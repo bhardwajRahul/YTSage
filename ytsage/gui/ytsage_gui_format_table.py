@@ -233,11 +233,15 @@ class FormatTableMixin:
         all_filtered = [(f, "video") for f in video_formats] + [(f, "audio") for f in audio_formats]
 
         # Build table with format type tracking
+        self.format_table.setVisible(False)
         self._populate_format_table(all_filtered)
         self._table_built = True
 
         # Apply initial visibility based on current button states
         self.filter_formats()
+        
+        # Animate table appearance
+        self.animate_widget_fade_in(self.format_table)
 
     def _populate_format_table(self, formats_with_types: list) -> None:
         """Populate the format table with formats and their types."""
