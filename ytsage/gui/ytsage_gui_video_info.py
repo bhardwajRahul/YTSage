@@ -310,7 +310,7 @@ class VideoInfoMixin:
         # removed extra logic for mapping to main_windows
         merge_checkbox = getattr(self, "merge_subs_checkbox", None)
 
-        if dialog.exec():  # If user clicks OK
+        if self.run_dialog_with_blur(dialog):  # If user clicks OK
             self.selected_subtitles = dialog.get_selected_subtitles()
             logger.info(f"Selected subtitles: {self.selected_subtitles}")
             # Update UI to reflect selection
@@ -356,7 +356,7 @@ class VideoInfoMixin:
 
         dialog = SponsorBlockCategoryDialog(dialog_categories, self)
 
-        if dialog.exec():
+        if self.run_dialog_with_blur(dialog):
             self.selected_sponsorblock_categories = dialog.get_selected_categories()
             logger.info(f"SponsorBlock categories selected: {self.selected_sponsorblock_categories}")
             self._update_sponsorblock_display()
@@ -414,7 +414,11 @@ class VideoInfoMixin:
             # Fade in the thumbnail
             self.thumbnail_label.setVisible(False)
             self.thumbnail_label.setPixmap(pixmap)
-            self.animate_widget_fade_in(self.thumbnail_label)
+            
+            if hasattr(self, "animate_widget_fade_in"):
+                self.animate_widget_fade_in(self.thumbnail_label)
+            else:
+                self.thumbnail_label.setVisible(True)
             
         except Exception as e:
             logger.exception(f"Error processing thumbnail image: {e}")

@@ -241,7 +241,10 @@ class FormatTableMixin:
         self.filter_formats()
         
         # Animate table appearance
-        self.animate_widget_fade_in(self.format_table)
+        if hasattr(self, "animate_widget_fade_in"):
+            self.animate_widget_fade_in(self.format_table)
+        else:
+            self.format_table.setVisible(True)
 
     def _populate_format_table(self, formats_with_types: list) -> None:
         """Populate the format table with formats and their types."""

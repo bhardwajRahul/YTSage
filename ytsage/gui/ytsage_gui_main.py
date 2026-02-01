@@ -27,7 +27,11 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
     QGraphicsOpacityEffect,
+    QGraphicsBlurEffect,
+    QGraphicsScene,
+    QGraphicsPixmapItem,
 )
+from PySide6.QtGui import QIcon, QPixmap, QPainter, QBrush, QColor
 
 from .. import __version__ as APP_VERSION
 from ..core.ytsage_downloader import DownloadThread, SignalManager  # Import downloader related classes
@@ -531,7 +535,7 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
 
     def show_download_settings_dialog(self) -> None:  # Renamed method
         dialog = DownloadSettingsDialog(self.last_path, self.speed_limit_value, self.speed_limit_unit_index, self)
-        if dialog.exec():
+        if self.run_dialog_with_blur(dialog):
             # Update Path
             new_path = dialog.get_selected_path()
             path_changed = False
@@ -978,7 +982,7 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
         # Style the dialog with improved theme matching
         msg.setStyleSheet(StyleSheet.UPDATE_DIALOG_MAIN)
 
-        msg.show()
+        self.run_dialog_with_blur(msg)
 
     def open_release_page(self, url):
         webbrowser.open(url)
@@ -1070,7 +1074,7 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
 
     def show_custom_options(self) -> None:
         dialog = CustomOptionsDialog(self)
-        if dialog.exec():
+        if self.run_dialog_with_blur(dialog):
             # Handle proxy options
             proxy_url = dialog.get_proxy_url()
             geo_proxy_url = dialog.get_geo_proxy_url()
@@ -1110,13 +1114,13 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
 
     def show_about_dialog(self) -> None:  # ADDED METHOD HERE
         dialog = AboutDialog(self)
-        dialog.exec()
+        self.run_dialog_with_blur(dialog)
     
     def show_history_dialog(self) -> None:
         """Show the download history dialog."""
         dialog = HistoryDialog(self)
         dialog.redownload_requested.connect(self.handle_redownload_from_history)
-        dialog.exec()
+        self.run_dialog_with_blur(dialog)
     
     def handle_redownload_from_history(self, entry: dict) -> None:
         """Handle redownload request from history dialog."""
@@ -1208,7 +1212,7 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
 
         dialog = PlaylistSelectionDialog(self.playlist_entries, self.selected_playlist_items, self)
 
-        if dialog.exec():
+        if self.run_dialog_with_blur(dialog):
             self.selected_playlist_items = dialog.get_selected_items_string()
             logger.info(f"Playlist items selected: {self.selected_playlist_items}")
 
@@ -1381,12 +1385,12 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
     def show_custom_command(self) -> None:
         dialog = CustomOptionsDialog(self)
         dialog.tab_widget.setCurrentIndex(1)  # Select the Custom Command tab
-        dialog.exec()
+        self.run_dialog_with_blur(dialog)
 
     def show_cookie_login_dialog(self) -> None:
         dialog = CustomOptionsDialog(self)
         dialog.tab_widget.setCurrentIndex(0)  # Select the Cookie Login tab
-        if dialog.exec():
+        if self.run_dialog_with_blur(dialog):
             # Handle cookies
             cookie_path = dialog.get_cookie_file_path()
             browser_cookies = dialog.get_browser_cookies_option()
@@ -1421,12 +1425,12 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
 
     def show_ffmpeg_dialog(self) -> None:
         dialog = FFmpegCheckDialog(self)
-        dialog.exec()
+        self.run_dialog_with_blur(dialog)
 
     # Add method for showing time range dialog
     def show_time_range_dialog(self) -> None:
         dialog = TimeRangeDialog(self)
-        if dialog.exec():
+        if self.run_dialog_with_blur(dialog):
             # Store the time range settings
             self.download_section = dialog.get_download_sections()
             self.force_keyframes = dialog.get_force_keyframes()
@@ -1451,7 +1455,7 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
             success_dialog.setText(_("ytdlp_setup.success_dialog_message", path=yt_dlp_path))
             success_dialog.setWindowIcon(self.windowIcon())
             success_dialog.setStyleSheet(StyleSheet.SETUP_SUCCESS_DIALOG)
-            success_dialog.exec()
+            self.run_dialog_with_blur(success_dialog)
 
     def show_deno_setup_dialog(self) -> None:
         """Show the Deno setup dialog to configure Deno"""
@@ -1463,10 +1467,15 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
             success_dialog.setText(f"{_('deno.success')}\n{deno_path}")
             success_dialog.setWindowIcon(self.windowIcon())
             success_dialog.setStyleSheet(StyleSheet.SETUP_SUCCESS_DIALOG)
-            success_dialog.exec()
+            self.run_dialog_with_blur(success_dialog)
 
     def animate_widget_fade_in(self, widget: QWidget, duration: int = 300) -> None:
         """Fade in a widget using opacity animation."""
+        # Check if the main window has a graphics effect (blur) active.
+        # If so, animating a child widget with another effect causes QPainter conflicts.
+        # NOTE: With the new Screenshot Overlay method, 'self.graphicsEffect()' on the MainWindow isn't used.
+        # However, we should still be careful if the widget itself already has an effect.
+        
         # Stop fade out if running
         if hasattr(widget, '_fade_out_anim'):
              try:
@@ -1504,6 +1513,7 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
 
     def animate_widget_fade_out(self, widget: QWidget, duration: int = 300) -> None:
         """Fade out a widget and then hide it."""
+        
         # Stop fade in if running
         if hasattr(widget, '_fade_anim'):
              try:
@@ -1619,5 +1629,75 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
         # Store ref
         self.status_label._status_anim = anim1 
         self.status_label._status_anim2 = anim2
+
+    def run_dialog_with_blur(self, dialog: QDialog) -> int:
+        """Run a dialog with a static background screenshot blur to avoid QPainter conflicts."""
+        
+        # 1. Capture the current state of the window (screenshot)
+        pixmap = self.grab()
+        
+        # 2. Create the blur using a Graphics Scene method (much safer than QGraphicsBlurEffect on live widget)
+        # However, for simplicity and performance with PySide6, we can just apply a blur to the image
+        # or use a simplified overlay.
+        # Let's manually blur the pixmap or use a simpler transparent overlay if blur is too heavy manually.
+        # Actually, using QGraphicsBlurEffect on a temporary QGraphicsScene rendering to a pixmap is a valid way
+        # to generate a single blurred frame.
+        
+        blurred_pixmap = self._apply_blur_to_pixmap(pixmap, radius=10)
+        
+        # 3. Create an overlay widget that covers the Main Window
+        overlay = QLabel(self)
+        overlay.setPixmap(blurred_pixmap)
+        overlay.setGeometry(0, 0, self.width(), self.height())
+        overlay.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, False) # Block mouse
+        overlay.show()
+        
+        # Animate overlay Fade In
+        opacity_effect = QGraphicsOpacityEffect(overlay)
+        overlay.setGraphicsEffect(opacity_effect)
+        
+        anim = QPropertyAnimation(opacity_effect, b"opacity", overlay)
+        anim.setDuration(250)
+        anim.setStartValue(0.0)
+        anim.setEndValue(1.0)
+        anim.setEasingCurve(QEasingCurve.Type.OutQuad)
+        anim.start(QPropertyAnimation.DeletionPolicy.DeleteWhenStopped)
+        
+        # 4. Run the dialog
+        # Ensure dialog is on top
+        result = dialog.exec()
+        
+        # 5. Remove overlay
+        overlay.deleteLater()
+        
+        return result
+
+    def _apply_blur_to_pixmap(self, source_pixmap: QPixmap, radius: int) -> QPixmap:
+        """Helper to create a blurred version of a pixmap."""
+        if source_pixmap.isNull():
+             return source_pixmap
+             
+        # Create a QGraphicsScene to apply the effect to the pixmap
+        scene = QGraphicsScene()
+        item = QGraphicsPixmapItem(source_pixmap)
+        scene.addItem(item)
+        
+        blur = QGraphicsBlurEffect()
+        blur.setBlurRadius(radius)
+        item.setGraphicsEffect(blur)
+        
+        # Render back to pixmap
+        result = source_pixmap.copy() # Match size/format
+        result.fill(Qt.GlobalColor.transparent)
+        
+        with QPainter(result) as painter:
+            scene.render(painter, target=source_pixmap.rect().toRectF(), source=source_pixmap.rect().toRectF())
+            
+            # Optional: Add a dark tint for 'dimming' effect
+            painter.setBrush(QBrush(QColor(0, 0, 0, 100))) # 100/255 opacity black
+            painter.setPen(Qt.PenStyle.NoPen)
+            painter.drawRect(source_pixmap.rect())
+
+        return result
 
 
