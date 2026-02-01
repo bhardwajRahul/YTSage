@@ -29,6 +29,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from ..ytsage_smooth_tab_widget import SmoothTabWidget
 from ...core.ytsage_yt_dlp import get_yt_dlp_path
 from ...core.ytsage_utils import update_auto_update_settings
 from ...utils.ytsage_constants import YTDLP_DOCS_URL
@@ -115,7 +116,7 @@ class CustomOptionsDialog(QDialog):
         layout = QVBoxLayout(self)
 
         # Create tab widget to organize content
-        self.tab_widget = QTabWidget()
+        self.tab_widget = SmoothTabWidget()
         layout.addWidget(self.tab_widget)
 
         # === Cookies Tab ===
@@ -542,7 +543,7 @@ class CustomOptionsDialog(QDialog):
             QDialog {
                 background-color: #15181b;
             }
-            QTabWidget::pane { 
+            QFrame#tabContent { 
                 border: 1px solid #3d3d3d;
                 background-color: #15181b;
             }
