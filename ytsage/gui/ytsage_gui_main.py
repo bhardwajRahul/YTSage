@@ -510,10 +510,10 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
         self.signals.update_progress.connect(self.update_progress_bar)
 
         # Connect new signals
-        self.signals.playlist_info_label_visible.connect(self.playlist_info_label.setVisible)
+        self.signals.playlist_info_label_visible.connect(lambda v: self.set_widget_visible_animated(self.playlist_info_label, v))
         self.signals.playlist_info_label_text.connect(self.playlist_info_label.setText)
         self.signals.selected_subs_label_text.connect(self.selected_subs_label.setText)
-        self.signals.playlist_select_btn_visible.connect(self.playlist_select_btn.setVisible)
+        self.signals.playlist_select_btn_visible.connect(lambda v: self.set_widget_visible_animated(self.playlist_select_btn, v))
         self.signals.playlist_select_btn_text.connect(self.playlist_select_btn.setText)
 
         # Disable analysis-dependent controls until video is analyzed
@@ -1461,15 +1461,25 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
 
     def animate_widget_fade_in(self, widget: QWidget, duration: int = 300) -> None:
         """Fade in a widget using opacity animation."""
-        if widget.isVisible():
+        # Stop fade out if running
+        if hasattr(widget, '_fade_out_anim'):
+             try:
+                 if widget._fade_out_anim.state() == QPropertyAnimation.State.Running:
+                     widget._fade_out_anim.stop()
+             except RuntimeError:
+                 pass
+        
+        if widget.isVisible() and widget.graphicsEffect() is None:
             return
 
         # Setup opacity effect if not present
-        effect = QGraphicsOpacityEffect(widget)
-        widget.setGraphicsEffect(effect)
+        effect = widget.graphicsEffect()
+        if not effect or not isinstance(effect, QGraphicsOpacityEffect):
+            effect = QGraphicsOpacityEffect(widget)
+            widget.setGraphicsEffect(effect)
         
-        # Determine start and end values
-        start_val = 0.0
+        # Determine start value (current opacity if previously animating)
+        start_val = effect.opacity() if widget.isVisible() else 0.0
         end_val = 1.0
         
         # Setup animation
@@ -1488,15 +1498,28 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
 
     def animate_widget_fade_out(self, widget: QWidget, duration: int = 300) -> None:
         """Fade out a widget and then hide it."""
+        # Stop fade in if running
+        if hasattr(widget, '_fade_anim'):
+             try:
+                 if widget._fade_anim.state() == QPropertyAnimation.State.Running:
+                     widget._fade_anim.stop()
+             except RuntimeError:
+                 pass
+
         if not widget.isVisible():
             return
 
-        effect = QGraphicsOpacityEffect(widget)
-        widget.setGraphicsEffect(effect)
+        effect = widget.graphicsEffect()
+        if not effect or not isinstance(effect, QGraphicsOpacityEffect):
+            effect = QGraphicsOpacityEffect(widget)
+            widget.setGraphicsEffect(effect)
+            effect.setOpacity(1.0)
+        
+        start_val = effect.opacity()
         
         anim = QPropertyAnimation(effect, b"opacity", widget)
         anim.setDuration(duration)
-        anim.setStartValue(1.0)
+        anim.setStartValue(start_val)
         anim.setEndValue(0.0)
         anim.setEasingCurve(QEasingCurve.Type.InQuad)
         
@@ -1508,6 +1531,14 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
         anim.start(QPropertyAnimation.DeletionPolicy.DeleteWhenStopped)
         
         widget._fade_out_anim = anim # Keep reference
+
+    def set_widget_visible_animated(self, widget: QWidget, visible: bool) -> None:
+        """Toggle widget visibility with fade animation."""
+        if visible:
+            self.animate_widget_fade_in(widget)
+        else:
+            self.animate_widget_fade_out(widget)
+
 
     def set_status_message_animated(self, message: str) -> None:
         """Update status label with a cross-fade animation."""
