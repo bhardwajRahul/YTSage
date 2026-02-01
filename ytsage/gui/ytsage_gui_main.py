@@ -26,6 +26,7 @@ from PySide6.QtWidgets import (
     QTextEdit,
     QVBoxLayout,
     QWidget,
+    QGraphicsOpacityEffect,
 )
 
 from .. import __version__ as APP_VERSION
@@ -505,7 +506,7 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
 
         # Connect signals
         self.signals.update_formats.connect(self.update_format_table)
-        self.signals.update_status.connect(self.status_label.setText)
+        self.signals.update_status.connect(self.set_status_message_animated)
         self.signals.update_progress.connect(self.update_progress_bar)
 
         # Connect new signals
@@ -698,7 +699,7 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
 
         # Connect signals
         self.download_thread.progress_signal.connect(self.update_progress_bar)
-        self.download_thread.status_signal.connect(self.status_label.setText)
+        self.download_thread.status_signal.connect(self.set_status_message_animated)
         self.download_thread.update_details.connect(self.download_details_label.setText)
         self.download_thread.finished_signal.connect(self.download_finished)
         self.download_thread.error_signal.connect(self.download_error)
@@ -710,8 +711,8 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
 
         # Show pause/cancel buttons
         self.pause_btn.setText(_("buttons.pause"))
-        self.pause_btn.setVisible(True)
-        self.cancel_btn.setVisible(True)
+        self.animate_widget_fade_in(self.pause_btn)
+        self.animate_widget_fade_in(self.cancel_btn)
 
         # Start download thread
         self.current_download = self.download_thread
@@ -720,8 +721,8 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
 
     def download_finished(self) -> None:
         self.toggle_download_controls(True)
-        self.pause_btn.setVisible(False)
-        self.cancel_btn.setVisible(False)
+        self.animate_widget_fade_out(self.pause_btn)
+        self.animate_widget_fade_out(self.cancel_btn)
         self.progress_bar.setValue(10000)  # 100% in 0-10000 range
 
         # Set completion message based on the file type of last downloaded file
@@ -731,19 +732,19 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
 
             # Video file extensions
             if ext in VIDEO_EXTENSIONS:
-                self.status_label.setText(_('download.video_completed'))
+                self.set_status_message_animated(_('download.video_completed'))
             # Audio file extensions
             elif ext in AUDIO_EXTENSIONS:
-                self.status_label.setText(_('download.audio_completed'))
+                self.set_status_message_animated(_('download.audio_completed'))
             # Subtitle file extensions
             elif ext in SUBTITLE_EXTENSIONS:
-                self.status_label.setText(_('download.subtitle_completed'))
+                self.set_status_message_animated(_('download.subtitle_completed'))
             # Default case
             else:
-                self.status_label.setText(_('download.completed'))
+                self.set_status_message_animated(_('download.completed'))
             
             # Show the open folder button
-            self.open_folder_btn.setVisible(True)
+            self.animate_widget_fade_in(self.open_folder_btn)
             
             # Save to history
             try:
@@ -1409,7 +1410,7 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
     def cancel_download(self) -> None:
         if self.current_download:
             self.current_download.cancelled = True
-            self.status_label.setText(_("status.cancelling"))  # Set status directly
+            self.set_status_message_animated(_("status.cancelling"))  # Set status directly
             self.download_details_label.setText("")  # Clear details label on cancellation
 
     def show_ffmpeg_dialog(self) -> None:
@@ -1457,5 +1458,99 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
             success_dialog.setWindowIcon(self.windowIcon())
             success_dialog.setStyleSheet(StyleSheet.SETUP_SUCCESS_DIALOG)
             success_dialog.exec()
+
+    def animate_widget_fade_in(self, widget: QWidget, duration: int = 300) -> None:
+        """Fade in a widget using opacity animation."""
+        if widget.isVisible():
+            return
+
+        # Setup opacity effect if not present
+        effect = QGraphicsOpacityEffect(widget)
+        widget.setGraphicsEffect(effect)
+        
+        # Determine start and end values
+        start_val = 0.0
+        end_val = 1.0
+        
+        # Setup animation
+        anim = QPropertyAnimation(effect, b"opacity", widget)
+        anim.setDuration(duration)
+        anim.setStartValue(start_val)
+        anim.setEndValue(end_val)
+        anim.setEasingCurve(QEasingCurve.Type.OutQuad)
+        
+        # Show widget before animation
+        widget.setVisible(True)
+        anim.start(QPropertyAnimation.DeletionPolicy.DeleteWhenStopped)
+        
+        # Keep reference to avoid garbage collection
+        widget._fade_anim = anim
+
+    def animate_widget_fade_out(self, widget: QWidget, duration: int = 300) -> None:
+        """Fade out a widget and then hide it."""
+        if not widget.isVisible():
+            return
+
+        effect = QGraphicsOpacityEffect(widget)
+        widget.setGraphicsEffect(effect)
+        
+        anim = QPropertyAnimation(effect, b"opacity", widget)
+        anim.setDuration(duration)
+        anim.setStartValue(1.0)
+        anim.setEndValue(0.0)
+        anim.setEasingCurve(QEasingCurve.Type.InQuad)
+        
+        def on_finished():
+            widget.setVisible(False)
+            widget.setGraphicsEffect(None) # Remove effect to restore normal painting
+            
+        anim.finished.connect(on_finished)
+        anim.start(QPropertyAnimation.DeletionPolicy.DeleteWhenStopped)
+        
+        widget._fade_out_anim = anim # Keep reference
+
+    def set_status_message_animated(self, message: str) -> None:
+        """Update status label with a cross-fade animation."""
+        if self.status_label.text() == message:
+             return
+
+        # If previous animation is running, stop it
+        if hasattr(self.status_label, '_status_anim'):
+            try:
+                if self.status_label._status_anim.state() == QPropertyAnimation.State.Running:
+                    self.status_label._status_anim.stop()
+            except RuntimeError:
+                pass  # Animation object already deleted
+
+        # Create effect if needed
+        effect = self.status_label.graphicsEffect()
+        if not effect or not isinstance(effect, QGraphicsOpacityEffect):
+            effect = QGraphicsOpacityEffect(self.status_label)
+            self.status_label.setGraphicsEffect(effect)
+        
+        # 1. Fade OUT
+        anim1 = QPropertyAnimation(effect, b"opacity", self.status_label)
+        anim1.setDuration(150)
+        anim1.setStartValue(1.0)
+        anim1.setEndValue(0.0)
+        anim1.setEasingCurve(QEasingCurve.Type.OutQuad)
+        
+        # 2. Change Text & Fade IN
+        anim2 = QPropertyAnimation(effect, b"opacity", self.status_label)
+        anim2.setDuration(150)
+        anim2.setStartValue(0.0)
+        anim2.setEndValue(1.0)
+        anim2.setEasingCurve(QEasingCurve.Type.InQuad)
+        
+        def on_fade_out_finished():
+            self.status_label.setText(message)
+            anim2.start(QPropertyAnimation.DeletionPolicy.DeleteWhenStopped)
+            
+        anim1.finished.connect(on_fade_out_finished)
+        anim1.start(QPropertyAnimation.DeletionPolicy.DeleteWhenStopped)
+        
+        # Store ref
+        self.status_label._status_anim = anim1 
+        self.status_label._status_anim2 = anim2
 
 
