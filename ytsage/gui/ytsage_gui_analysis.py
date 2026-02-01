@@ -271,12 +271,16 @@ class AnalysisMixin:
         url = self.url_input.text().strip()
         if not url:
             self.signals.update_status.emit(_("main_ui.invalid_url_or_enter"))
+            if hasattr(self, "animate_widget_shake"):
+                self.animate_widget_shake(self.url_input)
             return
         
         # Validate URL before processing
         is_valid, error_message = validate_video_url(url)
         if not is_valid:
             QMessageBox.warning(self, _("main_ui.error_title"), error_message)
+            if hasattr(self, "animate_widget_shake"):
+                self.animate_widget_shake(self.url_input)
             return
 
         # Cancel any existing analysis thread

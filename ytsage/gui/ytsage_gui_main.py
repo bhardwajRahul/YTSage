@@ -7,7 +7,7 @@ from pathlib import Path
 import markdown
 import requests
 from packaging import version
-from PySide6.QtCore import Q_ARG, QMetaObject, Qt, QTimer, Slot, QThread, Signal, QUrl, QPropertyAnimation, QEasingCurve
+from PySide6.QtCore import Q_ARG, QMetaObject, Qt, QTimer, Slot, QThread, Signal, QUrl, QPropertyAnimation, QEasingCurve, QPoint
 from PySide6.QtGui import QIcon
 from PySide6.QtMultimedia import QAudioOutput, QMediaPlayer
 from PySide6.QtWidgets import (
@@ -598,11 +598,15 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
         if not url or not path:
             # More specific error message if path is missing
             if not path:
-                self.status_label.setText(_('download.please_set_path'))
+                self.set_status_message_animated(_('download.please_set_path'))
+                self.animate_widget_shake(self.settings_button)
             elif not url:
-                self.status_label.setText(_('download.please_enter_url'))
+                self.set_status_message_animated(_('download.please_enter_url'))
+                self.animate_widget_shake(self.url_input)
             else:
-                self.status_label.setText(_('download.please_enter_url_and_path'))
+                self.set_status_message_animated(_('download.please_enter_url_and_path'))
+                self.animate_widget_shake(self.url_input)
+                self.animate_widget_shake(self.settings_button)
             return
         # --- End Path Change ---
         
@@ -610,12 +614,14 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
         is_valid, error_message = validate_video_url(url)
         if not is_valid:
             QMessageBox.warning(self, _("main_ui.error_title"), error_message)
+            self.animate_widget_shake(self.url_input)
             return
 
         # Get selected format
         selected_format = self.get_selected_format()
         if not selected_format:
-            self.status_label.setText(_('download.please_select_format'))
+            self.set_status_message_animated(_('download.please_select_format'))
+            self.animate_widget_shake(self.format_table)
             return
         format_id = selected_format["format_id"]
         is_audio_only = bool(selected_format.get("is_audio_only"))
@@ -1538,6 +1544,36 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
             self.animate_widget_fade_in(widget)
         else:
             self.animate_widget_fade_out(widget)
+
+    def animate_widget_shake(self, widget: QWidget) -> None:
+        """Shake a widget left and right to indicate an error or invalid input."""
+        # Stop shake if running
+        if hasattr(widget, '_shake_anim'):
+             try:
+                 if widget._shake_anim.state() == QPropertyAnimation.State.Running:
+                     return
+             except RuntimeError:
+                 pass
+
+        # Use current position as baseline
+        pos = widget.pos()
+        x = pos.x()
+        y = pos.y()
+        
+        anim = QPropertyAnimation(widget, b"pos", widget)
+        anim.setDuration(300)
+        anim.setLoopCount(1)
+        
+        # Create keyframes for shake effect
+        anim.setKeyValueAt(0, QPoint(x, y))
+        anim.setKeyValueAt(0.2, QPoint(x - 5, y))
+        anim.setKeyValueAt(0.4, QPoint(x + 5, y))
+        anim.setKeyValueAt(0.6, QPoint(x - 5, y))
+        anim.setKeyValueAt(0.8, QPoint(x + 5, y))
+        anim.setKeyValueAt(1.0, QPoint(x, y))
+        
+        widget._shake_anim = anim
+        anim.start(QPropertyAnimation.DeletionPolicy.DeleteWhenStopped)
 
 
     def set_status_message_animated(self, message: str) -> None:
