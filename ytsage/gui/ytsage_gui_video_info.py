@@ -410,7 +410,12 @@ class VideoInfoMixin:
             image.save(img_byte_arr, format="PNG")
             pixmap = QPixmap()
             pixmap.loadFromData(img_byte_arr.getvalue())
+            
+            # Fade in the thumbnail
+            self.thumbnail_label.setVisible(False)
             self.thumbnail_label.setPixmap(pixmap)
+            self.animate_widget_fade_in(self.thumbnail_label)
+            
         except Exception as e:
             logger.exception(f"Error processing thumbnail image: {e}")
 
