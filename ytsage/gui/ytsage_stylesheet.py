@@ -32,6 +32,7 @@ class StyleSheet:
             }
             QPushButton:pressed {
                 background-color: #800000;
+                padding: 10px 13px 6px 17px;
             }
             QPushButton:disabled {
                 background-color: #3d3d3d;
@@ -141,6 +142,7 @@ class StyleSheet:
             }
             QPushButton:pressed {
                 background-color: #1a1d1e;
+                padding: 11px 18px 7px 22px;
             }
     """
 
@@ -159,6 +161,7 @@ class StyleSheet:
             }
             QPushButton:pressed {
                 background-color: #800000;
+                padding: 11px 18px 7px 22px;
             }
             QPushButton:disabled {
                 background-color: #3d3d3d;
@@ -181,6 +184,10 @@ class StyleSheet:
                 background-color: #2a2d36;
                 border-color: #a50000;
             }
+            QPushButton:pressed {
+                background-color: #1d1e22;
+                padding: 8px 10px 4px 12px;
+            }
     """
 
     FORMAT_TOGGLE_BUTTON = """
@@ -200,6 +207,14 @@ class StyleSheet:
             }
             QPushButton:checked:hover {
                 background-color: #a50000;
+            }
+            QPushButton:pressed {
+                background-color: #151619;
+                padding: 10px 13px 6px 17px;
+            }
+            QPushButton:checked:pressed {
+                background-color: #800000;
+                padding: 10px 13px 6px 17px;
             }
     """
 
@@ -266,6 +281,7 @@ class StyleSheet:
             }
             QPushButton:pressed {
                 background-color: #1a1d1e;
+                padding: 4px 0px 0px 4px;
             }
     """
 
