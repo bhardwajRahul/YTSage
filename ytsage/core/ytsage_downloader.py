@@ -385,7 +385,9 @@ class DownloadThread(QThread):
     def _run_direct_command(self) -> None:
         """Run yt-dlp as a direct command line process instead of using Python API."""
         try:
+            self.error_lines = []  # Initialize error capture list
             cmd: List[str] = self._build_yt_dlp_command()
+
             cmd_str: str = " ".join(shlex.quote(str(arg)) for arg in cmd)
             logger.debug(f"Executing command: {cmd_str}")
 
@@ -508,16 +510,19 @@ class DownloadThread(QThread):
                 if self.cancelled:
                     self.status_signal.emit(_("download.cancelled"))
                 else:
-                    # Provide more descriptive error message for possible yt-dlp conflicts
-                    if return_code == 1:
+                    # Provide informative error message based on captured output
+                    if self.error_lines:
+                        # Use the captured error lines (last 2 for context)
+                        error_msg = "\n".join(self.error_lines[-2:])
                         self.error_signal.emit(
-                            _("errors.download_failed_return_code_conflict", return_code=return_code)
+                            _("errors.ytdlp_failed", error=error_msg)
                         )
                     else:
+                        # Fallback to generic return code error
                         self.error_signal.emit(
                             _("errors.download_failed_return_code", return_code=return_code)
                         )
-                    
+
                     # Add delay before cleanup to allow file handles to be released
                     time.sleep(1)
                     self.cleanup_partial_files()
@@ -533,6 +538,11 @@ class DownloadThread(QThread):
         """Parse yt-dlp command output to update progress and status."""
         line = line.strip()
         # logger.info(f"yt-dlp: {line}")  # Log all output - OPTIONALLY UNCOMMENT FOR VERBOSE DEBUG
+
+        # Capture error lines
+        if "ERROR:" in line:
+            if hasattr(self, 'error_lines'):
+                self.error_lines.append(line)
 
         # Extract filename when the destination line appears
         # Use a slightly more robust regex looking for the start of the line
