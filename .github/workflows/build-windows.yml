@@ -229,7 +229,12 @@ jobs:
           # Remove any duplicate or unnecessary DLLs (e.g., Qt6Qml, Qt6Quick, Qt6OpenGL from root lib)
           $bloatDlls = @("Qt6Web*", "Qt6Pdf*", "Qt6Qml*", "Qt6Quick*", "Qt6VirtualKeyboard*", "Qt6OpenGL*")
           foreach ($pattern in $bloatDlls) {
-              Get-ChildItem -Path $libDir -Filter $pattern | Remove-Item -Force
+              # Check in root lib
+              Get-ChildItem -Path $libDir -Filter $pattern -ErrorAction SilentlyContinue | Remove-Item -Force
+              # Check in PySide6 folder
+              if (Test-Path "$libDir\PySide6") {
+                  Get-ChildItem -Path "$libDir\PySide6" -Filter $pattern -ErrorAction SilentlyContinue | Remove-Item -Force
+              }
           }
           Write-Host "Removed unnecessary Qt DLLs"
 
@@ -373,7 +378,12 @@ jobs:
           # Remove any duplicate or unnecessary DLLs (e.g., Qt6Qml, Qt6Quick, Qt6OpenGL from root lib)
           $bloatDlls = @("Qt6Web*", "Qt6Pdf*", "Qt6Qml*", "Qt6Quick*", "Qt6VirtualKeyboard*", "Qt6OpenGL*")
           foreach ($pattern in $bloatDlls) {
-              Get-ChildItem -Path $libDir -Filter $pattern | Remove-Item -Force
+              # Check in root lib
+              Get-ChildItem -Path $libDir -Filter $pattern -ErrorAction SilentlyContinue | Remove-Item -Force
+              # Check in PySide6 folder
+              if (Test-Path "$libDir\PySide6") {
+                  Get-ChildItem -Path "$libDir\PySide6" -Filter $pattern -ErrorAction SilentlyContinue | Remove-Item -Force
+              }
           }
           Write-Host "Removed unnecessary Qt DLLs"
 
