@@ -271,8 +271,31 @@ jobs:
           echo "Warning: Build directory not found, cannot trim files"
         fi
 
-        # Build AppImage
-        python setup_cxfreeze.py bdist_appimage
+        # Build AppImage manually to avoid cx_Freeze rebuilding (and untrimming) the artifacts
+        echo "Creating AppImage manually..."
+        mkdir -p dist
+        
+        # Download appimagetool
+        wget -q -O appimagetool https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+        chmod +x appimagetool
+
+        # Setup AppDir structure
+        rm -rf AppDir
+        mkdir -p AppDir/usr/bin
+        
+        # Copy trimmed build content (preserving relative paths for cx_Freeze libs)
+        cp -r "$build_dir"/* AppDir/usr/bin/
+        
+        # Setup metadata
+        cp ytsage.desktop AppDir/
+        cp branding/icons/icon.png AppDir/ytsage.png
+        
+        # Create AppRun symlink
+        ln -s usr/bin/ytsage AppDir/AppRun
+        
+        # Build AppImage (using --appimage-extract-and-run to avoid FUSE issues in CI)
+        # We explicitly set ARCH for appimagetool
+        ARCH=x86_64 ./appimagetool --appimage-extract-and-run AppDir "dist/ytsage-v${version}.AppImage"
 
         # Build RPM manually with proper spec file
         version="${{ steps.get_version.outputs.VERSION }}"
