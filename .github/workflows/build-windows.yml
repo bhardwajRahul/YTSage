@@ -182,32 +182,65 @@ jobs:
       shell: powershell
       run: |
         $distDir = "dist\YTSage"
+        $libDir = "$distDir\lib"
         if (Test-Path $distDir) {
           # Remove screenshots
-          if (Test-Path "$distDir\lib\assets\branding\screenshots") {
-            Remove-Item "$distDir\lib\assets\branding\screenshots" -Recurse -Force
+          if (Test-Path "$libDir\assets\branding\screenshots") {
+            Remove-Item "$libDir\assets\branding\screenshots" -Recurse -Force
             Write-Host "Removed screenshots folder"
           }
           # Remove debug PDB files
           Get-ChildItem -Path $distDir -Recurse -Filter "*.pdb" | Remove-Item -Force
           Write-Host "Removed PDB debug files"
-          # Remove unused Qt translations (if not needed for multilingual support)
-          if (Test-Path "$distDir\PySide6\translations") {
-            Remove-Item "$distDir\PySide6\translations" -Recurse -Force
+          
+          # Remove unused Qt translations (entire folder)
+          if (Test-Path "$libDir\PySide6\translations") {
+            Remove-Item "$libDir\PySide6\translations" -Recurse -Force
             Write-Host "Removed Qt translations"
           }
+          
           # Remove unused Qt plugins (based on your excludes; adjust if needed)
+          # Note: qpdf and qsvg plugins are removed specifically
           $unusedPlugins = @("designer", "pdf", "svg", "sql", "help", "qml", "quick", "webengine", "bluetooth", "opengl", "printsupport", "test", "xml")
           foreach ($plugin in $unusedPlugins) {
-            if (Test-Path "$distDir\PySide6\plugins\$plugin") {
-              Remove-Item "$distDir\PySide6\plugins\$plugin" -Recurse -Force
-              Write-Host "Removed unused plugin: $plugin"
+            if (Test-Path "$libDir\PySide6\plugins\$plugin") {
+              Remove-Item "$libDir\PySide6\plugins\$plugin" -Recurse -Force
+              Write-Host "Removed unused plugin folder: $plugin"
             }
           }
-          # Remove any duplicate or unnecessary DLLs (e.g., web-related)
-          Get-ChildItem -Path $distDir -Recurse -Filter "Qt6Web*" | Remove-Item -Force
-          Get-ChildItem -Path $distDir -Recurse -Filter "Qt6Pdf*" | Remove-Item -Force
-          Write-Host "Removed additional unnecessary Qt files"
+          # Explicitly remove virtualkeyboard input context if it exists
+          if (Test-Path "$libDir\PySide6\plugins\platforminputcontexts") {
+             Remove-Item "$libDir\PySide6\plugins\platforminputcontexts" -Recurse -Force
+             Write-Host "Removed plugin: platforminputcontexts"
+          }
+          # Explicitly remove specific image formats
+          foreach ($fmt in @("qpdf.dll", "qsvg.dll")) {
+             if (Test-Path "$libDir\PySide6\plugins\imageformats\$fmt") {
+                 Remove-Item "$libDir\PySide6\plugins\imageformats\$fmt" -Force
+                 Write-Host "Removed plugin: $fmt"
+             }
+          }
+          # Explicitly remove specific icon engines
+          if (Test-Path "$libDir\PySide6\plugins\iconengines\qsvgicon.dll") {
+              Remove-Item "$libDir\PySide6\plugins\iconengines\qsvgicon.dll" -Force
+              Write-Host "Removed plugin: qsvgicon.dll"
+          }
+
+          # Remove any duplicate or unnecessary DLLs (e.g., Qt6Qml, Qt6Quick, Qt6OpenGL from root lib)
+          $bloatDlls = @("Qt6Web*", "Qt6Pdf*", "Qt6Qml*", "Qt6Quick*", "Qt6VirtualKeyboard*", "Qt6OpenGL*")
+          foreach ($pattern in $bloatDlls) {
+              Get-ChildItem -Path $libDir -Filter $pattern | Remove-Item -Force
+          }
+          Write-Host "Removed unnecessary Qt DLLs"
+
+          # Remove build tools and unused python modules
+          $uselessFolders = @("setuptools", "wheel", "pkg_resources", "_distutils_hack", "curses", "_pyrepl")
+          foreach ($folder in $uselessFolders) {
+              if (Test-Path "$libDir\$folder") {
+                  Remove-Item "$libDir\$folder" -Recurse -Force
+                  Write-Host "Removed unused module: $folder"
+              }
+          }
         }
     
     - name: Setup FFmpeg for bundle
@@ -293,32 +326,65 @@ jobs:
       shell: powershell
       run: |
         $distDir = "dist\YTSage-FFmpeg"
+        $libDir = "$distDir\lib"
         if (Test-Path $distDir) {
           # Remove screenshots
-          if (Test-Path "$distDir\lib\assets\branding\screenshots") {
-            Remove-Item "$distDir\lib\assets\branding\screenshots" -Recurse -Force
+          if (Test-Path "$libDir\assets\branding\screenshots") {
+            Remove-Item "$libDir\assets\branding\screenshots" -Recurse -Force
             Write-Host "Removed screenshots folder"
           }
           # Remove debug PDB files
           Get-ChildItem -Path $distDir -Recurse -Filter "*.pdb" | Remove-Item -Force
           Write-Host "Removed PDB debug files"
-          # Remove unused Qt translations (if not needed for multilingual support)
-          if (Test-Path "$distDir\PySide6\translations") {
-            Remove-Item "$distDir\PySide6\translations" -Recurse -Force
+          
+          # Remove unused Qt translations (entire folder)
+          if (Test-Path "$libDir\PySide6\translations") {
+            Remove-Item "$libDir\PySide6\translations" -Recurse -Force
             Write-Host "Removed Qt translations"
           }
+          
           # Remove unused Qt plugins (based on your excludes; adjust if needed)
+          # Note: qpdf and qsvg plugins are removed specifically
           $unusedPlugins = @("designer", "pdf", "svg", "sql", "help", "qml", "quick", "webengine", "bluetooth", "opengl", "printsupport", "test", "xml")
           foreach ($plugin in $unusedPlugins) {
-            if (Test-Path "$distDir\PySide6\plugins\$plugin") {
-              Remove-Item "$distDir\PySide6\plugins\$plugin" -Recurse -Force
-              Write-Host "Removed unused plugin: $plugin"
+            if (Test-Path "$libDir\PySide6\plugins\$plugin") {
+              Remove-Item "$libDir\PySide6\plugins\$plugin" -Recurse -Force
+              Write-Host "Removed unused plugin folder: $plugin"
             }
           }
-          # Remove any duplicate or unnecessary DLLs (e.g., web-related)
-          Get-ChildItem -Path $distDir -Recurse -Filter "Qt6Web*" | Remove-Item -Force
-          Get-ChildItem -Path $distDir -Recurse -Filter "Qt6Pdf*" | Remove-Item -Force
-          Write-Host "Removed additional unnecessary Qt files"
+          # Explicitly remove virtualkeyboard input context if it exists
+          if (Test-Path "$libDir\PySide6\plugins\platforminputcontexts") {
+             Remove-Item "$libDir\PySide6\plugins\platforminputcontexts" -Recurse -Force
+             Write-Host "Removed plugin: platforminputcontexts"
+          }
+          # Explicitly remove specific image formats
+          foreach ($fmt in @("qpdf.dll", "qsvg.dll")) {
+             if (Test-Path "$libDir\PySide6\plugins\imageformats\$fmt") {
+                 Remove-Item "$libDir\PySide6\plugins\imageformats\$fmt" -Force
+                 Write-Host "Removed plugin: $fmt"
+             }
+          }
+          # Explicitly remove specific icon engines
+          if (Test-Path "$libDir\PySide6\plugins\iconengines\qsvgicon.dll") {
+              Remove-Item "$libDir\PySide6\plugins\iconengines\qsvgicon.dll" -Force
+              Write-Host "Removed plugin: qsvgicon.dll"
+          }
+
+          # Remove any duplicate or unnecessary DLLs (e.g., Qt6Qml, Qt6Quick, Qt6OpenGL from root lib)
+          $bloatDlls = @("Qt6Web*", "Qt6Pdf*", "Qt6Qml*", "Qt6Quick*", "Qt6VirtualKeyboard*", "Qt6OpenGL*")
+          foreach ($pattern in $bloatDlls) {
+              Get-ChildItem -Path $libDir -Filter $pattern | Remove-Item -Force
+          }
+          Write-Host "Removed unnecessary Qt DLLs"
+
+          # Remove build tools and unused python modules
+          $uselessFolders = @("setuptools", "wheel", "pkg_resources", "_distutils_hack", "curses", "_pyrepl")
+          foreach ($folder in $uselessFolders) {
+              if (Test-Path "$libDir\$folder") {
+                  Remove-Item "$libDir\$folder" -Recurse -Force
+                  Write-Host "Removed unused module: $folder"
+              }
+          }
         }
     
     - name: Package and prepare release artifacts (ZIPs)
