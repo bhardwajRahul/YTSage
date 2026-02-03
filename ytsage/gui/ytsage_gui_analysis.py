@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, cast
 
 import json
 import subprocess
-from PySide6.QtCore import QMetaObject, Qt, Q_ARG, QThread, Signal
+from PySide6.QtCore import QMetaObject, Qt, Q_ARG, QThread, Signal, QTimer
 from PySide6.QtWidgets import QMessageBox
 
 from ..core.ytsage_utils import validate_video_url, parse_yt_dlp_error
@@ -22,6 +22,7 @@ class AnalysisThread(QThread):
     """
     # Signals for status updates
     status_update = Signal(str)
+    progress_update = Signal(int)  # Signal for progress bar updates
     
     # Signals for playlist UI
     playlist_info_visible = Signal(bool)
@@ -63,6 +64,7 @@ class AnalysisThread(QThread):
         """Main thread execution - performs URL analysis."""
         try:
             self.status_update.emit(_("main_ui.analyzing_extracting_basic"))
+            self.progress_update.emit(15)
             
             url = self.url
             # Clean up the URL to handle both playlist and video URLs
@@ -107,6 +109,7 @@ class AnalysisThread(QThread):
             return
 
         self.status_update.emit(_("main_ui.analyzing_extracting_ytdlp"))
+        self.progress_update.emit(30)  # This will trigger fake progress in UI
 
         # Build command for basic info extraction
         cmd = [yt_dlp_path, "--dump-single-json", "--flat-playlist", "--no-warnings", url]
@@ -156,6 +159,7 @@ class AnalysisThread(QThread):
             return
 
         self.status_update.emit(_("main_ui.analyzing_processing_data"))
+        self.progress_update.emit(60)
 
         # Prepare result data
         result_data: Dict[str, Any] = {
@@ -184,6 +188,7 @@ class AnalysisThread(QThread):
 
             # Fetch full info for the first video to get formats
             self.status_update.emit(_("main_ui.analyzing_fetching_first_video"))
+            self.progress_update.emit(70)
             first_video_entry = playlist_entries[0]
             first_video_url = first_video_entry.get("url")
 
@@ -235,20 +240,24 @@ class AnalysisThread(QThread):
             return
 
         self.status_update.emit(_("main_ui.analyzing_processing_formats_ytdlp"))
+        self.progress_update.emit(85)
         result_data["all_formats"] = video_info.get("formats", [])
 
         # Get thumbnail URL
         self.status_update.emit(_("main_ui.analyzing_loading_thumbnail_ytdlp"))
+        self.progress_update.emit(90)
         playlist_info = result_data.get("playlist_info") or {}
         thumbnail_url = playlist_info.get("thumbnail") or video_info.get("thumbnail")
         result_data["thumbnail_url"] = thumbnail_url
 
         # Handle subtitles
         self.status_update.emit(_("main_ui.analyzing_processing_subtitles_ytdlp"))
+        self.progress_update.emit(92)
         result_data["available_subtitles"] = video_info.get("subtitles", {})
         result_data["available_automatic_subtitles"] = video_info.get("automatic_captions", {})
 
         self.status_update.emit(_("main_ui.analyzing_updating_table"))
+        self.progress_update.emit(95)
 
         # Emit all results at once
         self.analysis_complete.emit(result_data)
@@ -259,6 +268,8 @@ class AnalysisMixin:
     
     # Track the current analysis thread
     _analysis_thread: Optional[AnalysisThread] = None
+    _analysis_timer: Optional[QTimer] = None
+    _fake_progress: int = 0
 
     def analyze_url(self) -> None:
         """Start URL analysis in a background thread."""
@@ -293,11 +304,18 @@ class AnalysisMixin:
         self.toggle_analysis_dependent_controls(enabled=False)
 
         self.signals.update_status.emit(_("main_ui.analyzing_preparing"))
+        self.signals.update_progress.emit(0) # Reset progress
         self.is_analyzing = True
+        
+        # Stop any existing timer
+        if self._analysis_timer:
+            self._analysis_timer.stop()
+            self._analysis_timer = None
 
         # Create and configure the analysis thread
         self._analysis_thread = AnalysisThread(
             url=url,
+            # ... arguments will be filled by ... usage below ...
             cookie_file_path=self.cookie_file_path,
             browser_cookies_option=self.browser_cookies_option,
             proxy_url=self.proxy_url,
@@ -307,6 +325,7 @@ class AnalysisMixin:
 
         # Connect signals to handlers
         self._analysis_thread.status_update.connect(self.signals.update_status.emit)
+        self._analysis_thread.progress_update.connect(self._handle_analysis_progress)
         self._analysis_thread.playlist_info_visible.connect(self.signals.playlist_info_label_visible.emit)
         self._analysis_thread.playlist_info_text.connect(self.signals.playlist_info_label_text.emit)
         self._analysis_thread.playlist_select_btn_visible.connect(self.signals.playlist_select_btn_visible.emit)
@@ -318,9 +337,52 @@ class AnalysisMixin:
         # Start the thread
         self._analysis_thread.start()
 
+    def _handle_analysis_progress(self, value: int) -> None:
+        """Handle progress updates from analysis thread."""
+        self = cast("YTSageApp", self)
+        
+        # Stop fake timer if running on any real update
+        if self._analysis_timer:
+            self._analysis_timer.stop()
+            self._analysis_timer = None
+            
+        self.signals.update_progress.emit(value)
+        
+        # If we hit the extraction phase (30%), start fake progress
+        if value == 30:
+            self._fake_progress = 30
+            self._analysis_timer = QTimer(self)
+            self._analysis_timer.timeout.connect(self._update_fake_progress)
+            self._analysis_timer.start(200) # Every 200ms
+
+    def _update_fake_progress(self) -> None:
+        """Increment progress bar slowly during long operations."""
+        self = cast("YTSageApp", self)
+        
+        # Asymptotically approach 85%
+        if self._fake_progress < 85:
+            # Slow down as we get higher
+            increment = 1
+            if self._fake_progress > 60:
+                 if self._fake_progress % 3 == 0: # Slower
+                      increment = 1
+                 else:
+                      increment = 0
+            
+            if increment > 0:
+                self._fake_progress += increment
+                self.signals.update_progress.emit(self._fake_progress)
+
     def _on_analysis_complete(self, result_data: Dict[str, Any]) -> None:
         """Handle successful analysis completion - runs in main thread."""
         self = cast("YTSageApp", self)
+        
+        # Stop fake timer
+        if self._analysis_timer:
+            self._analysis_timer.stop()
+            self._analysis_timer = None
+        
+        self.signals.update_progress.emit(100)
         
         # Update instance variables with results (safe - we're in main thread)
         self.is_playlist = result_data["is_playlist"]
@@ -362,6 +424,10 @@ class AnalysisMixin:
     def _on_analysis_error(self, error_message: str) -> None:
         """Handle analysis error - runs in main thread."""
         self = cast("YTSageApp", self)
+        if self._analysis_timer:
+            self._analysis_timer.stop()
+            self._analysis_timer = None
+        self.signals.update_progress.emit(0)
         self.signals.update_status.emit(error_message)
 
     def _on_analysis_finished(self) -> None:
