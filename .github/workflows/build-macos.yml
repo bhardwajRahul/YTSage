@@ -95,6 +95,7 @@ jobs:
 
         build_exe_options = dict(
             optimize=2,
+            silent=True,
             packages=[
                 "ytsage",
                 "PySide6.QtCore",
@@ -108,6 +109,13 @@ jobs:
                 "markdown",
                 "loguru",
                 "setuptools",
+            ],
+            zip_include_packages=[
+                "PySide6",
+                "shiboken6",
+                "requests",
+                "PIL",
+                "packaging",
             ],
             excludes=[
                 "PySide6.QtBluetooth",
@@ -132,6 +140,9 @@ jobs:
                 "unittest",
                 "test",
                 "tests",
+                "pydoc",
+                "doctest",
+                "email",
             ],
             include_files=[
                 ("ytsage/assets/Icon", "lib/assets/Icon"),
@@ -162,7 +173,6 @@ jobs:
                 "bdist_dmg": {
                     "volume_label": f"YTSage v{version}",
                     "applications_shortcut": True,
-                    # Sensible defaults; can be customized later if desired
                     "format": "UDZO",
                     "filesystem": "HFS+",
                     "default_view": "icon-view",
@@ -176,31 +186,67 @@ jobs:
       shell: bash
       run: |
         source venv/bin/activate
-        python setup_cxfreeze.py bdist_mac
-        # Locate the built .app (cx_Freeze may place it under build/ or dist/)
+        python -OO setup_cxfreeze.py bdist_mac
+        
+    - name: Trim unnecessary files from App bundle
+      shell: bash
+      run: |
+        version="${{ steps.get_version.outputs.VERSION }}"
+        
+        # Locate the built .app
         app_path=""
-        for cand in "dist/YTSage-v${VERSION}.app" "build/dist/YTSage-v${VERSION}.app" "build/YTSage-v${VERSION}.app"; do
+        for cand in "dist/YTSage-v${version}.app" "build/dist/YTSage-v${version}.app" "build/YTSage-v${version}.app"; do
           if [ -d "$cand" ]; then app_path="$cand"; break; fi
         done
         if [ -z "$app_path" ]; then
           app_path=$(ls -d dist/*.app build/dist/*.app build/*.app 2>/dev/null | head -n1 || true)
         fi
-        if [ -n "$app_path" ] && [ -d "$app_path/Contents/Resources/lib/assets/branding/screenshots" ]; then
-          rm -rf "$app_path/Contents/Resources/lib/assets/branding/screenshots"
-          echo "Removed screenshots folder from .app bundle at $app_path"
+        
+        if [ -n "$app_path" ]; then
+          echo "Processing App Bundle at: $app_path"
+          
+          # 1. Remove screenshots
+          if [ -d "$app_path/Contents/Resources/lib/assets/branding/screenshots" ]; then
+            rm -rf "$app_path/Contents/Resources/lib/assets/branding/screenshots"
+            echo "Removed screenshots folder"
+          fi
+          
+          # 2. Remove unused Qt translations
+          # In macOS .app, Qt libs might be in Contents/MacOS/PySide6 or similar
+          # Search for translations folder within the app bundle
+          translations=$(find "$app_path" -type d -name "translations" | grep "PySide6" || true)
+          if [ -n "$translations" ]; then
+            rm -rf "$translations"
+            echo "Removed Qt translations at $translations"
+          fi
+          
+          # 3. Remove unused Qt plugins (matching Windows logic)
+          plugins_dir=$(find "$app_path" -type d -name "plugins" | grep "PySide6" | head -n1 || true)
+          if [ -n "$plugins_dir" ]; then
+            echo "Cleaning plugins in $plugins_dir"
+            for plugin in designer pdf svg sql help qml quick webengine bluetooth opengl printsupport test xml; do
+              if [ -d "$plugins_dir/$plugin" ]; then
+                rm -rf "$plugins_dir/$plugin"
+                echo "Removed plugin: $plugin"
+              fi
+            done
+          fi
+          
+          # 4. Remove other unused components if found
+          find "$app_path" -name "Qt6Web*" -delete
+          find "$app_path" -name "Qt6Pdf*" -delete
+          echo "Cleaned additional Qt files"
+          
+        else
+           echo "Error: Could not find .app bundle to trim!"
+           exit 1
         fi
-        echo "Post-bdist_mac directory listing:"
-        echo "-- dist --"; ls -lah dist || true
-        echo "-- build --"; ls -lah build || true
 
     - name: Build DMG (bdist_dmg)
       shell: bash
       run: |
         source venv/bin/activate
         python setup_cxfreeze.py bdist_dmg
-        echo "Post-bdist_dmg directory listing:"
-        echo "-- dist --"; ls -lah dist || true
-        echo "-- build --"; ls -lah build || true
 
     - name: Package and prepare release artifacts (.app.zip and .dmg)
       shell: bash
@@ -209,7 +255,7 @@ jobs:
         echo "Preparing artifacts for version: $version"
         mkdir -p artifacts
 
-        # Find the .app bundle (preferring versioned name)
+        # Find the .app bundle
         app_path=""
         for cand in "dist/YTSage-v${version}.app" "build/dist/YTSage-v${version}.app" "build/YTSage-v${version}.app"; do
           if [ -d "$cand" ]; then app_path="$cand"; break; fi
@@ -217,21 +263,17 @@ jobs:
         if [ -z "$app_path" ]; then
           app_path=$(ls -d dist/*.app build/dist/*.app build/*.app 2>/dev/null | head -n1 || true)
         fi
+        
         if [ -n "$app_path" ] && [ -d "$app_path" ]; then
           app_base="$(basename "$app_path")"
           app_parent="$(dirname "$app_path")"
-          # Ensure screenshots folder is not shipped
-          if [ -d "$app_path/Contents/Resources/lib/assets/branding/screenshots" ]; then
-            rm -rf "$app_path/Contents/Resources/lib/assets/branding/screenshots"
-            echo "Removed screenshots folder from .app bundle at $app_path"
-          fi
           (cd "$app_parent" && zip -r "${GITHUB_WORKSPACE}/artifacts/YTSage-v${version}-${ARCH_SUFFIX}.app.zip" "$app_base")
           echo "Created: artifacts/YTSage-v${version}-${ARCH_SUFFIX}.app.zip"
         else
           echo "Warning: .app bundle not found in dist/ or build/"
         fi
 
-        # Try to find the generated DMG in dist or build
+        # Try to find the generated DMG
         dmg_src=""
         for cand in "dist/YTSage-v${version}.dmg"; do
           if [ -f "$cand" ]; then dmg_src="$cand"; break; fi
@@ -241,11 +283,10 @@ jobs:
         fi
 
         if [ -n "$dmg_src" ] && [ -f "$dmg_src" ]; then
-          # Rename the DMG to a consistent name in artifacts
           cp "$dmg_src" "artifacts/YTSage-v${version}-${ARCH_SUFFIX}.dmg"
-          echo "Copied DMG to artifacts from $dmg_src -> artifacts/YTSage-v${version}-${ARCH_SUFFIX}.dmg"
+          echo "Copied DMG to artifacts"
         else
-          echo "Warning: No DMG found in dist/ or build/"
+          echo "Warning: No DMG found"
         fi
 
         echo "Final artifacts:"
