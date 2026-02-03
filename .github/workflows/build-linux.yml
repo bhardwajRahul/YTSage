@@ -49,7 +49,7 @@ jobs:
         path: |
           venv
           ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
 
@@ -67,7 +67,7 @@ jobs:
         python -m venv venv
         source venv/bin/activate
         python -m pip install --upgrade pip
-        pip install --no-cache-dir .
+        pip install --no-cache-dir -r requirements.txt
         pip install --no-cache-dir cx_Freeze
 
     - name: Prepare build variables
@@ -82,13 +82,6 @@ jobs:
     - name: Create cx_Freeze setup script (Linux)
       shell: bash
       run: |
-        # Create entry point script
-        cat > ytsage_entry.py <<'ENTRY'
-        from ytsage.main import main
-        if __name__ == "__main__":
-            main()
-        ENTRY
-
         cat > setup_cxfreeze.py <<'PY'
         import os
         import sys
@@ -99,32 +92,32 @@ jobs:
 
         # Prepare include_files list
         include_files_list = [
-            ("ytsage/assets/Icon", "lib/assets/Icon"),
-            ("ytsage/assets/sound", "lib/assets/sound"),
-            ("ytsage/languages", "lib/languages"),
-            ("branding/icons", "lib/assets/branding/icons"),
+            ("src", "src"),
+            ("assets/branding/icons", "lib/assets/branding/icons"),
+            ("assets/Icon", "lib/assets/Icon"),
+            ("assets/sound", "lib/assets/sound"),
+            ("languages", "lib/languages"),
             ("ytsage.desktop", "share/applications/ytsage.desktop"),
-            ("branding/icons/icon.png", "share/pixmaps/ytsage.png"),
+            ("assets/branding/icons/icon.png", "share/pixmaps/ytsage.png"),
         ]
 
         build_exe_options = dict(
             optimize=2,
             packages=[
-                "ytsage",
                 "PySide6.QtCore",
                 "PySide6.QtGui",
                 "PySide6.QtWidgets",
-                "PySide6.QtMultimedia",
-                "PySide6.QtNetwork",
                 "requests",
                 "PIL",
                 "packaging",
                 "markdown",
+                "pyglet",
                 "loguru",
                 "setuptools",
             ],
             excludes=[
                 "PySide6.QtBluetooth",
+                "PySide6.QtNetwork",
                 "PySide6.QtOpenGL",
                 "PySide6.QtPrintSupport",
                 "PySide6.QtSvg",
@@ -132,6 +125,7 @@ jobs:
                 "PySide6.QtXml",
                 "PySide6.QtSql",
                 "PySide6.QtHelp",
+                "PySide6.QtMultimedia",
                 "PySide6.QtQml",
                 "PySide6.QtQuick",
                 "PySide6.QtWebEngineCore",
@@ -157,9 +151,9 @@ jobs:
 
         executables = [
             Executable(
-                script="ytsage_entry.py",
+                script="main.py",
                 target_name="ytsage",
-                icon="branding/icons/icon.png",
+                icon="assets/branding/icons/icon.png",
             )
         ]
 
@@ -263,7 +257,7 @@ jobs:
         
         # Install desktop file and icon
         install -m 0644 ${workspace_root}/ytsage.desktop %{buildroot}/usr/share/applications/ytsage.desktop
-        install -m 0644 ${workspace_root}/branding/icons/icon.png %{buildroot}/usr/share/pixmaps/ytsage.png
+        install -m 0644 ${workspace_root}/assets/branding/icons/icon.png %{buildroot}/usr/share/pixmaps/ytsage.png
         
         %files
         /opt/ytsage
@@ -343,7 +337,7 @@ jobs:
 
         # Desktop file and icon
         install -m 0644 ytsage.desktop "$pkgroot/usr/share/applications/ytsage.desktop"
-        install -m 0644 branding/icons/icon.png "$pkgroot/usr/share/pixmaps/ytsage.png"
+        install -m 0644 assets/branding/icons/icon.png "$pkgroot/usr/share/pixmaps/ytsage.png"
 
         # Control file
         cat > "$pkgroot/DEBIAN/control" <<CONTROL
@@ -441,7 +435,7 @@ jobs:
                 "cp -r dist/ytsage-v${version}-*/* /app/share/ytsage/",
                 "ln -s /app/share/ytsage/ytsage /app/bin/ytsage",
                 "install -D flatpak.desktop /app/share/applications/$APP_ID.desktop",
-                "install -D branding/icons/icon.png /app/share/icons/hicolor/128x128/apps/$APP_ID.png"
+                "install -D assets/branding/icons/icon.png /app/share/icons/hicolor/128x128/apps/$APP_ID.png"
               ],
               "sources": [
                 {

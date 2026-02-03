@@ -50,7 +50,7 @@ jobs:
           venv
           ~/.cache/pip
           ~/Library/Caches/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
 
@@ -60,7 +60,7 @@ jobs:
         python -m venv venv
         source venv/bin/activate
         python -m pip install --upgrade pip
-        pip install --no-cache-dir .
+        pip install --no-cache-dir -r requirements.txt
         pip install --no-cache-dir cx_Freeze dmgbuild
 
     - name: Prepare build variables
@@ -80,13 +80,6 @@ jobs:
     - name: Create cx_Freeze setup script
       shell: bash
       run: |
-        # Create entry point script
-        cat > ytsage_entry.py <<'ENTRY'
-        from ytsage.main import main
-        if __name__ == "__main__":
-            main()
-        ENTRY
-
         cat > setup_cxfreeze.py <<'PY'
         import os
         from cx_Freeze import setup, Executable
@@ -96,21 +89,20 @@ jobs:
         build_exe_options = dict(
             optimize=2,
             packages=[
-                "ytsage",
                 "PySide6.QtCore",
                 "PySide6.QtGui",
                 "PySide6.QtWidgets",
-                "PySide6.QtMultimedia",
-                "PySide6.QtNetwork",
                 "requests",
                 "PIL",
                 "packaging",
                 "markdown",
+                "pyglet",
                 "loguru",
                 "setuptools",
             ],
             excludes=[
                 "PySide6.QtBluetooth",
+                "PySide6.QtNetwork",
                 "PySide6.QtOpenGL",
                 "PySide6.QtPrintSupport",
                 "PySide6.QtSvg",
@@ -118,6 +110,7 @@ jobs:
                 "PySide6.QtXml",
                 "PySide6.QtSql",
                 "PySide6.QtHelp",
+                "PySide6.QtMultimedia",
                 "PySide6.QtQml",
                 "PySide6.QtQuick",
                 "PySide6.QtWebEngineCore",
@@ -134,18 +127,19 @@ jobs:
                 "tests",
             ],
             include_files=[
-                ("ytsage/assets/Icon", "lib/assets/Icon"),
-                ("ytsage/assets/sound", "lib/assets/sound"),
-                ("ytsage/languages", "lib/languages"),
-                ("branding/icons", "lib/assets/branding/icons"),
+                ("src", "src"),
+                ("assets/branding/icons", "lib/assets/branding/icons"),
+                ("assets/Icon", "lib/assets/Icon"),
+                ("assets/sound", "lib/assets/sound"),
+                ("languages", "lib/languages"),
             ],
         )
 
         executables = [
             Executable(
-                script="ytsage_entry.py",
+                script="main.py",
                 target_name=f"YTSage-v{version}",
-                icon="branding/icons/icon.icns",
+                icon="assets/branding/icons/icon.icns",
             )
         ]
 
@@ -156,7 +150,7 @@ jobs:
             options={
                 "build_exe": build_exe_options,
                 "bdist_mac": {
-                    "iconfile": "branding/icons/icon.icns",
+                    "iconfile": "assets/branding/icons/icon.icns",
                     "bundle_name": f"YTSage-v{version}",
                 },
                 "bdist_dmg": {
