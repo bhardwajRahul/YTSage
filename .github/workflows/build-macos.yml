@@ -205,37 +205,67 @@ jobs:
         if [ -n "$app_path" ]; then
           echo "Processing App Bundle at: $app_path"
           
-          # 1. Remove screenshots
-          if [ -d "$app_path/Contents/Resources/lib/assets/branding/screenshots" ]; then
-            rm -rf "$app_path/Contents/Resources/lib/assets/branding/screenshots"
+          # Determine Lib directory (standard location vs customized)
+          # We look for 'os.py' or 'ytsage' folder to be sure
+          lib_dir=$(find "$app_path/Contents" -type d -name "ytsage" | head -n1 | xargs dirname)
+          
+          if [ -z "$lib_dir" ]; then
+             # Fallback standard cx_Freeze locations
+             if [ -d "$app_path/Contents/MacOS/lib" ]; then
+                lib_dir="$app_path/Contents/MacOS/lib"
+             elif [ -d "$app_path/Contents/Resources/lib" ]; then
+                lib_dir="$app_path/Contents/Resources/lib"
+             fi
+          fi
+
+          echo "Detected Lib Directory: $lib_dir"
+          
+          if [ -d "$lib_dir" ]; then
+            # 1. Remove screenshots
+            rm -rf "$lib_dir/assets/branding/screenshots"
             echo "Removed screenshots folder"
-          fi
-          
-          # 2. Remove unused Qt translations
-          # In macOS .app, Qt libs might be in Contents/MacOS/PySide6 or similar
-          # Search for translations folder within the app bundle
-          translations=$(find "$app_path" -type d -name "translations" | grep "PySide6" || true)
-          if [ -n "$translations" ]; then
-            rm -rf "$translations"
-            echo "Removed Qt translations at $translations"
-          fi
-          
-          # 3. Remove unused Qt plugins (matching Windows logic)
-          plugins_dir=$(find "$app_path" -type d -name "plugins" | grep "PySide6" | head -n1 || true)
-          if [ -n "$plugins_dir" ]; then
-            echo "Cleaning plugins in $plugins_dir"
+            
+            # 2. Remove unused Qt translations
+            rm -rf "$lib_dir/PySide6/translations"
+            echo "Removed Qt translations"
+            
+            # 3. Remove unused Qt plugins
+            plugins_dir="$lib_dir/PySide6/plugins"
             for plugin in designer pdf svg sql help qml quick webengine bluetooth opengl printsupport test xml; do
-              if [ -d "$plugins_dir/$plugin" ]; then
-                rm -rf "$plugins_dir/$plugin"
-                echo "Removed plugin: $plugin"
-              fi
+               if [ -d "$plugins_dir/$plugin" ]; then
+                 rm -rf "$plugins_dir/$plugin"
+                 echo "Removed plugin folder: $plugin"
+               fi
             done
+            
+            # 3.1. Explicitly remove specific input contexts and image formats
+            rm -rf "$plugins_dir/platforminputcontexts"
+            # Note: macOS libs usually have .dylib extension or no extension in bundles, or .so for python modules
+            # We try removing common variants
+            rm -f "$plugins_dir/imageformats/libqpdf.dylib" "$plugins_dir/imageformats/libqsvg.dylib"
+            rm -f "$plugins_dir/imageformats/qpdf.dylib" "$plugins_dir/imageformats/qsvg.dylib"
+            rm -f "$plugins_dir/iconengines/libqsvgicon.dylib" "$plugins_dir/iconengines/qsvgicon.dylib"
+            
+            # 4. Remove any duplicate or unnecessary Qt Libraries (DLLs/dylibs)
+            # Targeting root lib and PySide6 internal lib
+            # Patterns match both .so, .dylib, and .framework style naming
+            echo "Removing bloat Qt libraries..."
+            find "$lib_dir" -name "Qt6Web*" -delete
+            find "$lib_dir" -name "Qt6Pdf*" -delete
+            find "$lib_dir" -name "Qt6Qml*" -delete
+            find "$lib_dir" -name "Qt6Quick*" -delete
+            find "$lib_dir" -name "Qt6VirtualKeyboard*" -delete
+            find "$lib_dir" -name "Qt6OpenGL*" -delete 
+            
+            # 5. Remove build tools and unused python modules
+            for tool in setuptools wheel pkg_resources _distutils_hack curses _pyrepl; do
+               rm -rf "$lib_dir/$tool"
+               echo "Removed build tool/module: $tool"
+            done
+            
+          else
+            echo "Warning: Library directory could not be precisely determined. Skipping deep trim."
           fi
-          
-          # 4. Remove other unused components if found
-          find "$app_path" -name "Qt6Web*" -delete
-          find "$app_path" -name "Qt6Pdf*" -delete
-          echo "Cleaned additional Qt files"
           
         else
            echo "Error: Could not find .app bundle to trim!"
