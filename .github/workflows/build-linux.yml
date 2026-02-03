@@ -117,6 +117,8 @@ jobs:
                 "PySide6.QtWidgets",
                 "PySide6.QtMultimedia",
                 "PySide6.QtNetwork",
+                "PySide6.QtDBus",
+                "PySide6.QtSvg",
                 "requests",
                 "PIL",
                 "packaging",
@@ -135,7 +137,6 @@ jobs:
                 "PySide6.QtBluetooth",
                 "PySide6.QtOpenGL",
                 "PySide6.QtPrintSupport",
-                "PySide6.QtSvg",
                 "PySide6.QtTest",
                 "PySide6.QtXml",
                 "PySide6.QtSql",
@@ -237,16 +238,14 @@ jobs:
             # 3. Remove unused Qt plugins
             plugins_dir="$lib_dir/PySide6/plugins"
             if [ -d "$plugins_dir" ]; then
-                for plugin in designer pdf svg sql help qml quick webengine bluetooth opengl printsupport test xml; do
+                for plugin in designer pdf sql help qml quick webengine bluetooth opengl printsupport test xml; do
                   if [ -d "$plugins_dir/$plugin" ]; then
                     rm -rf "$plugins_dir/$plugin"
                     echo "Removed plugin: $plugin"
                   fi
                 done
-                # Specific cleanups (input contexts, imageformats)
-                rm -rf "$plugins_dir/platforminputcontexts"
-                rm -f "$plugins_dir/imageformats/libqpdf.so" "$plugins_dir/imageformats/libqsvg.so"
-                rm -f "$plugins_dir/iconengines/libqsvgicon.so"
+                # Specific cleanups (imageformats)
+                rm -f "$plugins_dir/imageformats/libqpdf.so"
             fi
 
             # 4. Remove bloat shared libraries (Recursively finds in lib/ and lib/PySide6/)
