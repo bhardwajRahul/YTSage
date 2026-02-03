@@ -103,6 +103,7 @@ jobs:
                 "PySide6.QtWidgets",
                 "PySide6.QtMultimedia",
                 "PySide6.QtNetwork",
+                "PySide6.QtDBus",
                 "requests",
                 "PIL",
                 "packaging",
@@ -232,16 +233,13 @@ jobs:
                       done
                       
                       # Specific cleanups
-                      rm -rf "$plugins_path/platforminputcontexts"
                       find "$plugins_path" -name "libqpdf.*" -delete
-                      find "$plugins_path" -name "libqsvg.*" -delete
-                      find "$plugins_path" -name "libqsvgicon.*" -delete
                   fi
                   
                   # 4. Remove bloat Qt libraries / Frameworks
                   # Iterate specifically over unwanted Qt modules
                   # Matches both 'QtQml' (file) and 'QtQml.abi3.so' etc
-                  for bloat in QtQml QtQmlMeta QtQmlModels QtQmlWorkerScript QtQuick QtQuickControls2 QtQuickTemplates2 QtWebEngine QtWebEngineCore QtVirtualKeyboard QtVirtualKeyboardQml QtOpenGL QtOpenGLWidgets QtPdf QtPdfWidgets QtDBus; do
+                  for bloat in QtQml QtQmlMeta QtQmlModels QtQmlWorkerScript QtQuick QtQuickControls2 QtQuickTemplates2 QtWebEngine QtWebEngineCore QtVirtualKeyboard QtVirtualKeyboardQml QtOpenGL QtOpenGLWidgets QtPdf QtPdfWidgets; do
                       find "$lib_dir" -maxdepth 2 -name "$bloat" -delete
                       find "$lib_dir" -maxdepth 2 -name "${bloat}.*" -delete 
                       find "$lib_dir" -maxdepth 2 -name "*$bloat*" -delete 
