@@ -279,19 +279,31 @@ jobs:
         wget -q -O appimagetool https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
         chmod +x appimagetool
 
-        # Setup AppDir structure
+        # Setup AppDir structure (Root layout matches cx_Freeze build output exactly)
         rm -rf AppDir
-        mkdir -p AppDir/usr/bin
+        mkdir -p AppDir
         
-        # Copy trimmed build content (preserving relative paths for cx_Freeze libs)
-        cp -r "$build_dir"/* AppDir/usr/bin/
+        # Copy trimmed build content DIRECTLY to AppDir root
+        # This keeps 'lib' adjacent to 'ytsage', preventing 'ModuleNotFoundError: encodings'
+        cp -r "$build_dir"/* AppDir/
         
         # Setup metadata
         cp ytsage.desktop AppDir/
+        # Fix Exec path for AppImage context (binary is in root, not /usr/bin)
+        sed -i 's|Exec=/usr/bin/ytsage|Exec=ytsage|g' AppDir/ytsage.desktop
         cp branding/icons/icon.png AppDir/ytsage.png
+        # .DirIcon for file managers
+        cp branding/icons/icon.png AppDir/.DirIcon 
         
-        # Create AppRun symlink
-        ln -s usr/bin/ytsage AppDir/AppRun
+        # Create AppRun as a script to correctly set environment
+        cat > AppDir/AppRun <<'APPRUN'
+        #!/bin/sh
+        SELF=$(readlink -f "$0")
+        HERE=$(dirname "$SELF")
+        export LD_LIBRARY_PATH="$HERE/lib:$LD_LIBRARY_PATH"
+        exec "$HERE/ytsage" "$@"
+        APPRUN
+        chmod +x AppDir/AppRun
         
         # Build AppImage (using --appimage-extract-and-run to avoid FUSE issues in CI)
         # We explicitly set ARCH for appimagetool
