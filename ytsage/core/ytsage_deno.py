@@ -683,9 +683,12 @@ def compare_deno_versions(current: str, latest: str) -> bool:
         return False
 
 
-def upgrade_deno() -> tuple[bool, str]:
+def upgrade_deno(progress_callback=None) -> tuple[bool, str]:
     """
     Upgrade Deno to the latest version using 'deno upgrade' command.
+    
+    Args:
+        progress_callback: Optional function to call with output lines for progress tracking
     
     Returns:
         tuple: (success: bool, output: str) - Success status and command output
@@ -700,23 +703,42 @@ def upgrade_deno() -> tuple[bool, str]:
         
         logger.info(f"Upgrading Deno using: {deno_path}")
         
-        # Run deno upgrade command
-        result = subprocess.run(
+        # Run deno upgrade command with output capturing
+        process = subprocess.Popen(
             [str(deno_path), "upgrade"],
-            capture_output=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
             text=True,
-            timeout=300,  # 5 minutes timeout
-            creationflags=SUBPROCESS_CREATIONFLAGS
+            creationflags=SUBPROCESS_CREATIONFLAGS,
+            bufsize=1,  # Line buffered
+            encoding='utf-8',
+            errors='replace'
         )
         
-        output = result.stdout + result.stderr
+        full_output = []
         
-        if result.returncode == 0:
+        # Read output line by line as it is generated
+        while True:
+            line = process.stdout.readline()
+            if not line and process.poll() is not None:
+                break
+            
+            if line:
+                line_str = line.strip()
+                if line_str:
+                    full_output.append(line_str)
+                    logger.debug(f"Deno upgrade output: {line_str}")
+                    if progress_callback:
+                        progress_callback(line_str)
+        
+        return_code = process.poll()
+        output = "\n".join(full_output)
+        
+        if return_code == 0:
             logger.info("Deno upgrade successful")
-            logger.debug(f"Upgrade output: {output}")
             return True, output
         else:
-            logger.error(f"Deno upgrade failed with code {result.returncode}")
+            logger.error(f"Deno upgrade failed with code {return_code}")
             logger.error(f"Output: {output}")
             return False, output
             

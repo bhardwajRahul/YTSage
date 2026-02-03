@@ -183,6 +183,21 @@ class DenoCheckThread(QThread):
             self.error.emit(str(e))
 
 
+class DenoUpdateThread(QThread):
+    finished = Signal(bool, str)
+    progress = Signal(str)
+    error = Signal(str)
+
+    def run(self):
+        try:
+            success, output = upgrade_deno(progress_callback=self.progress.emit)
+            self.finished.emit(success, output)
+        except Exception as e:
+            logger.exception(f"Error updating Deno: {e}")
+            self.error.emit(str(e))
+
+
+
 class UpdaterTabWidget(QWidget):
     """Widget for the Updater tab in Custom Options dialog."""
     
@@ -930,24 +945,41 @@ class UpdaterTabWidget(QWidget):
             "background-color: #2a2d36; border-radius: 4px; margin: 5px 0;"
         )
         
-        # Run update in background thread
-        def update_thread():
-            try:
-                success, output = upgrade_deno()
-                
-                # Update UI in main thread
-                self.deno_check_button.setEnabled(True)
-                self.deno_update_button.setEnabled(True)
-                self._handle_deno_update_result(success, output)
-                
-            except Exception as e:
-                logger.exception(f"Error updating Deno: {e}")
-                self.deno_check_button.setEnabled(True)
-                self.deno_update_button.setEnabled(True)
-                self._handle_deno_update_result(False, str(e))
-        
-        thread = threading.Thread(target=update_thread, daemon=True)
-        thread.start()
+        # Use QThread for updates with progress reporting
+        self.deno_update_thread = DenoUpdateThread()
+        self.deno_update_thread.progress.connect(self._on_deno_update_progress)
+        self.deno_update_thread.finished.connect(self._on_deno_update_finished)
+        self.deno_update_thread.error.connect(self._on_deno_update_error)
+        self.deno_update_thread.start()
+
+    @Slot(str)
+    def _on_deno_update_progress(self, message: str) -> None:
+        """Handle Deno update progress messages."""
+        # Clean up message for display
+        # Strip ANSI escape codes (colors)
+        ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+        display_msg = ansi_escape.sub('', message).strip()
+
+        if not display_msg:
+            return
+            
+        # If message is too long, truncate it
+        if len(display_msg) > 70:
+            display_msg = display_msg[:67] + "..."
+            
+        self.deno_status_label.setText(display_msg)
+
+    @Slot(bool, str)
+    def _on_deno_update_finished(self, success: bool, output: str) -> None:
+        self.deno_check_button.setEnabled(True)
+        self.deno_update_button.setEnabled(True)
+        self._handle_deno_update_result(success, output)
+
+    @Slot(str)
+    def _on_deno_update_error(self, error: str) -> None:
+        self.deno_check_button.setEnabled(True)
+        self.deno_update_button.setEnabled(True)
+        self._handle_deno_update_result(False, error)
     
     def _handle_deno_update_result(self, success: bool, output: str) -> None:
         """Handle Deno update completion."""
