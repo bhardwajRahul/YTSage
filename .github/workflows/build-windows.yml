@@ -89,6 +89,7 @@ jobs:
         Add-Content -Path "setup_cxfreeze.py" -Value ""
         Add-Content -Path "setup_cxfreeze.py" -Value "build_exe_options = dict("
         Add-Content -Path "setup_cxfreeze.py" -Value "    optimize=2,"
+        Add-Content -Path "setup_cxfreeze.py" -Value "    silent=True,"
         Add-Content -Path "setup_cxfreeze.py" -Value "    packages=["
         Add-Content -Path "setup_cxfreeze.py" -Value '        "ytsage",'
         Add-Content -Path "setup_cxfreeze.py" -Value '        "PySide6.QtCore",'
@@ -102,6 +103,13 @@ jobs:
         Add-Content -Path "setup_cxfreeze.py" -Value '        "markdown",'
         Add-Content -Path "setup_cxfreeze.py" -Value '        "loguru",'
         Add-Content -Path "setup_cxfreeze.py" -Value '        "setuptools",'
+        Add-Content -Path "setup_cxfreeze.py" -Value "    ],"
+        Add-Content -Path "setup_cxfreeze.py" -Value "    zip_include_packages=["
+        Add-Content -Path "setup_cxfreeze.py" -Value '        "PySide6",'
+        Add-Content -Path "setup_cxfreeze.py" -Value '        "shiboken6",'
+        Add-Content -Path "setup_cxfreeze.py" -Value '        "requests",'
+        Add-Content -Path "setup_cxfreeze.py" -Value '        "PIL",'
+        Add-Content -Path "setup_cxfreeze.py" -Value '        "packaging",'
         Add-Content -Path "setup_cxfreeze.py" -Value "    ],"
         Add-Content -Path "setup_cxfreeze.py" -Value "    excludes=["
         Add-Content -Path "setup_cxfreeze.py" -Value '        "PySide6.QtBluetooth",'
@@ -124,6 +132,9 @@ jobs:
         Add-Content -Path "setup_cxfreeze.py" -Value '        "tkinter",'
         Add-Content -Path "setup_cxfreeze.py" -Value '        "yt_dlp",'
         Add-Content -Path "setup_cxfreeze.py" -Value '        "unittest",'
+        Add-Content -Path "setup_cxfreeze.py" -Value '        "pydoc",'
+        Add-Content -Path "setup_cxfreeze.py" -Value '        "doctest",'
+        Add-Content -Path "setup_cxfreeze.py" -Value '        "email",'
         Add-Content -Path "setup_cxfreeze.py" -Value '        "test",'
         Add-Content -Path "setup_cxfreeze.py" -Value '        "tests",'
         Add-Content -Path "setup_cxfreeze.py" -Value "    ],"
@@ -164,13 +175,39 @@ jobs:
         if (Test-Path "build\bdist.*") { Remove-Item "build\bdist.*" -Recurse -Force }
         if (Test-Path "dist") { Remove-Item "dist" -Recurse -Force }
         
-        # Build executable using setup script
-        python setup_cxfreeze.py build_exe --build-exe "dist\YTSage"
-        
-        # Remove screenshots folder to reduce build size
-        if (Test-Path "dist\YTSage\lib\assets\branding\screenshots") {
-          Remove-Item "dist\YTSage\lib\assets\branding\screenshots" -Recurse -Force
-          Write-Host "Removed screenshots folder from standard build"
+        # Build executable using setup script with extra optimization
+        python -OO setup_cxfreeze.py build_exe --build-exe "dist\YTSage"
+
+    - name: Trim unnecessary files from Standard build
+      shell: powershell
+      run: |
+        $distDir = "dist\YTSage"
+        if (Test-Path $distDir) {
+          # Remove screenshots
+          if (Test-Path "$distDir\lib\assets\branding\screenshots") {
+            Remove-Item "$distDir\lib\assets\branding\screenshots" -Recurse -Force
+            Write-Host "Removed screenshots folder"
+          }
+          # Remove debug PDB files
+          Get-ChildItem -Path $distDir -Recurse -Filter "*.pdb" | Remove-Item -Force
+          Write-Host "Removed PDB debug files"
+          # Remove unused Qt translations (if not needed for multilingual support)
+          if (Test-Path "$distDir\PySide6\translations") {
+            Remove-Item "$distDir\PySide6\translations" -Recurse -Force
+            Write-Host "Removed Qt translations"
+          }
+          # Remove unused Qt plugins (based on your excludes; adjust if needed)
+          $unusedPlugins = @("designer", "pdf", "svg", "sql", "help", "qml", "quick", "webengine", "bluetooth", "opengl", "printsupport", "test", "xml")
+          foreach ($plugin in $unusedPlugins) {
+            if (Test-Path "$distDir\PySide6\plugins\$plugin") {
+              Remove-Item "$distDir\PySide6\plugins\$plugin" -Recurse -Force
+              Write-Host "Removed unused plugin: $plugin"
+            }
+          }
+          # Remove any duplicate or unnecessary DLLs (e.g., web-related)
+          Get-ChildItem -Path $distDir -Recurse -Filter "Qt6Web*" | Remove-Item -Force
+          Get-ChildItem -Path $distDir -Recurse -Filter "Qt6Pdf*" | Remove-Item -Force
+          Write-Host "Removed additional unnecessary Qt files"
         }
     
     - name: Setup FFmpeg for bundle
@@ -232,13 +269,7 @@ jobs:
         (Get-Content "setup_cxfreeze.py") -replace 'YTSage-v\{version\}\.exe', 'YTSage-v{version}-ffmpeg.exe' | Set-Content "setup_cxfreeze_ffmpeg.py"
         
         # Build executable with FFmpeg using setup script
-        python setup_cxfreeze_ffmpeg.py build_exe --build-exe "dist\YTSage-FFmpeg"
-
-        # Remove screenshots folder to reduce build size
-        if (Test-Path "dist\YTSage-FFmpeg\lib\assets\branding\screenshots") {
-          Remove-Item "dist\YTSage-FFmpeg\lib\assets\branding\screenshots" -Recurse -Force
-          Write-Host "Removed screenshots folder from FFmpeg build"
-        }
+        python -OO setup_cxfreeze_ffmpeg.py build_exe --build-exe "dist\YTSage-FFmpeg"
 
         # Copy FFmpeg binaries into dist folder post-build (more reliable than CLI include)
         # Note: ffplay.exe is excluded as it's not needed by the application
@@ -256,6 +287,38 @@ jobs:
               Write-Host "Warning: FFmpeg binary not found: $file"
             }
           }
+        }
+
+    - name: Trim unnecessary files from FFmpeg build
+      shell: powershell
+      run: |
+        $distDir = "dist\YTSage-FFmpeg"
+        if (Test-Path $distDir) {
+          # Remove screenshots
+          if (Test-Path "$distDir\lib\assets\branding\screenshots") {
+            Remove-Item "$distDir\lib\assets\branding\screenshots" -Recurse -Force
+            Write-Host "Removed screenshots folder"
+          }
+          # Remove debug PDB files
+          Get-ChildItem -Path $distDir -Recurse -Filter "*.pdb" | Remove-Item -Force
+          Write-Host "Removed PDB debug files"
+          # Remove unused Qt translations (if not needed for multilingual support)
+          if (Test-Path "$distDir\PySide6\translations") {
+            Remove-Item "$distDir\PySide6\translations" -Recurse -Force
+            Write-Host "Removed Qt translations"
+          }
+          # Remove unused Qt plugins (based on your excludes; adjust if needed)
+          $unusedPlugins = @("designer", "pdf", "svg", "sql", "help", "qml", "quick", "webengine", "bluetooth", "opengl", "printsupport", "test", "xml")
+          foreach ($plugin in $unusedPlugins) {
+            if (Test-Path "$distDir\PySide6\plugins\$plugin") {
+              Remove-Item "$distDir\PySide6\plugins\$plugin" -Recurse -Force
+              Write-Host "Removed unused plugin: $plugin"
+            }
+          }
+          # Remove any duplicate or unnecessary DLLs (e.g., web-related)
+          Get-ChildItem -Path $distDir -Recurse -Filter "Qt6Web*" | Remove-Item -Force
+          Get-ChildItem -Path $distDir -Recurse -Filter "Qt6Pdf*" | Remove-Item -Force
+          Write-Host "Removed additional unnecessary Qt files"
         }
     
     - name: Package and prepare release artifacts (ZIPs)
