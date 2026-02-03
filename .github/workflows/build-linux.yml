@@ -109,6 +109,7 @@ jobs:
 
         build_exe_options = dict(
             optimize=2,
+            silent=True,
             packages=[
                 "ytsage",
                 "PySide6.QtCore",
@@ -122,6 +123,13 @@ jobs:
                 "markdown",
                 "loguru",
                 "setuptools",
+            ],
+            zip_include_packages=[
+                "PySide6",
+                "shiboken6",
+                "requests",
+                "PIL",
+                "packaging",
             ],
             excludes=[
                 "PySide6.QtBluetooth",
@@ -146,6 +154,9 @@ jobs:
                 "unittest",
                 "test",
                 "tests",
+                "pydoc",
+                "doctest",
+                "email",
             ],
             include_files=include_files_list,
             # Bundle all dependencies - avoid system library references
@@ -200,14 +211,47 @@ jobs:
         set -e
         source venv/bin/activate
 
-        # Ensure a clean build and build_exe first
-        python setup_cxfreeze.py build_exe
+        # Ensure a clean build and build_exe first with -OO
+        python -OO setup_cxfreeze.py build_exe
 
-        # Remove screenshots to reduce size before packaging
+        # Clean unnecessary files from build directory before packaging
         build_dir=$(ls -d build/exe.* 2>/dev/null | head -n1 || true)
-        if [ -n "$build_dir" ] && [ -d "$build_dir/lib/assets/branding/screenshots" ]; then
-          rm -rf "$build_dir/lib/assets/branding/screenshots"
-          echo "Removed screenshots folder from $build_dir"
+        
+        if [ -n "$build_dir" ]; then
+          echo "Trimming files in $build_dir..."
+          
+          # Remove screenshots
+          if [ -d "$build_dir/lib/assets/branding/screenshots" ]; then
+            rm -rf "$build_dir/lib/assets/branding/screenshots"
+            echo "Removed screenshots folder"
+          fi
+          
+          # Remove unused Qt translations
+          # In Linux builds, translations are often in lib/PySide6/translations or similar
+          translations=$(find "$build_dir" -type d -name "translations" | grep "PySide6" || true)
+          if [ -n "$translations" ]; then
+             rm -rf "$translations"
+             echo "Removed Qt translations at $translations"
+          fi
+          
+          # Remove unused Qt plugins (matching Windows logic)
+          plugins_dir=$(find "$build_dir" -type d -name "plugins" | grep "PySide6" | head -n1 || true)
+          if [ -n "$plugins_dir" ]; then
+            for plugin in designer pdf svg sql help qml quick webengine bluetooth opengl printsupport test xml; do
+              if [ -d "$plugins_dir/$plugin" ]; then
+                rm -rf "$plugins_dir/$plugin"
+                echo "Removed plugin: $plugin"
+              fi
+            done
+          fi
+          
+          # Remove other unused components if found
+          find "$build_dir" -name "Qt6Web*" -delete
+          find "$build_dir" -name "Qt6Pdf*" -delete
+          echo "Cleaned additional Qt files"
+          
+        else
+          echo "Warning: Build directory not found, cannot trim files"
         fi
 
         # Build AppImage
