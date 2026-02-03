@@ -219,37 +219,54 @@ jobs:
         
         if [ -n "$build_dir" ]; then
           echo "Trimming files in $build_dir..."
+          lib_dir="$build_dir/lib"
           
-          # Remove screenshots
-          if [ -d "$build_dir/lib/assets/branding/screenshots" ]; then
-            rm -rf "$build_dir/lib/assets/branding/screenshots"
-            echo "Removed screenshots folder"
-          fi
-          
-          # Remove unused Qt translations
-          # In Linux builds, translations are often in lib/PySide6/translations or similar
-          translations=$(find "$build_dir" -type d -name "translations" | grep "PySide6" || true)
-          if [ -n "$translations" ]; then
-             rm -rf "$translations"
-             echo "Removed Qt translations at $translations"
-          fi
-          
-          # Remove unused Qt plugins (matching Windows logic)
-          plugins_dir=$(find "$build_dir" -type d -name "plugins" | grep "PySide6" | head -n1 || true)
-          if [ -n "$plugins_dir" ]; then
-            for plugin in designer pdf svg sql help qml quick webengine bluetooth opengl printsupport test xml; do
-              if [ -d "$plugins_dir/$plugin" ]; then
-                rm -rf "$plugins_dir/$plugin"
-                echo "Removed plugin: $plugin"
-              fi
+          if [ -d "$lib_dir" ]; then
+            # 1. Remove screenshots
+            if [ -d "$lib_dir/assets/branding/screenshots" ]; then
+               rm -rf "$lib_dir/assets/branding/screenshots"
+               echo "Removed screenshots folder"
+            fi
+
+            # 2. Remove unused Qt translations
+            if [ -d "$lib_dir/PySide6/translations" ]; then
+               rm -rf "$lib_dir/PySide6/translations"
+               echo "Removed Qt translations"
+            fi
+
+            # 3. Remove unused Qt plugins
+            plugins_dir="$lib_dir/PySide6/plugins"
+            if [ -d "$plugins_dir" ]; then
+                for plugin in designer pdf svg sql help qml quick webengine bluetooth opengl printsupport test xml; do
+                  if [ -d "$plugins_dir/$plugin" ]; then
+                    rm -rf "$plugins_dir/$plugin"
+                    echo "Removed plugin: $plugin"
+                  fi
+                done
+                # Specific cleanups (input contexts, imageformats)
+                rm -rf "$plugins_dir/platforminputcontexts"
+                rm -f "$plugins_dir/imageformats/libqpdf.so" "$plugins_dir/imageformats/libqsvg.so"
+                rm -f "$plugins_dir/iconengines/libqsvgicon.so"
+            fi
+
+            # 4. Remove bloat shared libraries (Recursively finds in lib/ and lib/PySide6/)
+            # Matches libQt6Qml.so.6, Qt6Qml.abi3.so, etc.
+            echo "Removing bloat Qt libraries..."
+            find "$lib_dir" -name "*Qt6Web*" -delete
+            find "$lib_dir" -name "*Qt6Pdf*" -delete
+            find "$lib_dir" -name "*Qt6Qml*" -delete
+            find "$lib_dir" -name "*Qt6Quick*" -delete
+            find "$lib_dir" -name "*Qt6VirtualKeyboard*" -delete
+            find "$lib_dir" -name "*Qt6OpenGL*" -delete 
+
+            # 5. Remove build tools and unused python modules
+            for tool in setuptools wheel pkg_resources _distutils_hack curses _pyrepl; do
+               rm -rf "$lib_dir/$tool"
+               echo "Removed build tool/module: $tool"
             done
+          else
+             echo "Warning: lib directory not found inside build_dir"
           fi
-          
-          # Remove other unused components if found
-          find "$build_dir" -name "Qt6Web*" -delete
-          find "$build_dir" -name "Qt6Pdf*" -delete
-          echo "Cleaned additional Qt files"
-          
         else
           echo "Warning: Build directory not found, cannot trim files"
         fi
