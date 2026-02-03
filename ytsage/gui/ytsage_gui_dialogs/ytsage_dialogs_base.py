@@ -24,8 +24,53 @@ from ...utils.ytsage_localization import _
 
 from ...core.ytsage_ffmpeg import get_ffmpeg_path
 from ...core.ytsage_utils import _version_cache, check_ffmpeg, get_ffmpeg_version, get_ytdlp_version, get_deno_version, refresh_version_cache
-from ...core.ytsage_yt_dlp import check_ytdlp_installed, get_yt_dlp_path
+from ...core.ytsage_yt_dlp import check_ytdlp_installed, get_yt_dlp_path, check_ytdlp_deno_integration
 from ...core.ytsage_deno import check_deno_installed, get_deno_path
+
+
+class SystemInfoThread(QThread):
+    """Background thread to gather system information."""
+    info_ready = Signal(dict)
+
+    def run(self):
+        info = {}
+        
+        # yt-dlp Status
+        ytdlp_found = check_ytdlp_installed()
+        info['ytdlp_found'] = ytdlp_found
+        info['ytdlp_version'] = get_ytdlp_version()
+        info['ytdlp_path'] = get_yt_dlp_path() if ytdlp_found else None
+
+        # yt-dlp cache status
+        ytdlp_cache = _version_cache.get("ytdlp", {})
+        info['ytdlp_last_check'] = ytdlp_cache.get("last_check", 0)
+        
+        # FFmpeg Status
+        ffmpeg_found = check_ffmpeg()
+        info['ffmpeg_found'] = ffmpeg_found
+        info['ffmpeg_version'] = get_ffmpeg_version() if ffmpeg_found else _('about.not_available')
+        info['ffmpeg_path'] = get_ffmpeg_path() if ffmpeg_found else None
+
+        # FFmpeg cache status
+        ffmpeg_cache = _version_cache.get("ffmpeg", {})
+        info['ffmpeg_last_check'] = ffmpeg_cache.get("last_check", 0)
+        
+        # Deno Status
+        deno_found = check_deno_installed()
+        info['deno_found'] = deno_found
+        info['deno_version'] = get_deno_version() if deno_found else _('about.not_available')
+        info['deno_path'] = get_deno_path() if deno_found else None
+        
+        # Deno cache status
+        deno_cache = _version_cache.get("deno", {})
+        info['deno_last_check'] = deno_cache.get("last_check", 0)
+
+        # Check integration with yt-dlp if both are present
+        info['integration_status'] = False
+        if deno_found and ytdlp_found:
+             info['integration_status'] = check_ytdlp_deno_integration()
+             
+        self.info_ready.emit(info)
 
 
 class LogWindow(QDialog):
@@ -378,7 +423,13 @@ class AboutDialog(QDialog):
         return item_widget
 
     def update_system_info(self) -> None:
-        """Update the system information display with compact layout."""
+        """Start background thread to gather system info."""
+        self.info_thread = SystemInfoThread()
+        self.info_thread.info_ready.connect(self._populate_system_info)
+        self.info_thread.start()
+
+    def _populate_system_info(self, info: dict) -> None:
+        """Populate UI with gathered info."""
         # Clear existing items
         for i in reversed(range(self.status_container.count())):
             child = self.status_container.itemAt(i).widget()
@@ -386,19 +437,18 @@ class AboutDialog(QDialog):
                 child.deleteLater()
 
         # yt-dlp Status - compact version with path
-        ytdlp_found = check_ytdlp_installed()
+        ytdlp_found = info['ytdlp_found']
         ytdlp_status_text = (
             f"<span style='color: #4CAF50;'>{_('about.detected')}</span>" if ytdlp_found else f"<span style='color: #F44336;'>{_('about.missing')}</span>"
         )
-        ytdlp_version = get_ytdlp_version()
+        ytdlp_version = info['ytdlp_version']
 
         # Get yt-dlp path
-        ytdlp_path = get_yt_dlp_path() if ytdlp_found else None
+        ytdlp_path = info['ytdlp_path']
         ytdlp_path_text = ytdlp_path if ytdlp_path and ytdlp_path != "yt-dlp" else None
 
         # Simplified cache status
-        ytdlp_cache = _version_cache.get("ytdlp", {})
-        last_check = ytdlp_cache.get("last_check", 0)
+        last_check = info['ytdlp_last_check']
         cache_status = ""
         if last_check > 0:
             cache_time = datetime.fromtimestamp(last_check).strftime("%H:%M")
@@ -414,23 +464,19 @@ class AboutDialog(QDialog):
         self.status_container.addWidget(ytdlp_item)
 
         # FFmpeg Status - compact version with path
-        ffmpeg_found = check_ffmpeg()
+        ffmpeg_found = info['ffmpeg_found']
         ffmpeg_status_text = (
             f"<span style='color: #4CAF50;'>{_('about.detected')}</span>"
             if ffmpeg_found
             else f"<span style='color: #F44336;'>{_('about.missing')}</span>"
         )
-        ffmpeg_version = get_ffmpeg_version() if ffmpeg_found else _('about.not_available')
+        ffmpeg_version = info['ffmpeg_version']
 
         # Get FFmpeg path
-        ffmpeg_path_text = None
-        if ffmpeg_found:
-            ffmpeg_path = get_ffmpeg_path()
-            ffmpeg_path_text = ffmpeg_path if ffmpeg_path else None
+        ffmpeg_path_text = info['ffmpeg_path']
 
         # Simplified cache status for FFmpeg
-        ffmpeg_cache = _version_cache.get("ffmpeg", {})
-        last_check = ffmpeg_cache.get("last_check", 0)
+        last_check = info['ffmpeg_last_check']
         cache_status = ""
         if last_check > 0 and ffmpeg_found:
             cache_time = datetime.fromtimestamp(last_check).strftime("%H:%M")
@@ -446,16 +492,16 @@ class AboutDialog(QDialog):
         self.status_container.addWidget(ffmpeg_item)
 
         # Deno Status - compact version with path (only show path if in app bin directory)
-        deno_found = check_deno_installed()
+        deno_found = info['deno_found']
         deno_status_text = (
             f"<span style='color: #4CAF50;'>{_('about.detected')}</span>" if deno_found else f"<span style='color: #F44336;'>{_('about.missing')}</span>"
         )
-        deno_version = get_deno_version() if deno_found else _('about.not_available')
+        deno_version = info['deno_version']
 
         # Get Deno path - only show if in app bin directory
         deno_path_text = None
         if deno_found:
-            deno_path = get_deno_path()
+            deno_path = info['deno_path']
             # Only show path if it's not the fallback "deno" and the file exists
             if deno_path and deno_path != "deno":
                 from pathlib import Path
@@ -465,21 +511,26 @@ class AboutDialog(QDialog):
                     deno_path_text = deno_path
 
         # Simplified cache status for Deno
-        deno_cache = _version_cache.get("deno", {})
-        last_check = deno_cache.get("last_check", 0)
+        last_check = info['deno_last_check']
         cache_status = ""
         if last_check > 0 and deno_found:
             cache_time = datetime.fromtimestamp(last_check).strftime("%H:%M")
             cache_status = f" <span style='color: #888; font-size: 10px;'>({cache_time})</span>"
+        
+        # Check integration with yt-dlp if both are present
+        integration_status = ""
+        if info.get('integration_status', False):
+             integration_status = f" <span style='color: #4CAF50; font-size: 10px; font-weight: bold;'> + yt-dlp</span>"
 
         deno_item = self._create_status_item(
             "🦕",
             "Deno",
             deno_status_text,
-            deno_version + cache_status,
+            deno_version + cache_status + integration_status,
             deno_path_text,
         )
         self.status_container.addWidget(deno_item)
+
 
     def refresh_version_info(self) -> None:
         """Refresh version information manually."""
