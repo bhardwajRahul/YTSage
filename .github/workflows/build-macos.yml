@@ -263,12 +263,6 @@ jobs:
            exit 1
         fi
 
-    - name: Build DMG (bdist_dmg)
-      shell: bash
-      run: |
-        source venv/bin/activate
-        python setup_cxfreeze.py bdist_dmg
-
     - name: Package and prepare release artifacts (.app.zip and .dmg)
       shell: bash
       run: |
@@ -288,26 +282,24 @@ jobs:
         if [ -n "$app_path" ] && [ -d "$app_path" ]; then
           app_base="$(basename "$app_path")"
           app_parent="$(dirname "$app_path")"
+          
+          # Create ZIP
           (cd "$app_parent" && zip -r "${GITHUB_WORKSPACE}/artifacts/YTSage-v${version}-${ARCH_SUFFIX}.app.zip" "$app_base")
           echo "Created: artifacts/YTSage-v${version}-${ARCH_SUFFIX}.app.zip"
+          
+          # Create DMG (Manual)
+          echo "Creating DMG from $app_path..."
+          mkdir -p dmg_stage
+          cp -R "$app_path" "dmg_stage/"
+          ln -s /Applications "dmg_stage/Applications"
+          
+          hdiutil create -volname "YTSage v${version}" -srcfolder "dmg_stage" -ov -format UDZO "artifacts/YTSage-v${version}-${ARCH_SUFFIX}.dmg"
+          echo "Created: artifacts/YTSage-v${version}-${ARCH_SUFFIX}.dmg"
+          
+          rm -rf dmg_stage
         else
-          echo "Warning: .app bundle not found in dist/ or build/"
-        fi
-
-        # Try to find the generated DMG
-        dmg_src=""
-        for cand in "dist/YTSage-v${version}.dmg"; do
-          if [ -f "$cand" ]; then dmg_src="$cand"; break; fi
-        done
-        if [ -z "$dmg_src" ]; then
-          dmg_src=$(ls dist/*.dmg build/*.dmg build/dist/*.dmg 2>/dev/null | head -n1 || true)
-        fi
-
-        if [ -n "$dmg_src" ] && [ -f "$dmg_src" ]; then
-          cp "$dmg_src" "artifacts/YTSage-v${version}-${ARCH_SUFFIX}.dmg"
-          echo "Copied DMG to artifacts"
-        else
-          echo "Warning: No DMG found"
+          echo "Error: .app bundle not found in dist/ or build/"
+          exit 1
         fi
 
         echo "Final artifacts:"
