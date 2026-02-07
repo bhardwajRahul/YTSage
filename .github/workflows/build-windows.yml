@@ -449,6 +449,39 @@ jobs:
           Write-Host "  Artifacts directory not found!"
         }
 
+    - name: Create Installer (Inno Setup)
+      shell: powershell
+      run: |
+        $version = "${{ steps.get_version.outputs.VERSION }}"
+        
+        # Install Inno Setup
+        choco install innosetup --no-progress
+        
+        # Add matches generally C:\Program Files (x86)\Inno Setup 6
+        $env:Path = "C:\Program Files (x86)\Inno Setup 6;$env:Path"
+        
+        # Compile
+        $exeName = "YTSage-v$version.exe"
+        Write-Host "Compiling installer for $exeName..."
+        
+        # Note: Setup-windows.iss is in setup-scripts/
+        # OutputDir is ..\artifacts (relative to script) -> repo/artifacts
+        # SourceDir is ..\dist\YTSage (relative to script) -> repo/dist/YTSage
+        
+        iscc /DMyAppVersion="$version" /DMyAppExeName="$exeName" /DSourceDir="..\dist\YTSage" "setup-scripts\Setup-windows.iss"
+        
+        # Compile FFmpeg Installer
+        $exeNameFFmpeg = "YTSage-v$version-ffmpeg.exe"
+        Write-Host "Compiling FFmpeg installer for $exeNameFFmpeg..."
+        iscc /DMyAppVersion="$version" /DMyAppExeName="$exeNameFFmpeg" /DSourceDir="..\dist\YTSage-FFmpeg" "setup-scripts\Setup-windows-ffmpeg.iss"
+
+        if ($LASTEXITCODE -eq 0) {
+          Write-Host "Installer compilation successful."
+        } else {
+          Write-Host "Installer compilation failed."
+          exit 1
+        }
+
     - name: Create draft release
       uses: softprops/action-gh-release@v2
       with:
