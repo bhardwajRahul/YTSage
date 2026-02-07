@@ -222,9 +222,9 @@ python -m ytsage.main
 - **FFmpeg/yt-dlp/Deno Detection:** Automatically detect FFmpeg/yt-dlp/Deno path and version. You can use this option by clicking on about button.
 - **Trim Video:** Download only specific parts of a video by specifying time ranges (HH:MM:SS format)
 - **Proxy Support:** Use a proxy server for downloads (e.g., `http://<proxy-server>:<port>`)
-- **Force Output Format:** Force video downloads in a specific container format (e.g., `mp4`, `webm`, `mkv`). Available in **Download Settings → Audio Format Settings**.
+- **Force Output Format:** Force video downloads in a specific container format (e.g., `mp4`, `webm`, `mkv`). Available in **Download Settings → Output Format Settings**.
 - **Audio Format Conversion:** Convert audio-only downloads to preferred formats (`AAC`, `MP3`, `FLAC`, `WAV`, `Opus`, `M4A`, `Vorbis`, or `Best`). Ideal for video editing software like DaVinci Resolve. Available in **Download Settings → Audio Format Settings**.
-- **Download History:** View past downloads with thumbnails and statuses. You can use this option by clicking on download settings button.
+- **Download History:** View past downloads with thumbnails and statuses. You can use this option by clicking on the **History** button.
 
 </details>
 
