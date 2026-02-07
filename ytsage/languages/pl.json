@@ -57,6 +57,7 @@
     "audio_only_resolution": "Tylko dźwięk"
   },
   "buttons": {
+    "reset": "Zresetuj",
     "download": "Pobierz",
     "pause": "Wstrzymaj",
     "resume": "Wznów",
@@ -326,7 +327,9 @@
     "audio_format_wav": "WAV (Nieskompresowany)",
     "audio_format_opus": "Opus (Wydajny)",
     "audio_format_m4a": "M4A (Apple)",
-    "audio_format_vorbis": "Vorbis (Otwarty)"
+    "audio_format_vorbis": "Vorbis (Otwarty)",
+    "filename_format": "Format nazwy pliku",
+    "filename_format_help": "Dostępne zmienne: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. Obsługiwana jest standardowa składnia szablonu wyjściowego yt-dlp."
   },
   "main_ui": {
     "url_placeholder": "Wprowadź URL wideo YouTube lub playlisty",

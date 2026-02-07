@@ -57,6 +57,7 @@
     "audio_only_resolution": "Sadece ses"
   },
   "buttons": {
+    "reset": "Sıfırla",
     "download": "İndir",
     "pause": "Duraklat",
     "resume": "Devam Et",
@@ -324,7 +325,9 @@
     "audio_format_wav": "WAV (Sıkıştırılmamış)",
     "audio_format_opus": "Opus (Verimli)",
     "audio_format_m4a": "M4A (Apple)",
-    "audio_format_vorbis": "Vorbis (Açık)"
+    "audio_format_vorbis": "Vorbis (Açık)",
+    "filename_format": "Çıktı Dosya Adı Formatı",
+    "filename_format_help": "Kullanılabilir değişkenler: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. Standart yt-dlp çıktı şablonu sözdizimi desteklenir."
   },
   "main_ui": {
     "url_placeholder": "YouTube video veya oynatma listesi URL'sini girin",

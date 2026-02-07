@@ -57,6 +57,7 @@
     "audio_only_resolution": "音声のみ"
   },
   "buttons": {
+    "reset": "リセット",
     "download": "ダウンロード",
     "pause": "一時停止",
     "resume": "再開",
@@ -326,7 +327,9 @@
     "audio_format_wav": "WAV（非圧縮）",
     "audio_format_opus": "Opus（効率的）",
     "audio_format_m4a": "M4A（Apple）",
-    "audio_format_vorbis": "Vorbis（オープン）"
+    "audio_format_vorbis": "Vorbis（オープン）",
+    "filename_format": "出力ファイル名の形式",
+    "filename_format_help": "利用可能な変数: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s。標準のyt-dlp出力テンプレート構文がサポートされています。"
   },
   "main_ui": {
     "url_placeholder": "YouTubeの動画URLまたはプレイリストURLを入力",

@@ -57,6 +57,7 @@
     "audio_only_resolution": "केवल ऑडियो"
   },
   "buttons": {
+    "reset": "रीसेट",
     "download": "डाउनलोड",
     "pause": "रोकें",
     "resume": "जारी रखें",
@@ -326,7 +327,9 @@
     "audio_format_wav": "WAV (असंकुचित)",
     "audio_format_opus": "Opus (कुशल)",
     "audio_format_m4a": "M4A (Apple)",
-    "audio_format_vorbis": "Vorbis (खुला)"
+    "audio_format_vorbis": "Vorbis (खुला)",
+    "filename_format": "आउटपुट फ़ाइलनाम प्रारूप",
+    "filename_format_help": "उपलब्ध चर: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. मानक yt-dlp आउटपुट टेम्प्लेट सिंटैक्स समर्थित है."
   },
   "main_ui": {
     "url_placeholder": "YouTube वीडियो या प्लेलिस्ट URL दर्ज करें",

@@ -57,6 +57,7 @@
     "audio_only_resolution": "صوت فقط"
   },
   "buttons": {
+    "reset": "إعادة تعيين",
     "download": "تنزيل",
     "pause": "إيقاف مؤقت",
     "resume": "استئناف",
@@ -326,7 +327,9 @@
     "audio_format_wav": "WAV (غير مضغوط)",
     "audio_format_opus": "Opus (فعال)",
     "audio_format_m4a": "M4A (أبل)",
-    "audio_format_vorbis": "Vorbis (مفتوح)"
+    "audio_format_vorbis": "Vorbis (مفتوح)",
+    "filename_format": "تنسيق اسم الملف الناتج",
+    "filename_format_help": "المتغيرات المتاحة: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. يتم دعم صيغة قالب إخراج yt-dlp القياسية."
   },
   "main_ui": {
     "url_placeholder": "أدخل رابط فيديو يوتيوب أو قائمة تشغيل",

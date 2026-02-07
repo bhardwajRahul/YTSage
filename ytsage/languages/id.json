@@ -57,6 +57,7 @@
     "audio_only_resolution": "Audio saja"
   },
   "buttons": {
+    "reset": "Atur Ulang",
     "download": "Unduh",
     "pause": "Jeda",
     "resume": "Lanjutkan",
@@ -326,7 +327,9 @@
     "audio_format_wav": "WAV (Tidak terkompresi)",
     "audio_format_opus": "Opus (Efisien)",
     "audio_format_m4a": "M4A (Apple)",
-    "audio_format_vorbis": "Vorbis (Terbuka)"
+    "audio_format_vorbis": "Vorbis (Terbuka)",
+    "filename_format": "Format Nama File Keluaran",
+    "filename_format_help": "Variabel yang tersedia: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. Sintaks templat keluaran standar yt-dlp didukung."
   },
   "main_ui": {
     "url_placeholder": "Masukkan URL video atau playlist YouTube",

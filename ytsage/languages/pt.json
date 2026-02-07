@@ -57,6 +57,7 @@
     "audio_only_resolution": "Apenas áudio"
   },
   "buttons": {
+    "reset": "Redefinir",
     "download": "Baixar",
     "pause": "Pausar",
     "resume": "Retomar",
@@ -326,7 +327,9 @@
     "audio_format_wav": "WAV (Não comprimido)",
     "audio_format_opus": "Opus (Eficiente)",
     "audio_format_m4a": "M4A (Apple)",
-    "audio_format_vorbis": "Vorbis (Aberto)"
+    "audio_format_vorbis": "Vorbis (Aberto)",
+    "filename_format": "Formato de nome de arquivo",
+    "filename_format_help": "Variáveis disponíveis: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. A sintaxe padrão de modelo de saída do yt-dlp é suportada."
   },
   "main_ui": {
     "url_placeholder": "Digite a URL do vídeo ou playlist do YouTube",
