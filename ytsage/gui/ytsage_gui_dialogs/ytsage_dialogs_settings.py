@@ -228,7 +228,7 @@ class DownloadSettingsDialog(QDialog):
         # Help text
         help_label = QLabel(_("settings.force_format_help"))
         help_label.setWordWrap(True)
-        help_label.setStyleSheet("color: #cccccc; margin: 5px; font-size: 10px;")
+        help_label.setStyleSheet("color: #cccccc; margin: 5px; font-size: 11px;")
         output_format_layout.addWidget(help_label)
 
         output_format_group_box.setLayout(output_format_layout)
@@ -274,7 +274,7 @@ class DownloadSettingsDialog(QDialog):
         # Help text for audio format
         audio_help_label = QLabel(_("settings.force_audio_format_help"))
         audio_help_label.setWordWrap(True)
-        audio_help_label.setStyleSheet("color: #cccccc; margin: 5px; font-size: 10px;")
+        audio_help_label.setStyleSheet("color: #cccccc; margin: 5px; font-size: 11px;")
         audio_format_layout.addWidget(audio_help_label)
 
         audio_format_group_box.setLayout(audio_format_layout)
@@ -303,7 +303,7 @@ class DownloadSettingsDialog(QDialog):
         
         filename_help_label = QLabel(_("settings.filename_format_help"))
         filename_help_label.setWordWrap(True)
-        filename_help_label.setStyleSheet("color: #cccccc; margin: 5px; font-size: 10px;")
+        filename_help_label.setStyleSheet("color: #cccccc; margin: 5px; font-size: 11px;")
         filename_layout.addWidget(filename_help_label)
         
         filename_format_group_box.setLayout(filename_layout)
