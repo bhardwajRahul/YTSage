@@ -82,7 +82,8 @@
     "select_defaults": "Select Defaults",
     "select_all": "Select All",
     "deselect_all": "Deselect All",
-    "open_folder": "Open folder location"
+    "open_folder": "Open folder location",
+    "reset": "Reset"
   },
   "dialogs": {
     "custom_options": "Custom Options",

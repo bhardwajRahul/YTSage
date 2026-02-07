@@ -287,9 +287,19 @@ class DownloadSettingsDialog(QDialog):
         # Load current filename format from ConfigManager
         self.filename_format_value = ConfigManager.get("filename_format") or "%(title)s_%(resolution)s.%(ext)s"
         
+        # Input and Reset Button Layout
+        filename_input_layout = QHBoxLayout()
+
         self.filename_format_input = QLineEdit(self.filename_format_value)
         self.filename_format_input.setPlaceholderText("%(title)s_%(resolution)s.%(ext)s")
-        filename_layout.addWidget(self.filename_format_input)
+        filename_input_layout.addWidget(self.filename_format_input)
+        
+        self.reset_format_button = QPushButton(_("buttons.reset"))
+        self.reset_format_button.setFixedWidth(70)
+        self.reset_format_button.clicked.connect(lambda: self.filename_format_input.setText("%(title)s_%(resolution)s.%(ext)s"))
+        filename_input_layout.addWidget(self.reset_format_button)
+
+        filename_layout.addLayout(filename_input_layout)
         
         filename_help_label = QLabel(_("settings.filename_format_help"))
         filename_help_label.setWordWrap(True)
