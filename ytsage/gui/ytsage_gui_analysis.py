@@ -389,7 +389,6 @@ class AnalysisMixin:
         self.playlist_info = result_data["playlist_info"]
         self.playlist_entries = result_data["playlist_entries"]
         self.video_info = result_data["video_info"]
-        self.all_formats = result_data["all_formats"]
         self.available_subtitles = result_data["available_subtitles"]
         self.available_automatic_subtitles = result_data["available_automatic_subtitles"]
         self.selected_playlist_items = None
@@ -413,7 +412,7 @@ class AnalysisMixin:
         # Update format table
         self.video_button.setChecked(True)
         self.audio_button.setChecked(False)
-        self.filter_formats()
+        self.update_format_table(result_data["all_formats"])
 
         self.signals.update_status.emit(_("main_ui.analysis_complete"))
 
