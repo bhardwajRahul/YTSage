@@ -678,6 +678,9 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
                 logger.warning(f"Thumbnail download failed: {e}", exc_info=True)
                 # Optionally inform the user, but don't stop the main download
 
+        # Get filename format from config
+        filename_format = ConfigManager.get("filename_format")
+
         # Create download thread with resolution in output template
         self.download_thread = DownloadThread(
             url=url,
@@ -705,6 +708,7 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
             preferred_output_format=self.preferred_output_format,  # Pass preferred format
             force_audio_format=self.force_audio_format,  # Pass force audio format setting
             preferred_audio_format=self.preferred_audio_format,  # Pass preferred audio format
+            filename_format=filename_format,  # Pass the filename format
         )
 
         # Connect signals

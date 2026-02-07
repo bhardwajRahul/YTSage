@@ -280,6 +280,25 @@ class DownloadSettingsDialog(QDialog):
         audio_format_group_box.setLayout(audio_format_layout)
         layout.addWidget(audio_format_group_box)
 
+        # --- Filename Format Section ---
+        filename_format_group_box = QGroupBox(_("settings.filename_format"))
+        filename_layout = QVBoxLayout()
+        
+        # Load current filename format from ConfigManager
+        self.filename_format_value = ConfigManager.get("filename_format") or "%(title)s_%(resolution)s.%(ext)s"
+        
+        self.filename_format_input = QLineEdit(self.filename_format_value)
+        self.filename_format_input.setPlaceholderText("%(title)s_%(resolution)s.%(ext)s")
+        filename_layout.addWidget(self.filename_format_input)
+        
+        filename_help_label = QLabel(_("settings.filename_format_help"))
+        filename_help_label.setWordWrap(True)
+        filename_help_label.setStyleSheet("color: #cccccc; margin: 5px; font-size: 10px;")
+        filename_layout.addWidget(filename_help_label)
+        
+        filename_format_group_box.setLayout(filename_layout)
+        layout.addWidget(filename_format_group_box)
+
         # Dialog buttons (OK/Cancel)
         button_box = QDialogButtonBox()
         ok_button = button_box.addButton(_("buttons.ok"), QDialogButtonBox.ButtonRole.AcceptRole)
@@ -332,6 +351,10 @@ class DownloadSettingsDialog(QDialog):
         audio_format_map = {0: "best", 1: "aac", 2: "mp3", 3: "flac", 4: "wav", 5: "opus", 6: "m4a", 7: "vorbis"}
         return audio_format_map.get(self.audio_format_combo.currentIndex(), "best")
 
+    def get_filename_format(self) -> str:
+        """Returns the filename format string."""
+        return self.filename_format_input.text().strip()
+
     def _create_styled_message_box(self, icon, title, text) -> QMessageBox:
         """Create a styled QMessageBox that matches the app theme."""
         msg_box = QMessageBox(self)
@@ -381,6 +404,11 @@ class DownloadSettingsDialog(QDialog):
             preferred_audio_format = self.get_preferred_audio_format()
             ConfigManager.set("force_audio_format", force_audio_format)
             ConfigManager.set("preferred_audio_format", preferred_audio_format)
+
+            # Save filename format
+            filename_format = self.get_filename_format()
+            if filename_format:
+                ConfigManager.set("filename_format", filename_format)
 
             QMessageBox.information(
                 self,

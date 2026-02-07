@@ -72,6 +72,7 @@ class DownloadThread(QThread):
         preferred_output_format="mp4",
         force_audio_format=False,
         preferred_audio_format="best",
+        filename_format=None,
     ) -> None:
         super().__init__()
         self.url = url
@@ -99,6 +100,7 @@ class DownloadThread(QThread):
         self.preferred_output_format = preferred_output_format
         self.force_audio_format = force_audio_format
         self.preferred_audio_format = preferred_audio_format
+        self.filename_format = filename_format
         self.paused: bool = False
         self.cancelled: bool = False
         self.process: Optional[subprocess.Popen] = None
@@ -274,11 +276,14 @@ class DownloadThread(QThread):
         # Use string concatenation instead of Path.joinpath to avoid Path object issues
         base_path: str = self.path.as_posix()
         
+        # Determine the filename part of the template
+        filename_part = self.filename_format if self.filename_format else "%(title)s_%(resolution)s.%(ext)s"
+
         if self.is_playlist:
             # Create output template with playlist subfolder
-            output_template: str = f"{base_path}/%(playlist_title)s/%(title)s_%(resolution)s.%(ext)s"
+            output_template: str = f"{base_path}/%(playlist_title)s/{filename_part}"
         else:
-            output_template: str = f"{base_path}/%(title)s_%(resolution)s.%(ext)s"
+            output_template: str = f"{base_path}/{filename_part}"
 
         cmd.extend(["-o", str(output_template)])
 
