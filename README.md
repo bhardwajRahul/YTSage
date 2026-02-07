@@ -214,6 +214,7 @@ python -m ytsage.main
      c. Create a file named `cookies.txt` and paste the cookies into it
      d. Select the `cookies.txt` file in the app
 - **Save Download Path:** Save the default download path for future downloads. Available in **Download Settings → Download Path**.
+- **Output Filename Format:** Customize the output filename format using variables like `%(title)s`, `%(uploader)s`, `%(resolution)s`, etc. Available in **Download Settings → Filename Format**.
 - **Updater Tab:** Unified tab in Custom Options for managing all updates:
   - **yt-dlp Updates:** Check and update yt-dlp to the latest version, with release channel selection (Stable/Nightly)
   - **FFmpeg Version Checker:** Check your FFmpeg version with direct links to installation guides
