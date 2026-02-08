@@ -8,8 +8,8 @@ This repository uses GitHub Actions to automatically build and release YTSage fo
 The workflows are triggered manually via the GitHub Actions "Workflow Dispatch" interface. This allows you to specify the version number explicitly (e.g., `1.0.0`) at runtime.
 
 ### Workflows
-- **Create All Releases** (`release-all.yml`): The master workflow. Triggering this will automatically run the Windows, Linux, and macOS builds in parallel with the version you provide.
-- **Platform Specific**: You can also trigger `Build Windows Release`, `Build Linux Release`, or `Build macOS Release` individually if you only need updates for one OS.
+- **Create All Releases** (`release-all.yml`): The master workflow. Triggering this will automatically run the Windows, Linux, macOS, and PyPI builds in parallel with the version you provide.
+- **Platform Specific**: You can also trigger `Build Windows Release`, `Build Linux Release`, `Build macOS Release`, or `Build PyPI Package` individually.
 
 ### Build Process
 1. **Setup**: Uses Python 3.13 on all platforms
@@ -54,8 +54,13 @@ The workflow creates the following files based on the platform:
 - `YTSage-v{version}-arm64.app.zip` - Zipped application bundle
 - `YTSage-v{version}-arm64.dmg` - Disk image installer
 
+#### PyPI
+- `ytsage-{version}-py3-none-any.whl` - Python Wheel
+- `ytsage-{version}.tar.gz` - Source Distribution
+
 ## Workflow Features
 
+- **PyPI**: Standard Python build system (Wheel & Source)
 ### Multi-Platform Support
 - **Windows**: Uses PowerShell scripts with cx_Freeze
 - **Linux**: Uses Bash scripts with cx_Freeze, creates AppImage, RPM, and DEB
@@ -91,6 +96,7 @@ The workflow files are located in `.github/workflows/`:
 - `release-all.yml` - Master workflow that orchestrates the others
 - `build-windows.yml` - Windows builds logic
 - `build-linux.yml` - Linux builds logic
+- `build-pypi.yml` - PyPI build logic
 - `build-macos.yml` - macOS builds logic
 
 ### Key Configuration Options
