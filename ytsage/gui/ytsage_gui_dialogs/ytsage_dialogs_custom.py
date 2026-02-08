@@ -966,6 +966,12 @@ class CustomOptionsDialog(QDialog):
             logger.info(f"Saving auto-update settings: enabled={enabled}, frequency={frequency}")
             result = update_auto_update_settings(enabled, frequency)
             logger.info(f"Auto-update settings save result: {result}")
+
+            # Save beta update setting
+            beta_enabled = self.updater_tab.get_beta_update_setting()
+            ConfigManager.set("check_beta_updates", beta_enabled)
+            logger.info(f"Saved beta updates setting: {beta_enabled}")
+
         except Exception as e:
             logger.exception(f"Error saving auto-update settings: {e}")
         

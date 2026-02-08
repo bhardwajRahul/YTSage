@@ -116,9 +116,63 @@ class UpdateCheckThread(QThread):
             # Silently fallback if GitHub API fails (rate limiting, network issues, etc.)
             return fallback
 
+    def _fetch_github_beta_version(self) -> tuple[str | None, str | None, str | None]:
+        """Fetch latest version code from GitHub releases (including betas). Returns (version, tag, changelog)."""
+        try:
+            response = requests.get(
+                "https://api.github.com/repos/oop7/YTSage/releases",
+                headers={"Accept": "application/vnd.github.v3+json"},
+                timeout=self.GITHUB_TIMEOUT,
+            )
+            if response.status_code != 200:
+                logger.debug(f"GitHub Releases API returned {response.status_code}")
+                return None, None, None
+
+            releases = response.json()
+            if not releases:
+                return None, None, None
+
+            latest_release = None
+            highest_ver = version.parse("0.0.0")
+
+            for rel in releases:
+                tag = rel.get("tag_name", "")
+                ver_str = tag.lstrip("v")
+                try:
+                    v = version.parse(ver_str)
+                    if v > highest_ver:
+                        highest_ver = v
+                        latest_release = rel
+                except Exception:
+                    continue
+            
+            if latest_release:
+                return str(highest_ver), latest_release.get("tag_name"), latest_release.get("body")
+            return None, None, None
+
+        except Exception as e:
+            logger.debug(f"GitHub beta check error: {e}")
+            return None, None, None
+
     def run(self):
         """Check for updates using parallel network requests for better performance."""
         try:
+            # Check for beta updates if enabled
+            check_beta = ConfigManager.get("check_beta_updates")
+            
+            if check_beta:
+                latest_ver_str, tag, changelog = self._fetch_github_beta_version()
+                
+                if latest_ver_str and version.parse(latest_ver_str) > version.parse(self.current_version):
+                    release_url = f"https://github.com/oop7/YTSage/releases/tag/{tag}"
+                    if not changelog:
+                        changelog = "View the full changelog on GitHub."
+                    self.update_available.emit(latest_ver_str, release_url, changelog)
+                # Return if beta check completes (whether update found or not), 
+                # effectively skipping PyPI check if beta is enabled. 
+                # This ensures we don't downgrade or conflict.
+                return
+
             # Use ThreadPoolExecutor to make both requests in parallel
             # This reduces total wait time from potentially 15s to ~8s max
             with ThreadPoolExecutor(max_workers=2) as executor:

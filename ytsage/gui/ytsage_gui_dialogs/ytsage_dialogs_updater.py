@@ -441,6 +441,40 @@ class UpdaterTabWidget(QWidget):
         deno_layout.addLayout(deno_button_layout)
         
         layout.addWidget(deno_group)
+
+        # === App Updates Section ===
+        app_update_group = QGroupBox(_("settings.app_updates_title"))
+        app_update_layout = QVBoxLayout()
+        
+        self.beta_updates_checkbox = QCheckBox(_("settings.check_beta_updates"))
+        self.beta_updates_checkbox.setStyleSheet(
+            """
+            QCheckBox {
+                color: #ffffff;
+                spacing: 5px;
+                padding: 3px;
+            }
+            QCheckBox::indicator {
+                width: 18px;
+                height: 18px;
+                border-radius: 9px;
+            }
+            QCheckBox::indicator:unchecked {
+                border: 2px solid #666666;
+                background: #1d1e22;
+                border-radius: 9px;
+            }
+            QCheckBox::indicator:checked {
+                border: 2px solid #c90000;
+                background: #c90000;
+                border-radius: 9px;
+            }
+            """
+        )
+        app_update_layout.addWidget(self.beta_updates_checkbox)
+        
+        app_update_group.setLayout(app_update_layout)
+        layout.addWidget(app_update_group)
         
         # === yt-dlp Release Channel Section ===
         ytdlp_channel_group = QGroupBox(_("settings.ytdlp_channel"))
@@ -618,6 +652,10 @@ class UpdaterTabWidget(QWidget):
             # Set checkbox
             self.auto_update_enabled.setChecked(auto_settings["enabled"])
             
+            # Load beta setting
+            beta_enabled = ConfigManager.get("check_beta_updates") or False
+            self.beta_updates_checkbox.setChecked(beta_enabled)
+            
             # Set current selection based on saved settings
             current_frequency = auto_settings["frequency"]
             if current_frequency == "startup":
@@ -655,6 +693,10 @@ class UpdaterTabWidget(QWidget):
             frequency = "weekly"
 
         return enabled, frequency
+
+    def get_beta_update_setting(self) -> bool:
+        """Returns the beta update setting from the dialog."""
+        return self.beta_updates_checkbox.isChecked()
     
     def _on_channel_changed(self, checked: bool) -> None:
         """Handle channel selection change."""

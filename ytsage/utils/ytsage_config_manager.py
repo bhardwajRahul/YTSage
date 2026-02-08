@@ -83,6 +83,7 @@ class ConfigManager:
         "geo_proxy_url": None,
         "auto_update_ytdlp": True,
         "auto_update_frequency": "daily",
+        "check_beta_updates": False,
         "last_update_check": 0,
         "language": "en",
         "ytdlp_channel": "stable",
