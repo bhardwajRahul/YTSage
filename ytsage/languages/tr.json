@@ -295,6 +295,8 @@
     "ytdlp_channel_switched": "✅ Başarıyla {channel} kanalına geçildi!",
     "ytdlp_channel_switch_failed": "❌ Kanal değiştirilemedi: {error}",
     "ytdlp_current_channel": "Mevcut kanal: {channel}",
+    "app_updates_title": "YTSage Güncellemeleri",
+    "check_beta_updates": "Beta Güncellemelerini Al",
     "auto_update_title": "Otomatik güncelleme ayarları",
     "auto_update_header": "🔄 Otomatik güncelleme ayarları",
     "auto_update_description": "En son özelliklere ve hata düzeltmelerine sahip olmak için yt-dlp otomatik güncellemelerini yapılandırın.",

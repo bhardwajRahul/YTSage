@@ -297,6 +297,8 @@
     "ytdlp_channel_switched": "✅ Passaggio al canale {channel} riuscito!",
     "ytdlp_channel_switch_failed": "❌ Impossibile cambiare canale: {error}",
     "ytdlp_current_channel": "Canale attuale: {channel}",
+    "app_updates_title": "Aggiornamenti YTSage",
+    "check_beta_updates": "Ricevi aggiornamenti beta",
     "auto_update_title": "Impostazioni aggiornamenti automatici",
     "auto_update_header": "🔄 Impostazioni aggiornamenti automatici",
     "auto_update_description": "Configura gli aggiornamenti automatici per yt-dlp per garantire le ultime funzionalità e correzioni bug.",

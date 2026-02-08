@@ -297,6 +297,8 @@
     "ytdlp_channel_switched": "✅ تم التبديل بنجاح إلى قناة {channel}!",
     "ytdlp_channel_switch_failed": "❌ فشل تبديل القناة: {error}",
     "ytdlp_current_channel": "القناة الحالية: {channel}",
+    "app_updates_title": "تحديثات YTSage",
+    "check_beta_updates": "تلقي تحديثات تجريبية (Beta)",
     "auto_update_title": "إعدادات التحديثات التلقائية",
     "auto_update_header": "🔄 إعدادات التحديثات التلقائية",
     "auto_update_description": "قم بتكوين التحديثات التلقائية لـ yt-dlp لضمان الحصول على أحدث الميزات وإصلاحات الأخطاء.",

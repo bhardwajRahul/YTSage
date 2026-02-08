@@ -297,6 +297,8 @@
     "ytdlp_channel_switched": "✅ Berhasil beralih ke saluran {channel}!",
     "ytdlp_channel_switch_failed": "❌ Gagal beralih saluran: {error}",
     "ytdlp_current_channel": "Saluran saat ini: {channel}",
+    "app_updates_title": "Pembaruan YTSage",
+    "check_beta_updates": "Terima Pembaruan Beta",
     "auto_update_title": "Pengaturan pembaruan otomatis",
     "auto_update_header": "🔄 Pengaturan pembaruan otomatis",
     "auto_update_description": "Konfigurasi pembaruan otomatis untuk yt-dlp untuk memastikan Anda selalu memiliki fitur dan perbaikan bug terbaru.",
