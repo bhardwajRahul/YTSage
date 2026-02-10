@@ -366,14 +366,15 @@ class AboutDialog(QDialog):
 
     def _show_loading_message(self) -> None:
         """Show a compact loading message while system information is being gathered."""
-        loading_label = QLabel(_("about.loading"))
+        # Strip the emoji from the localized string to avoid rendering issues
+        loading_text = _("about.loading").replace("🔄", "").strip()
+        loading_label = QLabel(loading_text)
         loading_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         loading_label.setStyleSheet(
             """
             QLabel {
-                color: #cccccc;
+                color: #888888;
                 font-size: 11px;
-                font-style: italic;
                 padding: 10px;
             }
         """
