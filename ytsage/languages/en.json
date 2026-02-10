@@ -246,6 +246,8 @@
     "system_info": "System Information",
     "loading": "🔄 Loading system information...",
     "refresh": "🔄",
+    "open_logs": "📂 Logs",
+    "logs_tooltip": "Open application logs folder",
     "refreshing": "🔄 Refreshing...",
     "refresh_failed": "Refresh Failed",
     "refresh_failed_message": "Could not refresh version information.",

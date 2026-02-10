@@ -245,6 +245,8 @@
     "system_info": "Systeminformationen",
     "loading": "🔄 Systeminformationen werden geladen...",
     "refresh": "🔄",
+    "open_logs": "📂 Logs",
+    "logs_tooltip": "Anwendungs-Protokollordner öffnen",
     "refreshing": "🔄 Wird aktualisiert...",
     "refresh_failed": "Aktualisierung fehlgeschlagen",
     "refresh_failed_message": "Versionsinformationen konnten nicht aktualisiert werden.",

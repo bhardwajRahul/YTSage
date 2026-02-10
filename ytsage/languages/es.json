@@ -205,6 +205,8 @@
     "system_info": "Información del Sistema",
     "loading": "🔄 Cargando información del sistema...",
     "refresh": "🔄",
+    "open_logs": "📂 Registros",
+    "logs_tooltip": "Abrir carpeta de registros de la aplicación",
     "refreshing": "🔄 Actualizando...",
     "refresh_failed": "Actualización Fallida",
     "refresh_failed_message": "No se pudo actualizar la información de versión.",

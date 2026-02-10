@@ -245,6 +245,8 @@
     "system_info": "Informations système",
     "loading": "🔄 Chargement des informations système...",
     "refresh": "🔄",
+    "open_logs": "📂 Journaux",
+    "logs_tooltip": "Ouvrir le dossier des journaux d'application",
     "refreshing": "🔄 Actualisation...",
     "refresh_failed": "Échec de l'actualisation",
     "refresh_failed_message": "Impossible d'actualiser les informations de version.",

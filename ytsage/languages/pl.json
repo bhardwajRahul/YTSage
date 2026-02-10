@@ -245,6 +245,8 @@
     "system_info": "Informacje systemowe",
     "loading": "🔄 Ładowanie informacji systemowych...",
     "refresh": "🔄",
+    "open_logs": "📂 Logi",
+    "logs_tooltip": "Otwórz folder logów aplikacji",
     "refreshing": "🔄 Odświeżanie...",
     "refresh_failed": "Odświeżanie nie powiodło się",
     "refresh_failed_message": "Nie można odświeżyć informacji o wersji.",

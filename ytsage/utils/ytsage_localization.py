@@ -113,6 +113,11 @@ class LocalizationManager:
             "download_failed_return_code_conflict": "Download failed with return code {return_code}. This may be due to a conflict with multiple yt-dlp installations. Try uninstalling any system-installed yt-dlp (e.g. through snap or apt) and restart the application.",
             "download_failed_return_code": "Download failed with return code {return_code}",
             "direct_command_error": "Error in direct command: {error}"
+        },
+        "about": {
+            "open_logs": "📂 Logs",
+            "logs_tooltip": "Open application logs folder",
+            "refresh": "🔄"
         }
     }
     

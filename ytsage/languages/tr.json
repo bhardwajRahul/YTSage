@@ -243,6 +243,8 @@
     "system_info": "Sistem bilgileri",
     "loading": "🔄 Sistem bilgileri yükleniyor...",
     "refresh": "🔄",
+    "open_logs": "📂 Kayıtlar",
+    "logs_tooltip": "Uygulama kayıt klasörünü aç",
     "refreshing": "🔄 Yenileniyor...",
     "refresh_failed": "Yenileme başarısız",
     "refresh_failed_message": "Sürüm bilgileri yenilenemedi.",

@@ -245,6 +245,8 @@
     "system_info": "Informasi sistem",
     "loading": "🔄 Memuat informasi sistem...",
     "refresh": "🔄",
+    "open_logs": "📂 Log",
+    "logs_tooltip": "Buka folder log aplikasi",
     "refreshing": "🔄 Menyegarkan...",
     "refresh_failed": "Gagal menyegarkan",
     "refresh_failed_message": "Tidak dapat menyegarkan informasi versi.",

@@ -245,6 +245,8 @@
     "system_info": "معلومات النظام",
     "loading": "🔄 جاري تحميل معلومات النظام...",
     "refresh": "🔄",
+    "open_logs": "📂 السجلات",
+    "logs_tooltip": "فتح مجلد سجلات التطبيق",
     "refreshing": "🔄 جاري التحديث...",
     "refresh_failed": "فشل التحديث",
     "refresh_failed_message": "تعذر تحديث معلومات الإصدار.",

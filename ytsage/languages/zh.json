@@ -233,6 +233,8 @@
     "system_info": "系统信息",
     "loading": "🔄 正在加载系统信息...",
     "refresh": "🔄",
+    "open_logs": "📂 日志",
+    "logs_tooltip": "打开应用程序日志文件夹",
     "refreshing": "🔄 正在刷新...",
     "refresh_failed": "刷新失败",
     "refresh_failed_message": "无法刷新版本信息。",
