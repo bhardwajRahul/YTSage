@@ -9,7 +9,8 @@ from datetime import datetime
 
 import requests
 from packaging import version as version_parser
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtCore import Qt, QTimer, QUrl
+from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import (
     QButtonGroup,
     QCheckBox,
@@ -30,6 +31,7 @@ from PySide6.QtWidgets import (
 from ...utils.ytsage_logger import logger
 from ...utils.ytsage_localization import _
 from ...utils.ytsage_config_manager import ConfigManager
+from ...utils.ytsage_constants import APP_LOG_DIR
 
 
 class DownloadSettingsDialog(QDialog):

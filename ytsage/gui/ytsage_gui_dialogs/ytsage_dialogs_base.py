@@ -5,7 +5,8 @@ Contains basic utility dialogs like LogWindow and AboutDialog.
 
 from datetime import datetime
 
-from PySide6.QtCore import Qt, QThread, QTimer, Signal
+from PySide6.QtCore import Qt, QThread, QTimer, Signal, QUrl
+from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import (
     QDialog,
     QDialogButtonBox,
@@ -21,6 +22,8 @@ from PySide6.QtWidgets import (
 
 from ... import __version__ as APP_VERSION
 from ...utils.ytsage_localization import _
+from ...utils.ytsage_logger import logger
+from ...utils.ytsage_constants import APP_LOG_DIR
 
 from ...core.ytsage_ffmpeg import get_ffmpeg_path
 from ...core.ytsage_utils import _version_cache, check_ffmpeg, get_ffmpeg_version, get_ytdlp_version, get_deno_version, refresh_version_cache
@@ -288,6 +291,34 @@ class AboutDialog(QDialog):
         # Add stretch to push refresh button to the right
         header_layout.addStretch()
 
+        # Create logs button (minimal)
+        self.logs_btn = QPushButton(_("about.open_logs")) # Expected to be small text or icon
+        self.logs_btn.setToolTip(_("about.logs_tooltip"))
+        self.logs_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.logs_btn.setStyleSheet(
+            """
+            QPushButton {
+                padding: 1px 6px;
+                background-color: transparent;
+                border: 1px solid #333;
+                border-radius: 4px;
+                color: #888888;
+                font-size: 10px;
+                margin-right: 8px;
+            }
+            QPushButton:hover {
+                color: #ffffff;
+                border-color: #555;
+                background-color: rgba(255, 255, 255, 0.05);
+            }
+            QPushButton:pressed {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        """
+        )
+        self.logs_btn.clicked.connect(self.open_logs_folder)
+        header_layout.addWidget(self.logs_btn)
+
         # Create refresh button
         self.refresh_btn = QPushButton(_("about.refresh"))
         self.refresh_btn.setFixedSize(16, 16)
@@ -531,6 +562,20 @@ class AboutDialog(QDialog):
         )
         self.status_container.addWidget(deno_item)
 
+
+    def open_logs_folder(self):
+        """Open the application logs folder in the system file explorer."""
+        try:
+            if not APP_LOG_DIR.exists():
+                logger.warning(f"Log directory does not exist: {APP_LOG_DIR}")
+                APP_LOG_DIR.mkdir(parents=True, exist_ok=True)
+            
+            log_url = QUrl.fromLocalFile(str(APP_LOG_DIR))
+            QDesktopServices.openUrl(log_url)
+        except Exception as e:
+            logger.error(f"Failed to open log folder: {e}")
+            # Minimal error feedback since this is about dialog
+            self.logs_btn.setToolTip(f"Error: {str(e)}")
 
     def refresh_version_info(self) -> None:
         """Refresh version information manually."""
