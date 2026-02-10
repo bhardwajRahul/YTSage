@@ -47,6 +47,9 @@ Name: "portuguese"; MessagesFile: "compiler:Languages\Portuguese.isl"
 Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
+Name: "chinesesimplified"; MessagesFile: "Languages\Unofficial\ChineseSimplified.isl"
+Name: "hindi"; MessagesFile: "Languages\Unofficial\Hindi.islu"
+Name: "indonesian"; MessagesFile: "Languages\Unofficial\Indonesian.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}";
@@ -106,6 +109,9 @@ begin
   else if ActiveLanguage = 'russian' then LanguageCode := 'ru'
   else if ActiveLanguage = 'spanish' then LanguageCode := 'es'
   else if ActiveLanguage = 'turkish' then LanguageCode := 'tr'
+  else if ActiveLanguage = 'chinesesimplified' then LanguageCode := 'zh'
+  else if ActiveLanguage = 'hindi' then LanguageCode := 'hi'
+  else if ActiveLanguage = 'indonesian' then LanguageCode := 'id'
   else LanguageCode := 'en';
 
   ConfigPath := ExpandConstant('{localappdata}\YTSage\data\ytsage_config.json');
