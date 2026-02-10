@@ -43,6 +43,8 @@ The workflow creates the following files based on the platform:
 #### Windows
 - `YTSage-v{version}-portable.zip` - Standard portable version
 - `YTSage-v{version}-ffmpeg-portable.zip` - FFmpeg bundle portable
+- `YTSage-v{version}-Setup.exe` - Standard installer
+- `YTSage-v{version}-ffmpeg-Setup.exe` - FFmpeg bundle installer
 
 #### Linux
 - `YTSage-v{version}-{arch}.AppImage` - AppImage portable (x86_64, aarch64)
