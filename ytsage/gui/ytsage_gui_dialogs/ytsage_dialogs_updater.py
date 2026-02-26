@@ -746,6 +746,11 @@ class UpdaterTabWidget(QWidget):
                         response.raise_for_status()
                         latest_tag = response.json()["info"]["version"]
                         if latest_tag:
+                            # PyPI returns version without zero-padding (e.g. "2026.2.21")
+                            # but yt-dlp GitHub tags are zero-padded (e.g. "2026.02.21")
+                            parts = latest_tag.split(".")
+                            if len(parts) == 3:
+                                latest_tag = f"{parts[0]}.{int(parts[1]):02d}.{int(parts[2]):02d}"
                             update_target = f"stable@{latest_tag}"
                             logger.info(f"Latest stable version tag: {latest_tag}")
                         else:
