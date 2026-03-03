@@ -240,6 +240,11 @@ class AboutDialog(QDialog):
         repo_label.setOpenExternalLinks(True)
         info_layout.addWidget(repo_label)
 
+        sponsor_link = '<a href="https://github.com/sponsors/oop7" style="color: #ea4aaa; text-decoration: none; font-size: 10px; font-weight: bold;">❤️ Sponsor</a>'
+        sponsor_label = QLabel(sponsor_link)
+        sponsor_label.setOpenExternalLinks(True)
+        info_layout.addWidget(sponsor_label)
+
         # Center the info layout
         info_container = QHBoxLayout()
         info_container.addStretch()
