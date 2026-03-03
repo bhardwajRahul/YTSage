@@ -82,6 +82,8 @@ ytsage
 
 ### 📦 Pre-built Executables
 
+> [👉 Download Latest Release](https://github.com/oop7/YTSage/releases/latest)
+
 #### 🪟 Windows
 
 | Format | Description |
@@ -146,8 +148,6 @@ ytsage
 
 *Note: If you encounter an "App is damaged" error, see the [macOS troubleshooting section](#troubleshooting) below.*
 </details>
-
-> [👉 Download Latest Release](https://github.com/oop7/YTSage/releases/latest)
 
 <details>
 <summary>🛠️ Manual Installation from Source</summary>
