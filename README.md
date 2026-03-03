@@ -10,6 +10,7 @@
 [![GitHub Downloads](https://img.shields.io/github/downloads/oop7/YTSage/total?color=4b5563&style=for-the-badge&label=downloads&logo=github&logoColor=white)](https://github.com/oop7/YTSage/releases)
 [![GitHub Stars](https://img.shields.io/github/stars/oop7/YTSage?color=dc2626&style=for-the-badge&logo=github&logoColor=white)](https://github.com/oop7/YTSage/stargazers)
 [![Supported Platforms](https://img.shields.io/badge/platform-cross--platform-4b5563?style=for-the-badge&logo=github&logoColor=white)](https://github.com/oop7/YTSage/releases)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/oop7?color=ea4aaa&style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/oop7)
 
 **A modern YouTube downloader with a clean PySide6 interface.**  
 Download videos in any quality, extract audio, fetch subtitles, and more.
