@@ -65,6 +65,15 @@ Install YTSage from PyPI:
 pip install ytsage
 ```
 
+<details>
+<summary>🔄 Update an existing installation</summary>
+
+```bash
+pip install --upgrade ytsage
+```
+
+</details>
+
 Then launch the app:
 
 ```bash
@@ -82,6 +91,14 @@ ytsage
 | ![Windows Portable](https://img.shields.io/badge/Windows-Portable-0078D6?style=for-the-badge&logo=windows&logoColor=white) | Portable version, no installation required |
 | ![Windows Portable FFmpeg](https://img.shields.io/badge/Windows-Portable%20FFmpeg-0078D6?style=for-the-badge&logo=windows&logoColor=white) | Portable with FFmpeg, zipped |
 
+<details>
+<summary>🛠️ Installation Steps</summary>
+
+1. **EXE Installer (`.exe`)**: Double-click the file and follow the setup wizard.
+2. **Portable Version (`.zip`)**: Extract the archive to your desired location and run `ytsage.exe`.
+3. **FFmpeg Bundled**: Choose the FFmpeg bundled versions if you don't have FFmpeg installed on your system.
+</details>
+
 #### 🐧 Linux
 
 | Format | Description |
@@ -91,12 +108,44 @@ ytsage
 | ![Linux RPM](https://img.shields.io/badge/Linux-RPM-FCC624?style=for-the-badge&logo=linux&logoColor=black) | RPM package |
 | ![Flathub](https://img.shields.io/badge/Linux-Flatpak-FCC624?style=for-the-badge&logo=flathub&logoColor=black) | Flatpak Bundle |
 
+<details>
+<summary>🛠️ Installation Steps</summary>
+
+- **DEB (`.deb`)**:
+  ```bash
+  sudo dpkg -i ytsage_*.deb
+  sudo apt-get install -f # Fix missing dependencies if any
+  ```
+- **RPM (`.rpm`)**:
+  ```bash
+  sudo rpm -i ytsage-*.rpm
+  ```
+- **AppImage (`.AppImage`)**:
+  ```bash
+  chmod +x YTSage-*.AppImage
+  ./YTSage-*.AppImage
+  ```
+- **Flatpak**: Follow instructions on Flathub or run:
+  ```bash
+  flatpak install flathub io.github.oop7.ytsage
+  ```
+</details>
+
 #### 🍎 macOS
 
 | Format | Description |
 |--------|-------------|
 | ![macOS ARM64 APP](https://img.shields.io/badge/macOS-ARM64%20APP-000000?style=for-the-badge&logo=apple&logoColor=white) | Zipped application for Apple Silicon |
 | ![macOS ARM64 DMG](https://img.shields.io/badge/macOS-ARM64%20DMG-000000?style=for-the-badge&logo=apple&logoColor=white) | Disk image installer for Apple Silicon |
+
+<details>
+<summary>🛠️ Installation Steps</summary>
+
+- **DMG Installer (`.dmg`)**: Double-click to mount, then drag `YTSage.app` into your Applications folder.
+- **App Archive (`.zip`)**: Extract the zip and move `YTSage.app` to your Applications folder.
+
+*Note: If you encounter an "App is damaged" error, see the [macOS troubleshooting section](#troubleshooting) below.*
+</details>
 
 > [👉 Download Latest Release](https://github.com/oop7/YTSage/releases/latest)
 
