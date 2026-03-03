@@ -149,8 +149,10 @@ ytsage
 *Note: If you encounter an "App is damaged" error, see the [macOS troubleshooting section](#troubleshooting) below.*
 </details>
 
+---
+
 <details>
-<summary>🛠️ Manual Installation from Source</summary>
+<summary>💻 Manual Installation from Source</summary>
 
 ### 1. Clone the Repository
 
