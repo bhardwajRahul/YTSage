@@ -226,21 +226,21 @@ class AboutDialog(QDialog):
         info_layout = QHBoxLayout()
         info_layout.setSpacing(15)
 
-        author_link = '<a href="https://github.com/oop7/" style="color: #c90000; text-decoration: none; font-size: 10px;">oop7</a>'
+        author_link = '<a href="https://github.com/oop7/" style="color: #c90000; text-decoration: none;">oop7</a>'
         author_label = QLabel(
             f"{_('about.author', author=author_link)}"
         )
         author_label.setOpenExternalLinks(True)
         info_layout.addWidget(author_label)
 
-        repo_link = '<a href="https://github.com/oop7/YTSage/" style="color: #c90000; text-decoration: none; font-size: 10px;">YTSage</a>'
+        repo_link = '<a href="https://github.com/oop7/YTSage/" style="color: #c90000; text-decoration: none;">YTSage</a>'
         repo_label = QLabel(
             f"{_('about.github', repo=repo_link)}"
         )
         repo_label.setOpenExternalLinks(True)
         info_layout.addWidget(repo_label)
 
-        sponsor_link = '<a href="https://github.com/sponsors/oop7" style="color: #ea4aaa; text-decoration: none; font-size: 10px; font-weight: bold;">❤️ Sponsor</a>'
+        sponsor_link = '<a href="https://github.com/sponsors/oop7" style="color: #c90000; text-decoration: none;">❤️ Sponsor</a>'
         sponsor_label = QLabel(sponsor_link)
         sponsor_label.setOpenExternalLinks(True)
         info_layout.addWidget(sponsor_label)
