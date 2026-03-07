@@ -45,14 +45,10 @@ assignees: ''
   Attach screenshots (for GUI issues) or terminal logs (for CLI errors).
   
   To collect log files:
-  1. Go to the logs folder:
-     - Windows: %LOCALAPPDATA%\YTSage\logs
-     - macOS: ~/Library/Application Support/YTSage/logs
-     - Linux: ~/.local/share/YTSage/logs
-  2. Delete all files in that folder
-  3. Open the app and reproduce the issue
-  4. Go back to the logs folder - you should find two new log files (ytsage.log, ytsage_errors.log)
-  5. Attach those log files to this issue
+  1. Open YTSage and reproduce the issue.
+  2. Click the **About** button.
+  3. Click **Logs** (📂) to open the logs folder.
+  4. Attach `ytsage.log` and `ytsage_error.log`.
   
   Use ``` to format logs:
 -->

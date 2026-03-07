@@ -29,3 +29,9 @@ jobs:
     with:
       version: ${{ inputs.version }}
     secrets: inherit
+
+  release-pypi:
+    uses: ./.github/workflows/build-pypi.yml
+    with:
+      version: ${{ inputs.version }}
+    secrets: inherit

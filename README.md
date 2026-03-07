@@ -1,13 +1,16 @@
 <div align="center">
 
-<img src="assets\branding\svg\ytsage-wordmark.svg" width="400" alt="ytsage-wordmark">
-<img src="assets\branding\screenshots\main.png" width="800" alt="YTSage Interface"/>
+<img src="branding\svg\ytsage-wordmark.svg" width="400" alt="ytsage-wordmark">
+<img src="branding\screenshots\main.png" width="800" alt="YTSage Interface"/>
 
-[![PyPI version](https://img.shields.io/pypi/v/ytsage?color=dc2626&style=for-the-badge&logo=pypi&logoColor=white)](https://badge.fury.io/py/ytsage)
-[![License: MIT](https://img.shields.io/badge/License-MIT-374151?style=for-the-badge&logo=opensource&logoColor=white)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-1f2937?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/downloads/)
-[![Downloads](https://img.shields.io/pepy/dt/ytsage?color=4b5563&style=for-the-badge&label=downloads&logo=download&logoColor=white)](https://pepy.tech/project/ytsage)
-[![GitHub Stars](https://img.shields.io/github/stars/oop7/YTSage?color=dc2626&style=for-the-badge&logo=github&logoColor=white)](https://github.com/oop7/YTSage/stargazers)
+[![PyPI Downloads](https://img.shields.io/pepy/dt/ytsage?color=1f2937&style=for-the-badge&label=downloads&logo=python&logoColor=white)](https://pepy.tech/project/ytsage)
+[![GitHub Downloads](https://img.shields.io/github/downloads/oop7/YTSage/total?color=1f2937&style=for-the-badge&label=downloads&logo=github&logoColor=white)](https://github.com/oop7/YTSage/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-1f2937?style=for-the-badge&logo=opensource&logoColor=white)](https://opensource.org/licenses/MIT)
+[![Supported Platforms](https://img.shields.io/badge/platform-cross--platform-1f2937?style=for-the-badge&logo=github&logoColor=white)](https://github.com/oop7/YTSage/releases)
+[![GitHub Stars](https://img.shields.io/github/stars/oop7/YTSage?color=c90000&style=for-the-badge&logo=github&logoColor=white)](https://github.com/oop7/YTSage/stargazers)
+[![PyPI version](https://img.shields.io/pypi/v/ytsage?color=c90000&style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/ytsage/)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/oop7?color=c90000&style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/oop7)
 
 **A modern YouTube downloader with a clean PySide6 interface.**  
 Download videos in any quality, extract audio, fetch subtitles, and more.
@@ -63,6 +66,15 @@ Install YTSage from PyPI:
 pip install ytsage
 ```
 
+<details>
+<summary>🔄 Update an existing installation</summary>
+
+```bash
+pip install --upgrade ytsage
+```
+
+</details>
+
 Then launch the app:
 
 ```bash
@@ -70,6 +82,8 @@ ytsage
 ```
 
 ### 📦 Pre-built Executables
+
+> [👉 Download Latest Release](https://github.com/oop7/YTSage/releases/latest)
 
 #### 🪟 Windows
 
@@ -80,6 +94,14 @@ ytsage
 | ![Windows Portable](https://img.shields.io/badge/Windows-Portable-0078D6?style=for-the-badge&logo=windows&logoColor=white) | Portable version, no installation required |
 | ![Windows Portable FFmpeg](https://img.shields.io/badge/Windows-Portable%20FFmpeg-0078D6?style=for-the-badge&logo=windows&logoColor=white) | Portable with FFmpeg, zipped |
 
+<details>
+<summary>🛠️ Installation Steps</summary>
+
+1. **EXE Installer (`.exe`)**: Double-click the file and follow the setup wizard.
+2. **Portable Version (`.zip`)**: Extract the archive to your desired location and run `ytsage.exe`.
+3. **FFmpeg Bundled**: Choose the FFmpeg bundled versions if you don't have FFmpeg installed on your system.
+</details>
+
 #### 🐧 Linux
 
 | Format | Description |
@@ -87,6 +109,30 @@ ytsage
 | ![Linux DEB](https://img.shields.io/badge/Linux-DEB-FCC624?style=for-the-badge&logo=linux&logoColor=black) | Debian package |
 | ![Linux AppImage](https://img.shields.io/badge/Linux-AppImage-FCC624?style=for-the-badge&logo=linux&logoColor=black) | AppImage, portable |
 | ![Linux RPM](https://img.shields.io/badge/Linux-RPM-FCC624?style=for-the-badge&logo=linux&logoColor=black) | RPM package |
+| ![Flathub](https://img.shields.io/badge/Linux-Flatpak-FCC624?style=for-the-badge&logo=flathub&logoColor=black) | Flatpak Bundle |
+
+<details>
+<summary>🛠️ Installation Steps</summary>
+
+- **DEB (`.deb`)**:
+  ```bash
+  sudo dpkg -i ytsage_*.deb
+  sudo apt-get install -f # Fix missing dependencies if any
+  ```
+- **RPM (`.rpm`)**:
+  ```bash
+  sudo rpm -i ytsage-*.rpm
+  ```
+- **AppImage (`.AppImage`)**:
+  ```bash
+  chmod +x YTSage-*.AppImage
+  ./YTSage-*.AppImage
+  ```
+- **Flatpak**: Follow instructions on Flathub or run:
+  ```bash
+  flatpak install flathub io.github.oop7.ytsage
+  ```
+</details>
 
 #### 🍎 macOS
 
@@ -95,10 +141,19 @@ ytsage
 | ![macOS ARM64 APP](https://img.shields.io/badge/macOS-ARM64%20APP-000000?style=for-the-badge&logo=apple&logoColor=white) | Zipped application for Apple Silicon |
 | ![macOS ARM64 DMG](https://img.shields.io/badge/macOS-ARM64%20DMG-000000?style=for-the-badge&logo=apple&logoColor=white) | Disk image installer for Apple Silicon |
 
-> [👉 Download Latest Release](https://github.com/oop7/YTSage/releases/latest)
+<details>
+<summary>🛠️ Installation Steps</summary>
+
+- **DMG Installer (`.dmg`)**: Double-click to mount, then drag `YTSage.app` into your Applications folder.
+- **App Archive (`.zip`)**: Extract the zip and move `YTSage.app` to your Applications folder.
+
+*Note: If you encounter an "App is damaged" error, see the [macOS troubleshooting section](#troubleshooting) below.*
+</details>
+
+---
 
 <details>
-<summary>🛠️ Manual Installation from Source</summary>
+<summary>💻 Manual Installation from Source</summary>
 
 ### 1. Clone the Repository
 
@@ -112,19 +167,19 @@ cd YTSage
 #### ⚡ With uv
 
 ```bash
-uv pip install -r requirements.txt
+uv pip install .
 ```
 
 #### 📦 Or with standard pip
 
 ```bash
-pip install -r requirements.txt
+pip install .
 ```
 
 ### 3. Run the Application
 
 ```bash
-python main.py
+python -m ytsage.main
 ```
 
 </details>
@@ -135,16 +190,16 @@ python main.py
 <div align="center">
 <table>
   <tr>
-    <td><img src="assets\branding\screenshots\Download-Settings.png" alt="Download Settings" width="400"/></td>
-    <td><img src="assets\branding\screenshots\playlist.png" alt="Playlist Download" width="400"/></td>
+    <td><img src="branding\screenshots\Download-Settings.png" alt="Download Settings" width="400"/></td>
+    <td><img src="branding\screenshots\playlist.png" alt="Playlist Download" width="400"/></td>
   </tr>
   <tr>
     <td align="center"><em>Download Settings</em></td>
     <td align="center"><em>Playlist Download</em></td>
   </tr>
   <tr>
-    <td><img src="assets\branding\screenshots\audio_format.png" alt="Audio Format Selection with Save Thumbnail" width="400"/></td>
-    <td><img src="assets\branding\screenshots\Custom-Option.png" alt="Custom Options" width="400"/></td>
+    <td><img src="branding\screenshots\audio_format.png" alt="Audio Format Selection with Save Thumbnail" width="400"/></td>
+    <td><img src="branding\screenshots\Custom-Option.png" alt="Custom Options" width="400"/></td>
   </tr>
   <tr>
     <td align="center"><em>Audio Format</em></td>
@@ -212,6 +267,7 @@ python main.py
      c. Create a file named `cookies.txt` and paste the cookies into it
      d. Select the `cookies.txt` file in the app
 - **Save Download Path:** Save the default download path for future downloads. Available in **Download Settings → Download Path**.
+- **Output Filename Format:** Customize the output filename format using variables like `%(title)s`, `%(uploader)s`, `%(resolution)s`, etc. Available in **Download Settings → Filename Format**.
 - **Updater Tab:** Unified tab in Custom Options for managing all updates:
   - **yt-dlp Updates:** Check and update yt-dlp to the latest version, with release channel selection (Stable/Nightly)
   - **FFmpeg Version Checker:** Check your FFmpeg version with direct links to installation guides
@@ -219,9 +275,9 @@ python main.py
 - **FFmpeg/yt-dlp/Deno Detection:** Automatically detect FFmpeg/yt-dlp/Deno path and version. You can use this option by clicking on about button.
 - **Trim Video:** Download only specific parts of a video by specifying time ranges (HH:MM:SS format)
 - **Proxy Support:** Use a proxy server for downloads (e.g., `http://<proxy-server>:<port>`)
-- **Force Output Format:** Force video downloads in a specific container format (e.g., `mp4`, `webm`, `mkv`). Available in **Download Settings → Audio Format Settings**.
+- **Force Output Format:** Force video downloads in a specific container format (e.g., `mp4`, `webm`, `mkv`). Available in **Download Settings → Output Format Settings**.
 - **Audio Format Conversion:** Convert audio-only downloads to preferred formats (`AAC`, `MP3`, `FLAC`, `WAV`, `Opus`, `M4A`, `Vorbis`, or `Best`). Ideal for video editing software like DaVinci Resolve. Available in **Download Settings → Audio Format Settings**.
-- **Download History:** View past downloads with thumbnails and statuses. You can use this option by clicking on download settings button.
+- **Download History:** View past downloads with thumbnails and statuses. You can use this option by clicking on the **History** button.
 
 </details>
 
@@ -342,47 +398,23 @@ YTSage/
 │   │   │── build-windows.yml      # Windows build workflow
 |   |   └── release-all.yml          # Master release workflow
 │   └── 📄 CI_CD_README.md        # CI/CD documentation
-├──  📁 assets/                    # Static assets and resources
-│   ├── 📁 branding/              # Branding assets
-│   │   ├── 📁 icons/             # Application icons
-│   │   │   ├── icon.icns         # macOS icon
-│   │   │   ├── icon.png          # PNG icon
-│   │   │   └── YTSage.ico        # Windows icon
-│   │   ├── 📁 screenshots/       # Screenshots for documentation
-│   │   │   ├── audio_format.png
-│   │   │   ├── Custom-Option.png
-│   │   │   ├── Download-Settings.png
-│   │   │   ├── playlist.png
-│   │   │   └── main.png
-│   │   └── 📁 svg/               # SVG assets
-│   │       └── ytsage-wordmark.svg
-│   │       └── ytsage-wordmark.svg
-│   ├── 📁 Icon/                  # Legacy icon directory
-│   │   └── icon.png
-│   └── 📁 sound/                 # Audio files
-│       └── notification.mp3
-├── 📁 languages/                 # Localization files
-│   ├── 📄 ar.json                # Arabic translation
-│   ├── 📄 de.json                # German translation
-│   ├── 📄 en.json                # English translation
-│   ├── 📄 es.json                # Spanish translation
-│   ├── 📄 fr.json                # French translation
-│   ├── 📄 hi.json                # Hindi translation
-│   ├── 📄 id.json                # Indonesian translation
-│   ├── 📄 it.json                # Italian translation
-│   ├── 📄 ja.json                # Japanese translation
-│   ├── 📄 pl.json                # Polish translation
-│   ├── 📄 pt.json                # Portuguese translation
-│   ├── 📄 ru.json                # Russian translation
-│   ├── 📄 tr.json                # Turkish translation
-│   └── 📄 zh.json                # Chinese translation
+├──  📁 branding/                 # Branding assets (Screenshots, SVGs)
+│   ├── 📁 icons/                 # Application icons
+│   ├── 📁 screenshots/           # Screenshots for documentation
+│   └── 📁 svg/                   # SVG assets
 ├── 📄 LICENSE                    # License file
-├── 📄 main.py                    # Application entry point
+├── 📄 pyproject.toml             # Project metadata and dependencies
 ├── 📄 README.md                  # Project documentation
-├── 📄 .gitignore                 # Git ignore rules
-├── 📄 requirements.txt           # Python dependencies
-└── 📁 src/                       # Source code
-    |
+├── 📄 requirements.txt           # Python dependencies (dev)
+└── 📁 ytsage/                    # Source package
+    ├── 📁 assets/                # Runtime assets
+    │   ├── 📁 Icon/              # Application icons
+    │   └── 📁 sound/             # Audio files
+    ├── 📁 languages/             # Localization files
+    │   ├── 📄 ar.json            # Arabic translation
+    │   ├── 📄 de.json            # German translation
+    │   ├── 📄 en.json            # English translation
+    │   └── ...                   # Other languages
     ├── 📁 core/                  # Core business logic
     │   ├── 📄 __init__.py        # Core package init
     │   ├── 📄 ytsage_deno.py     # Deno integration
@@ -392,26 +424,14 @@ YTSage/
     │   └── 📄 ytsage_yt_dlp.py   # yt-dlp integration
     ├── 📁 gui/                   # User interface components
     │   ├── 📄 __init__.py        # GUI package init
-    │   ├── 📄 ytsage_gui_format_table.py # Format table functionality
     │   ├── 📄 ytsage_gui_main.py # Main application window
-    │   ├── 📄 ytsage_gui_video_info.py # Video information display
     │   └── 📁 ytsage_gui_dialogs/ # Dialog classes
-    │       ├── 📄 __init__.py    # Dialogs package init
-    │       ├── 📄 ytsage_dialogs_base.py     # Basic dialogs
-    │       ├── 📄 ytsage_dialogs_custom.py   # Custom functionality dialogs
-    │       ├── 📄 ytsage_dialogs_ffmpeg.py   # FFmpeg-related dialogs
-    │       ├── 📄 ytsage_dialogs_history.py  # History dialogs
-    │       ├── 📄 ytsage_dialogs_selection.py # Selection dialogs
-    │       ├── 📄 ytsage_dialogs_settings.py  # Settings dialogs
-    │       ├── 📄 ytsage_dialogs_update.py    # Update dialogs
-    │       └── 📄 ytsage_dialogs_updater.py    # Updater dialogs
-    └── 📁 utils/                 # Utility modules
-        ├── 📄 __init__.py        # Utils package init
-        ├── 📄 ytsage_config_manager.py # Configuration management
-        ├── 📄 ytsage_constants.py # Application constants
-        ├── 📄 ytsage_history_manager.py # History management
-        ├── 📄 ytsage_localization.py # Localization utilities
-        └── 📄 ytsage_logger.py   # Logging utilities
+    ├── 📁 utils/                 # Utility modules
+    │   ├── 📄 __init__.py        # Utils package init
+    │   ├── 📄 ytsage_config_manager.py # Configuration management
+    │   └── 📄 ytsage_logger.py   # Logging utilities
+    ├── 📄 __init__.py            # Package entry point
+    └── 📄 main.py                # Main execution script
 ```
 
 </details>
@@ -479,10 +499,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
     <tr>
         <td><a href="https://python-markdown.github.io/">markdown</a></td>
         <td>Markdown Rendering</td>
-    </tr>
-    <tr>
-        <td><a href="https://pyglet.org/">pyglet</a></td>
-        <td>Audio Playback</td>
     </tr>
     <tr>
         <td><a href="https://github.com/Delgan/loguru">loguru</a></td>
