@@ -271,37 +271,55 @@ Notes:
 </details>
 
 <details>
-<summary>🧰 Advanced Options</summary>
+<summary>🧰 Media and Download Options</summary>
 
-- **Subtitle Options:** Filter languages and embed into video file
-- **Subtitle Merge:** Merge subtitles into video file for hardcoded subtitles
-- **Custom Commands:** Access advanced yt-dlp features via command line arguments
-- **Save Description:** Save the description of the video as a text file
-- **Save Thumbnail:** Save the thumbnail of the video as an image file
-- **Embed Chapters:** Embed chapter markers as metadata in the downloaded video file for compatible video players
+- **Subtitle Options:** Filter languages and embed subtitles into the video file
+- **Subtitle Merge:** Merge subtitles into the video file for hardcoded subtitles
+- **Save Description:** Save the video description as a text file
+- **Save Thumbnail:** Save the video thumbnail as an image file
+- **Embed Chapters:** Embed chapter markers as metadata for compatible video players
 - **Remove Sponsor Segments:** Remove sponsor segments from the video using SponsorBlock
-- **Speed Limiter:** Limit the download speed (e.g., `500K` for 500 KB/s)
-- **Login with Cookies:** Login to YouTube using cookies to access private content  
+- **Trim Video:** Download only specific parts of a video by specifying time ranges in `HH:MM:SS` format
+
+</details>
+
+<details>
+<summary>⚙️ Output and File Settings</summary>
+
+- **Speed Limiter:** Limit the download speed, for example `500K` for 500 KB/s
+- **Save Download Path:** Save the default download path for future downloads. Available in **Download Settings → Download Path**.
+- **Output Filename Format:** Customize the output filename format using variables like `%(title)s`, `%(uploader)s`, and `%(resolution)s`. Available in **Download Settings → Filename Format**.
+- **Force Output Format:** Force video downloads into a specific container format such as `mp4`, `webm`, or `mkv`. Available in **Download Settings → Output Format Settings**.
+- **Audio Format Conversion:** Convert audio-only downloads to preferred formats such as `AAC`, `MP3`, `FLAC`, `WAV`, `Opus`, `M4A`, `Vorbis`, or `Best`. Available in **Download Settings → Audio Format Settings**.
+
+</details>
+
+<details>
+<summary>🌐 Access and Network</summary>
+
+- **Login with Cookies:** Login to YouTube using cookies to access private content.
   How to use it:
-  1. **Recommended:** Use the built-in "Extract cookies from browser" option in the app. Select your browser (Chrome, Firefox, etc.) and then select Profile (optional).
+  1. **Recommended:** Use the built-in `Extract cookies from browser` option in the app, then select your browser and optionally a profile.
   2. Alternatively, extract cookies manually:
-     a. Extract cookies from your browser using an extension like [cookie-editor](https://github.com/moustachauve/cookie-editor?tab=readme-ov-file)
+     a. Export cookies from your browser using an extension like [cookie-editor](https://github.com/moustachauve/cookie-editor?tab=readme-ov-file)
      b. Copy the cookies in Netscape format
      c. Create a file named `cookies.txt` and paste the cookies into it
      d. Select the `cookies.txt` file in the app
-- **Save Download Path:** Save the default download path for future downloads. Available in **Download Settings → Download Path**.
-- **Output Filename Format:** Customize the output filename format using variables like `%(title)s`, `%(uploader)s`, `%(resolution)s`, etc. Available in **Download Settings → Filename Format**.
-- **Updater Tab:** Unified tab in Custom Options for managing all updates:
-  - **yt-dlp Updates:** Check and update yt-dlp to the latest version, with release channel selection (Stable/Nightly)
-  - **FFmpeg Version Checker:** Check your FFmpeg version with direct links to installation guides
-  - **Deno Updates:** Check and update Deno runtime to the latest version
-- **FFmpeg/yt-dlp/Deno Detection:** Automatically detect FFmpeg/yt-dlp/Deno path and version. You can use this option by clicking on about button.
-- **Trim Video:** Download only specific parts of a video by specifying time ranges (HH:MM:SS format)
-- **Proxy Support:** Use a proxy server for downloads (e.g., `http://<proxy-server>:<port>`)
-- **Force Output Format:** Force video downloads in a specific container format (e.g., `mp4`, `webm`, `mkv`). Available in **Download Settings → Output Format Settings**.
-- **Audio Format Conversion:** Convert audio-only downloads to preferred formats (`AAC`, `MP3`, `FLAC`, `WAV`, `Opus`, `M4A`, `Vorbis`, or `Best`). Ideal for video editing software like DaVinci Resolve. Available in **Download Settings → Audio Format Settings**.
+- **Proxy Support:** Use a proxy server for downloads, for example `http://<proxy-server>:<port>`
 - **Generic Mode:** Allow YTSage to analyze and download from non-YouTube sites supported by yt-dlp. Enable it from **Download Settings → Generic Mode**.
-- **Download History:** View past downloads with thumbnails and statuses. You can use this option by clicking on the **History** button.
+
+</details>
+
+<details>
+<summary>🛠️ Tools and Maintenance</summary>
+
+- **Custom Commands:** Access advanced yt-dlp features via command line arguments
+- **Updater Tab:** Manage built-in update tools from one place in Custom Options:
+  - **yt-dlp Updates:** Check for updates and switch between Stable and Nightly release channels
+  - **FFmpeg Version Checker:** Check your FFmpeg version and open installation guides
+  - **Deno Updates:** Check and update the Deno runtime
+- **FFmpeg/yt-dlp/Deno Detection:** Automatically detect FFmpeg, yt-dlp, and Deno paths and versions from the About dialog.
+- **Download History:** View past downloads with thumbnails and statuses from the **History** button.
 
 </details>
 
