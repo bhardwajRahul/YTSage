@@ -195,6 +195,24 @@ class DownloadSettingsDialog(QDialog):
         speed_group_box.setLayout(speed_layout)
         layout.addWidget(speed_group_box)
 
+        # --- Generic Mode Section ---
+        generic_mode_group_box = QGroupBox(_("settings.generic_mode"))
+        generic_mode_layout = QVBoxLayout()
+
+        self.generic_mode_enabled = ConfigManager.get("generic_mode") or False
+
+        self.generic_mode_checkbox = QCheckBox(_("settings.enable_generic_mode"))
+        self.generic_mode_checkbox.setChecked(self.generic_mode_enabled)
+        generic_mode_layout.addWidget(self.generic_mode_checkbox)
+
+        generic_mode_help_label = QLabel(_("settings.generic_mode_help"))
+        generic_mode_help_label.setWordWrap(True)
+        generic_mode_help_label.setStyleSheet("color: #cccccc; margin: 5px; font-size: 11px;")
+        generic_mode_layout.addWidget(generic_mode_help_label)
+
+        generic_mode_group_box.setLayout(generic_mode_layout)
+        layout.addWidget(generic_mode_group_box)
+
         # --- Output Format Settings Section ---
         output_format_group_box = QGroupBox(_("settings.output_format_settings"))
         output_format_layout = QVBoxLayout()
@@ -349,6 +367,10 @@ class DownloadSettingsDialog(QDialog):
         """Returns whether force output format is enabled."""
         return self.force_format_checkbox.isChecked()
 
+    def get_generic_mode_enabled(self) -> bool:
+        """Returns whether generic mode is enabled."""
+        return self.generic_mode_checkbox.isChecked()
+
     def get_preferred_format(self) -> str:
         """Returns the selected preferred format (lowercase)."""
         format_map = {0: "mp4", 1: "webm", 2: "mkv"}
@@ -405,6 +427,8 @@ class DownloadSettingsDialog(QDialog):
     def accept(self) -> None:
         """Override accept to save format settings."""
         try:
+            ConfigManager.set("generic_mode", self.get_generic_mode_enabled())
+
             # Save output format settings
             force_format = self.get_force_format_enabled()
             preferred_format = self.get_preferred_format()

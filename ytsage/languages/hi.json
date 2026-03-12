@@ -274,6 +274,9 @@
     "browse": "ब्राउज़ करें...",
     "speed_limit": "गति सीमा",
     "speed_limit_placeholder": "कोई नहीं",
+    "generic_mode": "जेनेरिक मोड",
+    "enable_generic_mode": "जेनेरिक मोड सक्षम करें (गैर-YouTube साइटों के लिए समर्थन)",
+    "generic_mode_help": "Dailymotion, CBC Gem और yt-dlp द्वारा समर्थित अन्य साइटों से डाउनलोड की अनुमति देता है।",
     "auto_update_ytdlp": "yt-dlp स्वचालित अपडेट",
     "enable_auto_updates": "yt-dlp स्वचालित अपडेट सक्षम करें",
     "update_frequency": "अपडेट आवृत्ति:",
@@ -337,6 +340,7 @@
   },
   "main_ui": {
     "url_placeholder": "YouTube वीडियो या प्लेलिस्ट URL दर्ज करें",
+    "url_placeholder_generic": "किसी भी समर्थित साइट से वीडियो या प्लेलिस्ट URL दर्ज करें",
     "merge_subtitles": "उपशीर्षक मर्ज करें",
     "save_thumbnail": "थंबनेल सेव करें",
     "save_description": "विवरण सेव करें",

@@ -274,6 +274,9 @@
     "browse": "تصفح...",
     "speed_limit": "حد السرعة",
     "speed_limit_placeholder": "بدون",
+    "generic_mode": "الوضع العام",
+    "enable_generic_mode": "تفعيل الوضع العام (دعم المواقع غير التابعة ليوتيوب)",
+    "generic_mode_help": "يسمح بالتنزيل من Dailymotion وCBC Gem ومواقع أخرى يدعمها yt-dlp.",
     "auto_update_ytdlp": "التحديثات التلقائية لـ yt-dlp",
     "enable_auto_updates": "تفعيل التحديثات التلقائية لـ yt-dlp",
     "update_frequency": "تكرار التحديثات:",
@@ -337,6 +340,7 @@
   },
   "main_ui": {
     "url_placeholder": "أدخل رابط فيديو يوتيوب أو قائمة تشغيل",
+    "url_placeholder_generic": "أدخل رابط فيديو أو قائمة تشغيل من أي موقع مدعوم",
     "merge_subtitles": "دمج الترجمات",
     "save_thumbnail": "حفظ الصورة المصغرة",
     "save_description": "حفظ الوصف",

@@ -274,6 +274,9 @@
     "browse": "参照...",
     "speed_limit": "速度制限",
     "speed_limit_placeholder": "なし",
+    "generic_mode": "汎用モード",
+    "enable_generic_mode": "汎用モードを有効化（YouTube以外のサイトをサポート）",
+    "generic_mode_help": "Dailymotion、CBC Gem、および yt-dlp が対応する他のサイトからのダウンロードを可能にします。",
     "auto_update_ytdlp": "yt-dlp自動更新",
     "enable_auto_updates": "yt-dlp自動更新を有効化",
     "update_frequency": "更新頻度:",
@@ -337,6 +340,7 @@
   },
   "main_ui": {
     "url_placeholder": "YouTubeの動画URLまたはプレイリストURLを入力",
+    "url_placeholder_generic": "対応サイトの動画またはプレイリストURLを入力",
     "merge_subtitles": "字幕を結合",
     "save_thumbnail": "サムネイルを保存",
     "save_description": "説明を保存",

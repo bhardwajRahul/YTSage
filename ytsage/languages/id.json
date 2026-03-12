@@ -274,6 +274,9 @@
     "browse": "Jelajahi...",
     "speed_limit": "Batas kecepatan",
     "speed_limit_placeholder": "Tidak ada",
+    "generic_mode": "Mode generik",
+    "enable_generic_mode": "Aktifkan mode generik (mendukung situs non-YouTube)",
+    "generic_mode_help": "Memungkinkan pengunduhan dari Dailymotion, CBC Gem, dan situs lain yang didukung oleh yt-dlp.",
     "auto_update_ytdlp": "Pembaruan otomatis yt-dlp",
     "enable_auto_updates": "Aktifkan pembaruan otomatis yt-dlp",
     "update_frequency": "Frekuensi pembaruan:",
@@ -337,6 +340,7 @@
   },
   "main_ui": {
     "url_placeholder": "Masukkan URL video atau playlist YouTube",
+    "url_placeholder_generic": "Masukkan URL video atau playlist dari situs apa pun yang didukung",
     "merge_subtitles": "Gabungkan subtitle",
     "save_thumbnail": "Simpan thumbnail",
     "save_description": "Simpan deskripsi",

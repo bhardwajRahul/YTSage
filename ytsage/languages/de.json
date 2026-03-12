@@ -274,6 +274,9 @@
     "browse": "Durchsuchen...",
     "speed_limit": "Geschwindigkeitsbegrenzung",
     "speed_limit_placeholder": "Keine",
+    "generic_mode": "Generischer Modus",
+    "enable_generic_mode": "Generischen Modus aktivieren (Unterstützung für Nicht-YouTube-Seiten)",
+    "generic_mode_help": "Ermöglicht Downloads von Dailymotion, CBC Gem und anderen von yt-dlp unterstützten Seiten.",
     "auto_update_ytdlp": "yt-dlp automatisch aktualisieren",
     "enable_auto_updates": "Automatische yt-dlp-Updates aktivieren",
     "update_frequency": "Update-Häufigkeit:",
@@ -337,6 +340,7 @@
   },
   "main_ui": {
     "url_placeholder": "YouTube-Video- oder Playlist-URL eingeben",
+    "url_placeholder_generic": "Video- oder Playlist-URL von jeder unterstützten Seite eingeben",
     "merge_subtitles": "Untertitel zusammenführen",
     "save_thumbnail": "Thumbnail speichern",
     "save_description": "Beschreibung speichern",

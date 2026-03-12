@@ -70,11 +70,22 @@ class LocalizationManager:
             "custom_options": "Custom Options",
             "settings": "Settings"
         },
+        "settings": {
+            "generic_mode": "Generic Mode",
+            "enable_generic_mode": "Enable Generic Mode (support non-YouTube sites)",
+            "generic_mode_help": "Allows downloading from Dailymotion, CBC Gem, and other sites supported by yt-dlp."
+        },
         "tabs": {
             "cookies": "Login with Cookies",
             "custom_command": "Custom Command", 
             "proxy": "Proxy",
             "language": "Language"
+        },
+        "main_ui": {
+            "url_placeholder": "Enter YouTube video or playlist URL",
+            "url_placeholder_generic": "Enter video or playlist URL from any supported site",
+            "settings_tooltip": "Current Path: {path}\nSpeed Limit: {speed_limit}",
+            "speed_limit_none": "None"
         },
         "language": {
             "select_language": "Select Language:",

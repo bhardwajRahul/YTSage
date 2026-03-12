@@ -71,6 +71,7 @@ class ConfigManager:
     _settings: Dict[str, Any] = {}
     _default_config: Dict[str, Any] = {
         "download_path": str(USER_HOME_DIR / "Downloads"),
+        "generic_mode": False,
         "speed_limit_value": None,
         "speed_limit_unit_index": 0,
         "cookie_source": "browser",  # "browser" or "file"

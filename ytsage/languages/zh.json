@@ -262,6 +262,9 @@
     "browse": "浏览...",
     "speed_limit": "速度限制",
     "speed_limit_placeholder": "无",
+    "generic_mode": "通用模式",
+    "enable_generic_mode": "启用通用模式（支持非 YouTube 网站）",
+    "generic_mode_help": "允许从 Dailymotion、CBC Gem 以及其他受 yt-dlp 支持的网站下载。",
     "auto_update_ytdlp": "自动更新 yt-dlp",
     "enable_auto_updates": "启用 yt-dlp 自动更新",
     "update_frequency": "更新频率：",
@@ -325,6 +328,7 @@
   },
   "main_ui": {
     "url_placeholder": "输入 YouTube 视频或播放列表网址",
+    "url_placeholder_generic": "输入任意受支持网站的视频或播放列表网址",
     "merge_subtitles": "合并字幕",
     "save_thumbnail": "保存缩略图",
     "save_description": "保存描述",

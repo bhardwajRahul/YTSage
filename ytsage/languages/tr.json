@@ -272,6 +272,9 @@
     "browse": "Gözat...",
     "speed_limit": "Hız sınırı",
     "speed_limit_placeholder": "Yok",
+    "generic_mode": "Genel mod",
+    "enable_generic_mode": "Genel modu etkinleştir (YouTube dışı siteleri destekle)",
+    "generic_mode_help": "Dailymotion, CBC Gem ve yt-dlp tarafından desteklenen diğer sitelerden indirmeye izin verir.",
     "auto_update_ytdlp": "yt-dlp otomatik güncelleme",
     "enable_auto_updates": "yt-dlp otomatik güncellemelerini etkinleştir",
     "update_frequency": "Güncelleme sıklığı:",
@@ -335,6 +338,7 @@
   },
   "main_ui": {
     "url_placeholder": "YouTube video veya oynatma listesi URL'sini girin",
+    "url_placeholder_generic": "Desteklenen herhangi bir siteden video veya oynatma listesi URL'si girin",
     "merge_subtitles": "Altyazıları birleştir",
     "save_thumbnail": "Küçük resmi kaydet",
     "save_description": "Açıklamayı kaydet",
