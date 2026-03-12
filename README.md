@@ -21,6 +21,7 @@ Download videos in any quality, extract audio, fetch subtitles, and more.
   <a href="#usage">Usage</a> •
   <a href="#screenshots">Screenshots</a> •
   <a href="#troubleshooting">Troubleshooting</a> •
+  <a href="#sponsor">Sponsor</a> •
   <a href="#contributing">Contributing</a>
 </p>
 
@@ -36,6 +37,7 @@ YTSage is designed for users who want a **simple yet powerful YouTube downloader
 - A clean, modern PySide6 interface
 - One-click downloads for video, audio, and subtitles
 - Advanced features like SponsorBlock, subtitle merging, and playlist selection
+- Optional Generic Mode for yt-dlp-supported sites beyond YouTube
 - Cross-platform support and easy installation
 
 <a id="features"></a>
@@ -46,13 +48,13 @@ YTSage is designed for users who want a **simple yet powerful YouTube downloader
 | Core Features                     | Advanced Features                       | Extra Features                     |
 |-----------------------------------|-----------------------------------------|------------------------------------|
 | 🎥 Format Table                   | 🚫 SponsorBlock Integration             | 🎞️ FPS/HDR Display             |
-| 🎵 Audio Extraction               | 📝 Multi-Subtitle Select & Merge        | 🔄 Auto-Update yt-dlp                  |
+| 🎵 Audio Extraction               | 📝 Multi-Subtitle Select & Merge        | 🔄 Auto-Update yt-dlp                               |
 | ✨ Simple UI                      |  💾 Save Description & Thumbnail        | 🛠️ FFmpeg/yt-dlp/Deno Detection    |
 | 📋 Playlist Support & Selector   | 🚀 Speed Limiter                        | ⚙️ Custom Commands                 |
 | 📑 Embed Chapters                | ✂️ Trim Video Sections                  | 🍪 Login with Cookies              |
 | 📜 Download History              | 🔄 Release Channel Selection            | 🌐 Proxy Support                   |
 | 🎚️ Audio Format Conversion       | 🎬 Video Format Settings                | 🆙 Built-in Updater Tab            |
-
+| 🌍 Generic Mode  || 🌍 Localization in 14 Languages |                                  |
 </div>
 
 <a id="installation"></a>
@@ -248,6 +250,27 @@ python -m ytsage.main
 </details>
 
 <details>
+<summary>🌍 Generic Mode for non-YouTube sites</summary>
+
+Use Generic Mode when you want YTSage to accept URLs from sites supported by yt-dlp, such as Dailymotion, CBC Gem, TikTok, and others.
+
+How to use it:
+
+1. Open `Download Settings`.
+2. Enable `Generic Mode`.
+3. Paste a supported non-YouTube video or playlist URL.
+4. Click `Analyze`.
+5. Choose a format and download as usual.
+
+Notes:
+
+- Generic Mode only changes URL validation inside YTSage. The target site must still be supported by your installed yt-dlp version.
+- Some sites require cookies, a login session, a proxy, or extra yt-dlp arguments depending on the extractor.
+- If a site fails, update yt-dlp first from the built-in updater tab before reporting the issue.
+
+</details>
+
+<details>
 <summary>🧰 Advanced Options</summary>
 
 - **Subtitle Options:** Filter languages and embed into video file
@@ -277,6 +300,7 @@ python -m ytsage.main
 - **Proxy Support:** Use a proxy server for downloads (e.g., `http://<proxy-server>:<port>`)
 - **Force Output Format:** Force video downloads in a specific container format (e.g., `mp4`, `webm`, `mkv`). Available in **Download Settings → Output Format Settings**.
 - **Audio Format Conversion:** Convert audio-only downloads to preferred formats (`AAC`, `MP3`, `FLAC`, `WAV`, `Opus`, `M4A`, `Vorbis`, or `Best`). Ideal for video editing software like DaVinci Resolve. Available in **Download Settings → Audio Format Settings**.
+- **Generic Mode:** Allow YTSage to analyze and download from non-YouTube sites supported by yt-dlp. Enable it from **Download Settings → Generic Mode**.
 - **Download History:** View past downloads with thumbnails and statuses. You can use this option by clicking on the **History** button.
 
 </details>
@@ -357,6 +381,16 @@ If you see this error on macOS Sonoma or newer, you need to remove the quarantin
 - **Linux:** `~/.local/share/YTSage`
 
 </details>
+
+<a id="sponsor"></a>
+## 💖 Sponsor
+
+If YTSage saves you time, consider sponsoring the project. Sponsorship helps cover development time, testing across platforms, and future improvements.
+
+- GitHub Sponsors: https://github.com/sponsors/oop7
+- The sponsor link is also available directly inside the app from the About dialog.
+
+[![Sponsor YTSage](https://img.shields.io/badge/Sponsor-YTSage-EA4AAA?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sponsors/oop7)
 
 <a id="contributing"></a>
 ## 👥 Contributing
