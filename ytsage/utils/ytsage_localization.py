@@ -73,7 +73,10 @@ class LocalizationManager:
         "settings": {
             "generic_mode": "Generic Mode",
             "enable_generic_mode": "Enable Generic Mode (support non-YouTube sites)",
-            "generic_mode_help": "Allows downloading from Dailymotion, CBC Gem, and other sites supported by yt-dlp."
+            "generic_mode_help": "Allows downloading from Dailymotion, CBC Gem, and other sites supported by yt-dlp.",
+            "app_updates_title": "YTSage Updates",
+            "check_app_updates": "Check for YTSage updates on startup",
+            "check_beta_updates": "Receive Beta Updates"
         },
         "tabs": {
             "cookies": "Login with Cookies",

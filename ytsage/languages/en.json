@@ -304,6 +304,7 @@
     "ytdlp_channel_switch_failed": "❌ Failed to switch channel: {error}",
     "ytdlp_current_channel": "Current channel: {channel}",
     "app_updates_title": "YTSage Updates",
+    "check_app_updates": "Check for YTSage updates on startup",
     "check_beta_updates": "Receive Beta Updates",
     "auto_update_title": "Auto-Update Settings",
     "auto_update_header": "🔄 Auto-Update Settings",

@@ -958,6 +958,10 @@ class YTSageApp(QMainWindow, FormatTableMixin, VideoInfoMixin, AnalysisMixin):  
 
     def check_for_updates(self) -> None:
         """Starts the update check in a background thread."""
+        if ConfigManager.get("check_app_updates") is False:
+            logger.info("App version checker is disabled in settings.")
+            return
+
         self.update_thread = UpdateCheckThread(self.version)
         self.update_thread.update_available.connect(self.show_update_dialog)
         self.update_thread.start()
