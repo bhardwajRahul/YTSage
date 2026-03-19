@@ -303,6 +303,7 @@
     "ytdlp_channel_switch_failed": "❌ चैनल स्विच करना विफल: {error}",
     "ytdlp_current_channel": "वर्तमान चैनल: {channel}",
     "app_updates_title": "YTSage अपडेट",
+    "check_app_updates": "स्टार्टअप पर YTSage अपडेट जांचें",
     "check_beta_updates": "बीटा अपडेट प्राप्त करें",
     "auto_update_title": "स्वचालित अपडेट सेटिंग्स",
     "auto_update_header": "🔄 स्वचालित अपडेट सेटिंग्स",

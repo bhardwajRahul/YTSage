@@ -303,6 +303,7 @@
     "ytdlp_channel_switch_failed": "❌ チャンネルの切り替えに失敗しました: {error}",
     "ytdlp_current_channel": "現在のチャンネル: {channel}",
     "app_updates_title": "YTSageの更新",
+    "check_app_updates": "起動時にYTSageの更新を確認する",
     "check_beta_updates": "ベータ版の更新を受け取る",
     "auto_update_title": "自動更新設定",
     "auto_update_header": "🔄 自動更新設定",

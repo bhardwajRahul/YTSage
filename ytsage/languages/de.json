@@ -303,6 +303,7 @@
     "ytdlp_channel_switch_failed": "❌ Kanalwechsel fehlgeschlagen: {error}",
     "ytdlp_current_channel": "Aktueller Kanal: {channel}",
     "app_updates_title": "YTSage-Updates",
+    "check_app_updates": "Beim Start nach YTSage-Updates suchen",
     "check_beta_updates": "Beta-Updates erhalten",
     "auto_update_title": "Auto-Update-Einstellungen",
     "auto_update_header": "🔄 Auto-Update-Einstellungen",

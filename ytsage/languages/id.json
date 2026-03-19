@@ -303,6 +303,7 @@
     "ytdlp_channel_switch_failed": "❌ Gagal beralih saluran: {error}",
     "ytdlp_current_channel": "Saluran saat ini: {channel}",
     "app_updates_title": "Pembaruan YTSage",
+    "check_app_updates": "Periksa pembaruan YTSage saat startup",
     "check_beta_updates": "Terima Pembaruan Beta",
     "auto_update_title": "Pengaturan pembaruan otomatis",
     "auto_update_header": "🔄 Pengaturan pembaruan otomatis",

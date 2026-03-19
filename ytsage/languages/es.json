@@ -286,6 +286,7 @@
     "ytdlp_channel_switch_failed": "❌ Error al cambiar de canal: {error}",
     "ytdlp_current_channel": "Canal actual: {channel}",
     "app_updates_title": "Actualizaciones de YTSage",
+    "check_app_updates": "Buscar actualizaciones de YTSage al iniciar",
     "check_beta_updates": "Recibir actualizaciones beta",
     "auto_update_title": "Configuración de Auto-Actualización",
     "auto_update_header": "🔄 Configuración de Auto-Actualización",

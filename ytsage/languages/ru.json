@@ -303,6 +303,7 @@
     "ytdlp_channel_switch_failed": "❌ Не удалось переключить канал: {error}",
     "ytdlp_current_channel": "Текущий канал: {channel}",
     "app_updates_title": "Обновления YTSage",
+    "check_app_updates": "Проверять обновления YTSage при запуске",
     "check_beta_updates": "Получать бета-обновления",
     "auto_update_title": "Настройки автообновления",
     "auto_update_header": "🔄 Настройки автообновления",

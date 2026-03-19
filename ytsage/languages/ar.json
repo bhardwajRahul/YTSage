@@ -303,6 +303,7 @@
     "ytdlp_channel_switch_failed": "❌ فشل تبديل القناة: {error}",
     "ytdlp_current_channel": "القناة الحالية: {channel}",
     "app_updates_title": "تحديثات YTSage",
+    "check_app_updates": "التحقق من تحديثات YTSage عند بدء التشغيل",
     "check_beta_updates": "تلقي تحديثات تجريبية (Beta)",
     "auto_update_title": "إعدادات التحديثات التلقائية",
     "auto_update_header": "🔄 إعدادات التحديثات التلقائية",

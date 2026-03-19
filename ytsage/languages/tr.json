@@ -301,6 +301,7 @@
     "ytdlp_channel_switch_failed": "❌ Kanal değiştirilemedi: {error}",
     "ytdlp_current_channel": "Mevcut kanal: {channel}",
     "app_updates_title": "YTSage Güncellemeleri",
+    "check_app_updates": "Başlangıçta YTSage güncellemelerini kontrol et",
     "check_beta_updates": "Beta Güncellemelerini Al",
     "auto_update_title": "Otomatik güncelleme ayarları",
     "auto_update_header": "🔄 Otomatik güncelleme ayarları",

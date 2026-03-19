@@ -291,6 +291,7 @@
     "ytdlp_channel_switch_failed": "❌ 切换渠道失败：{error}",
     "ytdlp_current_channel": "当前渠道：{channel}",
     "app_updates_title": "YTSage 更新",
+    "check_app_updates": "启动时检查 YTSage 更新",
     "check_beta_updates": "接收测试版更新",
     "auto_update_title": "自动更新设置",
     "auto_update_header": "🔄 自动更新设置",
