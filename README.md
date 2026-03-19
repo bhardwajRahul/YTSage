@@ -15,6 +15,23 @@
 **A modern YouTube downloader with a clean PySide6 interface.**  
 Download videos in any quality, extract audio, fetch subtitles, and more.
 
+### 🌍 README Languages
+
+English: [EN](README.md)
+| العربية: [AR](readme-translations/README.ar.md)
+| Deutsch: [DE](readme-translations/README.de.md)
+| Español: [ES](readme-translations/README.es.md)
+| Français: [FR](readme-translations/README.fr.md)
+| हिन्दी: [HI](readme-translations/README.hi.md)
+| Bahasa Indonesia: [ID](readme-translations/README.id.md)
+| Italiano: [IT](readme-translations/README.it.md)
+| 日本語: [JA](readme-translations/README.ja.md)
+| Polski: [PL](readme-translations/README.pl.md)
+| Português: [PT](readme-translations/README.pt.md)
+| Русский: [RU](readme-translations/README.ru.md)
+| Türkçe: [TR](readme-translations/README.tr.md)
+| 中文: [ZH](readme-translations/README.zh.md)
+
 <p align="center">
   <a href="#installation">Installation</a> •
   <a href="#features">Features</a> •
@@ -340,6 +357,18 @@ YTSage supports **14 languages** for worldwide accessibility. Select your prefer
 | 🇧🇷 Portuguese | `pt` | 🇷🇺 Russian | `ru` |
 | 🇹🇷 Turkish | `tr` | 🇨🇳 Chinese | `zh` |
 
+### README Translations
+
+| Language | File | Language | File |
+|----------|------|----------|------|
+| 🇺🇸 English | [README.md](README.md) | 🇪🇸 Spanish | [README.es.md](readme-translations/README.es.md) |
+| 🇸🇦 Arabic | [README.ar.md](readme-translations/README.ar.md) | 🇫🇷 French | [README.fr.md](readme-translations/README.fr.md) |
+| 🇩🇪 German | [README.de.md](readme-translations/README.de.md) | 🇮🇳 Hindi | [README.hi.md](readme-translations/README.hi.md) |
+| 🇮🇩 Indonesian | [README.id.md](readme-translations/README.id.md) | 🇮🇹 Italian | [README.it.md](readme-translations/README.it.md) |
+| 🇯🇵 Japanese | [README.ja.md](readme-translations/README.ja.md) | 🇵🇱 Polish | [README.pl.md](readme-translations/README.pl.md) |
+| 🇧🇷 Portuguese | [README.pt.md](readme-translations/README.pt.md) | 🇷🇺 Russian | [README.ru.md](readme-translations/README.ru.md) |
+| 🇹🇷 Turkish | [README.tr.md](readme-translations/README.tr.md) | 🇨🇳 Chinese | [README.zh.md](readme-translations/README.zh.md) |
+
 > 💡 **Want to contribute a translation?** Check out the [Contributing](#contributing) section to help us add more languages!
 
 </details>
@@ -429,6 +458,12 @@ We welcome contributions! Here's how you can help:
   git push origin feature/AmazingFeature
   ```
 5. 🔄 Open a Pull Request
+
+### 🌍 Contributing Translations
+
+- Update the matching localized README file (for example `readme-translations/README.es.md`)
+- Keep app strings in sync by editing `ytsage/languages/<code>.json`
+- If your language is missing, start from `README.md` and create `README.<code>.md`
 
 <details>
 <summary>📂 Project Structure</summary>
