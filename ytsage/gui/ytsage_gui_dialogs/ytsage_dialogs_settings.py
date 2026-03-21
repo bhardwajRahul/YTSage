@@ -261,11 +261,23 @@ class DownloadSettingsDialog(QDialog):
         # Load current audio format settings from ConfigManager
         self.force_audio_format_enabled = ConfigManager.get("force_audio_format") or False
         self.preferred_audio_format_value = ConfigManager.get("preferred_audio_format") or "best"
+        self.audio_normalization_enabled = ConfigManager.get("audio_normalization") or False
 
         # Enable/Disable force audio format checkbox
         self.force_audio_format_checkbox = QCheckBox(_("settings.force_audio_format"))
         self.force_audio_format_checkbox.setChecked(self.force_audio_format_enabled)
         audio_format_layout.addWidget(self.force_audio_format_checkbox)
+
+        # Enable/Disable audio normalization checkbox
+        self.audio_normalization_checkbox = QCheckBox(_("settings.audio_normalization", default="Audio Normalization"))
+        self.audio_normalization_checkbox.setChecked(self.audio_normalization_enabled)
+        audio_format_layout.addWidget(self.audio_normalization_checkbox)
+
+        # Audio normalization help text
+        audio_norm_help_label = QLabel(_("settings.audio_normalization_help", default="When enabled, audio will be normalized using EBU R128 standard."))
+        audio_norm_help_label.setWordWrap(True)
+        audio_norm_help_label.setStyleSheet("color: #cccccc; margin: 5px; font-size: 11px;")
+        audio_format_layout.addWidget(audio_norm_help_label)
 
         # Audio format selection layout
         audio_format_select_layout = QHBoxLayout()
@@ -296,6 +308,10 @@ class DownloadSettingsDialog(QDialog):
         audio_help_label.setWordWrap(True)
         audio_help_label.setStyleSheet("color: #cccccc; margin: 5px; font-size: 11px;")
         audio_format_layout.addWidget(audio_help_label)
+
+        # Connect signals
+        self.audio_normalization_checkbox.stateChanged.connect(self._on_audio_normalization_toggled)
+        self.force_audio_format_checkbox.stateChanged.connect(self._on_force_audio_format_toggled)
 
         audio_format_group_box.setLayout(audio_format_layout)
         layout.addWidget(audio_format_group_box)
@@ -336,6 +352,22 @@ class DownloadSettingsDialog(QDialog):
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
         layout.addWidget(button_box)
+
+    def _on_audio_normalization_toggled(self, state: int) -> None:
+        """Handle logic when audio normalization is toggled."""
+        if state == Qt.CheckState.Checked.value:
+            # Normalization requires re-encoding, so we must force an audio format
+            self.force_audio_format_checkbox.setChecked(True)
+            
+            # If 'Best (No conversion)' is selected, change it to MP3 to ensure re-encoding
+            if self.audio_format_combo.currentIndex() == 0:
+                self.audio_format_combo.setCurrentIndex(2)  # Index 2 is typically MP3
+
+    def _on_force_audio_format_toggled(self, state: int) -> None:
+        """Handle logic when force audio format is toggled."""
+        if state == Qt.CheckState.Unchecked.value:
+            # If re-encoding is disabled, normalization cannot happen
+            self.audio_normalization_checkbox.setChecked(False)
 
     def browse_new_path(self) -> None:
         new_path = QFileDialog.getExistingDirectory(self, _("dialogs.select_folder"), str(self.current_path))
@@ -384,6 +416,10 @@ class DownloadSettingsDialog(QDialog):
         """Returns the selected preferred audio format (lowercase)."""
         audio_format_map = {0: "best", 1: "aac", 2: "mp3", 3: "flac", 4: "wav", 5: "opus", 6: "m4a", 7: "vorbis"}
         return audio_format_map.get(self.audio_format_combo.currentIndex(), "best")
+
+    def get_audio_normalization_enabled(self) -> bool:
+        """Returns whether audio normalization is enabled."""
+        return self.audio_normalization_checkbox.isChecked()
 
     def get_filename_format(self) -> str:
         """Returns the filename format string."""
@@ -438,8 +474,10 @@ class DownloadSettingsDialog(QDialog):
             # Save audio format settings
             force_audio_format = self.get_force_audio_format_enabled()
             preferred_audio_format = self.get_preferred_audio_format()
+            audio_normalization = self.get_audio_normalization_enabled()
             ConfigManager.set("force_audio_format", force_audio_format)
             ConfigManager.set("preferred_audio_format", preferred_audio_format)
+            ConfigManager.set("audio_normalization", audio_normalization)
 
             # Save filename format
             filename_format = self.get_filename_format()

@@ -327,6 +327,8 @@
     "format_mkv": "MKV (Feature-rich)",
     "audio_format_settings": "Audio Format Settings",
     "force_audio_format": "Force audio format for audio-only downloads",
+    "audio_normalization": "Audio Normalization (EBU R128)",
+    "audio_normalization_help": "When enabled, audio tracks will be normalized. Note: This requires re-encoding, so a specific audio format (like MP3 or M4A) must be forced.",
     "filename_format": "Output Filename Format",
     "filename_format_help": "Available variables: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. Standard yt-dlp output template syntax is supported.",
     "preferred_audio_format": "Preferred audio format:",

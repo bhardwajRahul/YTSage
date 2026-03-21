@@ -93,6 +93,7 @@ class ConfigManager:
         "preferred_output_format": "mp4",
         "force_audio_format": False,
         "preferred_audio_format": "best",
+        "audio_normalization": False,
         "filename_format": "%(title)s_%(resolution)s.%(ext)s",
         "cached_versions": {
             "ytdlp": {"version": None, "path": None, "last_check": 0, "path_mtime": 0},
