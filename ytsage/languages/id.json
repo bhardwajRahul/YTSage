@@ -326,6 +326,8 @@
     "format_mkv": "MKV (Kaya fitur)",
     "audio_format_settings": "Pengaturan Format Audio",
     "force_audio_format": "Paksa format audio untuk unduhan khusus audio",
+    "audio_normalization": "Normalisasi Audio (EBU R128)",
+    "audio_normalization_help": "Jika diaktifkan, trek audio akan dinormalisasi. Catatan: Ini memerlukan pengkodean ulang, jadi format audio tertentu (seperti MP3 atau M4A) harus dipaksakan.",
     "preferred_audio_format": "Format audio pilihan:",
     "force_audio_format_help": "Saat diaktifkan, unduhan khusus audio akan dikonversi ke format pilihan Anda. Ini hanya berlaku saat mengunduh format audio.",
     "audio_format_best": "Terbaik (Tanpa konversi)",

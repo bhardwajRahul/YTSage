@@ -314,6 +314,8 @@
     "format_mkv": "MKV（功能丰富）",
     "audio_format_settings": "音频格式设置",
     "force_audio_format": "强制仅音频下载的音频格式",
+    "audio_normalization": "音频标准化 (EBU R128)",
+    "audio_normalization_help": "启用后，音轨将被标准化。 注意：这需要重新编码，因此必须强制使用特定的音频格式（如 MP3 或 M4A）。",
     "preferred_audio_format": "首选音频格式：",
     "force_audio_format_help": "启用后，仅音频下载将转换为您的首选格式。这仅在下载音频格式时适用。",
     "audio_format_best": "最佳（不转换）",

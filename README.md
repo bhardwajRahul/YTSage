@@ -71,7 +71,7 @@ YTSage is designed for users who want a **simple yet powerful YouTube downloader
 | 📑 Embed Chapters                | ✂️ Trim Video Sections                  | 🍪 Login with Cookies              |
 | 📜 Download History              | 🔄 Release Channel Selection            | 🌐 Proxy Support                   |
 | 🎚️ Audio Format Conversion       | 🎬 Video Format Settings                | 🆙 Built-in Updater Tab            |
-| 🌍 Generic Mode  || 🌍 Localization in 14 Languages |                                  |
+| 🌍 Generic Mode                   | 🔊 Audio Normalization (EBU R128)       | 🌍 Localization in 14 Languages    |
 </div>
 
 <a id="installation"></a>
@@ -308,6 +308,7 @@ Notes:
 - **Output Filename Format:** Customize the output filename format using variables like `%(title)s`, `%(uploader)s`, and `%(resolution)s`. Available in **Download Settings → Filename Format**.
 - **Force Output Format:** Force video downloads into a specific container format such as `mp4`, `webm`, or `mkv`. Available in **Download Settings → Output Format Settings**.
 - **Audio Format Conversion:** Convert audio-only downloads to preferred formats such as `AAC`, `MP3`, `FLAC`, `WAV`, `Opus`, `M4A`, `Vorbis`, or `Best`. Available in **Download Settings → Audio Format Settings**.
+- **Audio Normalization:** Standardize volume for audio-only downloads using EBU R128.
 
 </details>
 

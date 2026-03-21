@@ -308,6 +308,7 @@ Uwagi:
 - **Format nazwy pliku wyjściowego:** Dostosuj format nazwy pliku wyjściowego za pomocą zmiennych takich jak `%(title)s`, `%(uploader)s` i `%(resolution)s`. Dostępne w **Ustawienia pobierania → Format nazwy pliku**.
 - **Wymuś format wyjściowy:** Wymuś pobieranie plików wideo w określonym formacie kontenera, takim jak `mp4`, `webm` lub `mkv`. Dostępne w **Ustawienia pobierania → Ustawienia formatu wyjściowego**.
 - **Konwersja formatu audio:** Konwertuj pliki do pobrania zawierające wyłącznie dźwięk do preferowanych formatów, takich jak `AAC`, `MP3`, `FLAC`, `WAV`, `Opus`, `M4A`, `Vorbis` lub `Best`. Dostępne w **Ustawienia pobierania → Ustawienia formatu audio**.
+- **Normalizacja dźwięku:** Ujednolicenie głośności pobieranych plików zawierających wyłącznie dźwięk za pomocą EBU R128.
 
 </details>
 

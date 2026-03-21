@@ -326,6 +326,8 @@
     "format_mkv": "MKV（機能豊富）",
     "audio_format_settings": "オーディオ形式設定",
     "force_audio_format": "オーディオのみのダウンロードにオーディオ形式を強制",
+    "audio_normalization": "オーディオ正規化 (EBU R128)",
+    "audio_normalization_help": "有効にすると、オーディオトラックが正規化されます。注：これには再エンコードが必要なため、特定のオーディオ形式（MP3やM4Aなど）を強制する必要があります。",
     "preferred_audio_format": "優先オーディオ形式：",
     "force_audio_format_help": "有効にすると、オーディオのみのダウンロードが優先形式に変換されます。これはオーディオ形式をダウンロードする場合にのみ適用されます。",
     "audio_format_best": "最高（変換なし）",

@@ -326,6 +326,8 @@
     "format_mkv": "MKV (Rico em recursos)",
     "audio_format_settings": "Configurações de formato de áudio",
     "force_audio_format": "Forçar formato de áudio para downloads somente de áudio",
+    "audio_normalization": "Normalização de Áudio (EBU R128)",
+    "audio_normalization_help": "Quando ativado, as faixas de áudio serão normalizadas. Nota: isso requer recodificação, portanto, um formato de áudio específico (como MP3 ou M4A) deve ser forçado.",
     "preferred_audio_format": "Formato de áudio preferido:",
     "force_audio_format_help": "Quando ativado, downloads somente de áudio serão convertidos para seu formato preferido. Isso se aplica apenas ao baixar formatos de áudio.",
     "audio_format_best": "Melhor (Sem conversão)",

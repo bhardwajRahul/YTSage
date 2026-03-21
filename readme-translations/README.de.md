@@ -308,6 +308,7 @@ Hinweise:
 - **Format des Ausgabedateinamens:** Passen Sie das Format des Ausgabedateinamens mithilfe von Variablen wie `%(title)s`, `%(uploader)s` und `%(resolution)s` an. Verfügbar unter **Download-Einstellungen → Dateinamenformat**.
 - **Ausgabeformat erzwingen:** Video-Downloads in ein bestimmtes Containerformat wie `mp4`, `webm` oder `mkv` erzwingen. Verfügbar unter **Download-Einstellungen → Ausgabeformat-Einstellungen**.
 - **Audioformatkonvertierung:** Konvertieren Sie reine Audio-Downloads in bevorzugte Formate wie `AAC`, `MP3`, `FLAC`, `WAV`, `Opus`, `M4A`, `Vorbis` oder `Best`. Verfügbar unter **Download-Einstellungen → Audioformat-Einstellungen**.
+- **Audio-Normalisierung:** Standardisieren Sie die Lautstärke für reine Audio-Downloads mit EBU R128.
 
 </details>
 

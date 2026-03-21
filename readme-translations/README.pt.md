@@ -308,6 +308,7 @@ Notas:
 - **Formato do nome do arquivo de saída:** Personalize o formato do nome do arquivo de saída usando variáveis ​​como `%(title)s`, `%(uploader)s` e `%(resolution)s`. Disponível em **Configurações de download → Formato do nome do arquivo**.
 - **Forçar formato de saída:** Força downloads de vídeo em um formato de contêiner específico, como `mp4`, `webm` ou `mkv`. Disponível em **Configurações de download → Configurações de formato de saída**.
 - **Conversão de formato de áudio:** Converta downloads somente de áudio para formatos preferidos, como `AAC`, `MP3`, `FLAC`, `WAV`, `Opus`, `M4A`, `Vorbis` ou `Best`. Disponível em **Configurações de download → Configurações de formato de áudio**.
+- **Normalização de áudio:** Padronize o volume para downloads somente de áudio usando EBU R128.
 
 </details>
 

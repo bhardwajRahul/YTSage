@@ -308,6 +308,7 @@ Catatan:
 - **Format Nama File Keluaran:** Sesuaikan format nama file keluaran menggunakan variabel seperti `%(title)s`, `%(uploader)s`, dan `%(resolution)s`. Tersedia di **Pengaturan Unduhan → Format Nama File**.
 - **Format Output Paksa:** Paksa pengunduhan video ke dalam format wadah tertentu seperti `mp4`, `webm`, atau `mkv`. Tersedia di **Pengaturan Unduhan → Pengaturan Format Output**.
 - **Konversi Format Audio:** Konversi unduhan audio saja ke format pilihan seperti `AAC`, `MP3`, `FLAC`, `WAV`, `Opus`, `M4A`, `Vorbis`, atau `Best`. Tersedia di **Pengaturan Unduhan → Pengaturan Format Audio**.
+- **Normalisasi Audio:** Standarkan volume untuk unduhan audio saja menggunakan EBU R128.
 
 </details>
 
