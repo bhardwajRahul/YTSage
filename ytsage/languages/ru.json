@@ -339,7 +339,10 @@
     "audio_format_m4a": "M4A (Apple)",
     "audio_format_vorbis": "Vorbis (Открытый)",
     "filename_format": "Формат имени файла",
-    "filename_format_help": "Доступные переменные: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. Поддерживается стандартный синтаксис шаблона вывода yt-dlp."
+    "filename_format_help": "Доступные переменные: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. Поддерживается стандартный синтаксис шаблона вывода yt-dlp.",
+    "tab_general": "Общие",
+    "tab_format": "Формат",
+    "tab_file": "Файл"
   },
   "main_ui": {
     "url_placeholder": "Введите URL видео или плейлиста YouTube",

@@ -327,7 +327,10 @@
     "audio_format_m4a": "M4A（Apple）",
     "audio_format_vorbis": "Vorbis（开放）",
     "filename_format": "输出文件名格式",
-    "filename_format_help": "可用变量: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s。支持标准的 yt-dlp 输出模板语法。"
+    "filename_format_help": "可用变量: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s。支持标准的 yt-dlp 输出模板语法。",
+    "tab_general": "一般",
+    "tab_format": "格式",
+    "tab_file": "文件"
   },
   "main_ui": {
     "url_placeholder": "输入 YouTube 视频或播放列表网址",

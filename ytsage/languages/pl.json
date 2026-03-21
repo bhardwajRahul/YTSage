@@ -339,7 +339,10 @@
     "audio_format_m4a": "M4A (Apple)",
     "audio_format_vorbis": "Vorbis (Otwarty)",
     "filename_format": "Format nazwy pliku",
-    "filename_format_help": "Dostępne zmienne: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. Obsługiwana jest standardowa składnia szablonu wyjściowego yt-dlp."
+    "filename_format_help": "Dostępne zmienne: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. Obsługiwana jest standardowa składnia szablonu wyjściowego yt-dlp.",
+    "tab_general": "Ogólne",
+    "tab_format": "Format",
+    "tab_file": "Plik"
   },
   "main_ui": {
     "url_placeholder": "Wprowadź URL wideo YouTube lub playlisty",

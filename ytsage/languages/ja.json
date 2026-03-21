@@ -339,7 +339,10 @@
     "audio_format_m4a": "M4A（Apple）",
     "audio_format_vorbis": "Vorbis（オープン）",
     "filename_format": "出力ファイル名の形式",
-    "filename_format_help": "利用可能な変数: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s。標準のyt-dlp出力テンプレート構文がサポートされています。"
+    "filename_format_help": "利用可能な変数: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s。標準のyt-dlp出力テンプレート構文がサポートされています。",
+    "tab_general": "一般",
+    "tab_format": "フォーマット",
+    "tab_file": "ファイル"
   },
   "main_ui": {
     "url_placeholder": "YouTubeの動画URLまたはプレイリストURLを入力",

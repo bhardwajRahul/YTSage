@@ -339,7 +339,10 @@
     "audio_format_m4a": "M4A (أبل)",
     "audio_format_vorbis": "Vorbis (مفتوح)",
     "filename_format": "تنسيق اسم الملف الناتج",
-    "filename_format_help": "المتغيرات المتاحة: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. يتم دعم صيغة قالب إخراج yt-dlp القياسية."
+    "filename_format_help": "المتغيرات المتاحة: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. يتم دعم صيغة قالب إخراج yt-dlp القياسية.",
+    "tab_general": "عام",
+    "tab_format": "تنسيق",
+    "tab_file": "ملف"
   },
   "main_ui": {
     "url_placeholder": "أدخل رابط فيديو يوتيوب أو قائمة تشغيل",

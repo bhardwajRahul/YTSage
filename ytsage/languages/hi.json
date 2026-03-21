@@ -339,7 +339,10 @@
     "audio_format_m4a": "M4A (Apple)",
     "audio_format_vorbis": "Vorbis (खुला)",
     "filename_format": "आउटपुट फ़ाइलनाम प्रारूप",
-    "filename_format_help": "उपलब्ध चर: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. मानक yt-dlp आउटपुट टेम्प्लेट सिंटैक्स समर्थित है."
+    "filename_format_help": "उपलब्ध चर: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. मानक yt-dlp आउटपुट टेम्प्लेट सिंटैक्स समर्थित है.",
+    "tab_general": "सामान्य",
+    "tab_format": "प्रारूप",
+    "tab_file": "फ़ाइल"
   },
   "main_ui": {
     "url_placeholder": "YouTube वीडियो या प्लेलिस्ट URL दर्ज करें",

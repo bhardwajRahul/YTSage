@@ -339,7 +339,10 @@
     "audio_format_m4a": "M4A (Apple)",
     "audio_format_vorbis": "Vorbis (Terbuka)",
     "filename_format": "Format Nama File Keluaran",
-    "filename_format_help": "Variabel yang tersedia: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. Sintaks templat keluaran standar yt-dlp didukung."
+    "filename_format_help": "Variabel yang tersedia: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. Sintaks templat keluaran standar yt-dlp didukung.",
+    "tab_general": "Umum",
+    "tab_format": "Format",
+    "tab_file": "Berkas"
   },
   "main_ui": {
     "url_placeholder": "Masukkan URL video atau playlist YouTube",

@@ -337,7 +337,10 @@
     "audio_format_m4a": "M4A (Apple)",
     "audio_format_vorbis": "Vorbis (Açık)",
     "filename_format": "Çıktı Dosya Adı Formatı",
-    "filename_format_help": "Kullanılabilir değişkenler: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. Standart yt-dlp çıktı şablonu sözdizimi desteklenir."
+    "filename_format_help": "Kullanılabilir değişkenler: %(title)s, %(uploader)s, %(upload_date)s, %(resolution)s, %(id)s, %(ext)s. Standart yt-dlp çıktı şablonu sözdizimi desteklenir.",
+    "tab_general": "Genel",
+    "tab_format": "Biçim",
+    "tab_file": "Dosya"
   },
   "main_ui": {
     "url_placeholder": "YouTube video veya oynatma listesi URL'sini girin",

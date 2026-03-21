@@ -340,7 +340,10 @@
     "audio_format_wav": "WAV (Uncompressed)",
     "audio_format_opus": "Opus (Efficient)",
     "audio_format_m4a": "M4A (Apple)",
-    "audio_format_vorbis": "Vorbis (Open)"
+    "audio_format_vorbis": "Vorbis (Open)",
+    "tab_general": "General",
+    "tab_format": "Format",
+    "tab_file": "File"
   },
   "main_ui": {
     "url_placeholder": "Enter YouTube video or playlist URL",
