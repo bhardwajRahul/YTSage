@@ -71,8 +71,7 @@ YTSage, **basit ama güçlü bir YouTube indiricisi** isteyen kullanıcılar iç
 | 📑 Bölümleri Yerleştir | ✂️ Video Bölümlerini Kırp | 🍪 Çerezlerle Giriş Yapın |
 | 📜 Geçmişi İndir | 🔄 Kanal Seçimini Serbest Bırak | 🌐 Proxy Desteği |
 | 🎚️ Ses Formatı Dönüştürme | 🎬 Video Formatı Ayarları | 🆙 Yerleşik Güncelleyici Sekmesi |
-| 🌍 Genel Mod |
-| 🌍 14 Dilde Yerelleştirme |                                  |
+| 🌍 Genel Mod | 🌍 14 Dilde Yerelleştirme |                                  |
 </div>
 
 <a id="installation"></a>

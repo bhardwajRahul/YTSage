@@ -71,8 +71,7 @@ YTSage è progettato per gli utenti che desiderano un **downloader YouTube sempl
 | 📑 Incorpora capitoli | ✂️ Taglia le sezioni video | 🍪 Accedi con i cookie |
 | 📜 Scarica Cronologia | 🔄 Rilascio Selezione canale | 🌐Supporto proxy |
 | 🎚️ Conversione del formato audio | 🎬 Impostazioni formato video | 🆙 Scheda Aggiornamento integrata |
-| 🌍 Modalità generica |
-| 🌍 Localizzazione in 14 lingue |                                  |
+| 🌍 Modalità generica | 🌍 Localizzazione in 14 lingue |                                  |
 </div>
 
 <a id="installation"></a>

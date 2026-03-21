@@ -71,8 +71,7 @@ YTSage est conçu pour les utilisateurs qui souhaitent un **téléchargeur YouTu
 | 📑 Intégrer les chapitres | ✂️ Couper les sections vidéo | 🍪 Connectez-vous avec les cookies |
 | 📜 Historique des téléchargements | 🔄 Sélection des chaînes de sortie | 🌐 Assistance proxy |
 | 🎚️ Conversion de formats audio | 🎬 Paramètres de format vidéo | 🆙 Onglet de mise à jour intégré |
-| 🌍 Mode générique |
-| 🌍 Localisation en 14 langues |                                  |
+| 🌍 Mode générique | 🌍 Localisation en 14 langues |                                  |
 </div>
 
 <a id="installation"></a>

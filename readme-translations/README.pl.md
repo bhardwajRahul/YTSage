@@ -71,8 +71,7 @@ YTSage jest przeznaczony dla użytkowników, którzy chcą **prostego, ale potę
 | 📑 Umieść rozdziały | ✂️ Przytnij sekcje wideo | 🍪 Zaloguj się za pomocą plików cookie |
 | 📜 Pobierz historię | 🔄 Zwolnij wybór kanału | 🌐 Wsparcie proxy |
 | 🎚️ Konwersja formatu audio | 🎬 Ustawienia formatu wideo | 🆙 Wbudowana zakładka Aktualizator |
-| 🌍 Tryb ogólny |
-| 🌍 Lokalizacja w 14 językach |                                  |
+| 🌍 Tryb ogólny | 🌍 Lokalizacja w 14 językach |                                  |
 </div>
 
 <a id="installation"></a>

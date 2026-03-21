@@ -71,8 +71,7 @@ YTSage foi projetado para usuários que desejam um **baixador de YouTube simples
 | 📑 Incorporar capítulos | ✂️ Cortar seções de vídeo | 🍪 Login com Cookies |
 | 📜 Histórico de downloads | 🔄 Seleção de canal de lançamento | 🌐 Suporte a proxy |
 | 🎚️ Conversão de formato de áudio | 🎬 Configurações de formato de vídeo | 🆙 Guia Atualizador integrado |
-| 🌍 Modo Genérico |
-| 🌍 Localização em 14 idiomas |                                  |
+| 🌍 Modo Genérico | 🌍 Localização em 14 idiomas |                                  |
 </div>
 
 <a id="installation"></a>
