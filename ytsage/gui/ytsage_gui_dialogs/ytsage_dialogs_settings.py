@@ -26,8 +26,10 @@ from PySide6.QtWidgets import (
     QPushButton,
     QRadioButton,
     QVBoxLayout,
+    QWidget,
 )
 
+from ..ytsage_smooth_tab_widget import SmoothTabWidget
 from ...utils.ytsage_logger import logger
 from ...utils.ytsage_localization import _
 from ...utils.ytsage_config_manager import ConfigManager
@@ -38,7 +40,7 @@ class DownloadSettingsDialog(QDialog):
     def __init__(self, current_path, current_limit, current_unit_index, parent=None) -> None:
         super().__init__(parent)
         self.setWindowTitle(_("settings.title"))
-        self.setMinimumWidth(450)
+        self.setMinimumWidth(550)
         self.setMinimumHeight(400)
         self.current_path = current_path
         self.current_limit = current_limit if current_limit is not None else ""
@@ -49,7 +51,25 @@ class DownloadSettingsDialog(QDialog):
             """
             QDialog {
                 background-color: #15181b;
+            }
+            QFrame#tabContent { 
+                border: 1px solid #3d3d3d;
+                background-color: #15181b;
+            }
+            QTabBar::tab {
+                background-color: #1d1e22;
                 color: #ffffff;
+                padding: 8px 12px;
+                border: 1px solid #3d3d3d;
+                border-bottom: none;
+                border-top-left-radius: 4px;
+                border-top-right-radius: 4px;
+            }
+            QTabBar::tab:selected {
+                background-color: #c90000;
+            }
+            QTabBar::tab:hover:!selected {
+                background-color: #2a2d36;
             }
             QWidget {
                 background-color: #15181b;
@@ -59,18 +79,17 @@ class DownloadSettingsDialog(QDialog):
                 color: #ffffff;
             }
             QGroupBox {
-                color: #ffffff;
-                border: 2px solid #1b2021;
+                border: 1px solid #3d3d3d;
                 border-radius: 4px;
-                margin-top: 10px;
-                padding-top: 10px;
+                margin-top: 1.5ex;
+                color: #ffffff;
+                padding: 10px;
                 font-weight: bold;
-                background-color: #15181b;
             }
             QGroupBox::title {
                 subcontrol-origin: margin;
-                left: 10px;
-                padding: 0 5px 0 5px;
+                subcontrol-position: top left;
+                padding: 0 5px;
                 color: #ffffff;
             }
             QLineEdit {
@@ -112,11 +131,13 @@ class DownloadSettingsDialog(QDialog):
             }
             QCheckBox::indicator:unchecked {
                 border: 2px solid #666666;
-                background: #15181b;
+                background: #1d1e22;
+                border-radius: 9px;
             }
             QCheckBox::indicator:checked {
                 border: 2px solid #c90000;
                 background: #c90000;
+                border-radius: 9px;
             }
             QRadioButton {
                 spacing: 5px;
@@ -129,36 +150,49 @@ class DownloadSettingsDialog(QDialog):
             }
             QRadioButton::indicator:unchecked {
                 border: 2px solid #666666;
-                background: #15181b;
+                background: #1d1e22;
+                border-radius: 9px;
             }
             QRadioButton::indicator:checked {
                 border: 2px solid #c90000;
                 background: #c90000;
+                border-radius: 9px;
             }
             QComboBox {
-                padding: 5px;
+                padding: 8px;
                 border: 2px solid #1b2021;
                 border-radius: 4px;
                 background-color: #1b2021;
                 color: #ffffff;
-                min-height: 20px;
+                min-width: 150px;
             }
             QComboBox::drop-down {
                 border: none;
                 width: 20px;
             }
+            QComboBox::down-arrow {
+                border: none;
+                width: 12px;
+                height: 12px;
+            }
             QComboBox QAbstractItemView {
-                border: 2px solid #1b2021;
-                border-radius: 4px;
-                background-color: #15181b;
+                background-color: #1d1e22;
                 color: #ffffff;
+                border: 1px solid #3d3d3d;
                 selection-background-color: #c90000;
-                selection-color: #ffffff;
             }
         """
         )
 
         layout = QVBoxLayout(self)
+
+        # Create tab widget
+        self.tab_widget = SmoothTabWidget()
+        layout.addWidget(self.tab_widget)
+
+        # === General Tab ===
+        general_tab = QWidget()
+        general_layout = QVBoxLayout(general_tab)
 
         # --- Download Path Section ---
         path_group_box = QGroupBox(_("settings.download_path"))
@@ -177,7 +211,7 @@ class DownloadSettingsDialog(QDialog):
         path_layout.addWidget(browse_button)
 
         path_group_box.setLayout(path_layout)
-        layout.addWidget(path_group_box)
+        general_layout.addWidget(path_group_box)
 
         # --- Speed Limit Section ---
         speed_group_box = QGroupBox(_("settings.speed_limit"))
@@ -193,7 +227,7 @@ class DownloadSettingsDialog(QDialog):
         speed_layout.addWidget(self.speed_limit_unit)
 
         speed_group_box.setLayout(speed_layout)
-        layout.addWidget(speed_group_box)
+        general_layout.addWidget(speed_group_box)
 
         # --- Generic Mode Section ---
         generic_mode_group_box = QGroupBox(_("settings.generic_mode"))
@@ -211,7 +245,12 @@ class DownloadSettingsDialog(QDialog):
         generic_mode_layout.addWidget(generic_mode_help_label)
 
         generic_mode_group_box.setLayout(generic_mode_layout)
-        layout.addWidget(generic_mode_group_box)
+        general_layout.addWidget(generic_mode_group_box)
+        general_layout.addStretch()
+
+        # === Format Tab ===
+        format_tab = QWidget()
+        format_layout = QVBoxLayout(format_tab)
 
         # --- Output Format Settings Section ---
         output_format_group_box = QGroupBox(_("settings.output_format_settings"))
@@ -252,7 +291,7 @@ class DownloadSettingsDialog(QDialog):
         output_format_layout.addWidget(help_label)
 
         output_format_group_box.setLayout(output_format_layout)
-        layout.addWidget(output_format_group_box)
+        format_layout.addWidget(output_format_group_box)
 
         # --- Audio Format Settings Section (for audio-only downloads) ---
         audio_format_group_box = QGroupBox(_("settings.audio_format_settings"))
@@ -314,7 +353,12 @@ class DownloadSettingsDialog(QDialog):
         self.force_audio_format_checkbox.stateChanged.connect(self._on_force_audio_format_toggled)
 
         audio_format_group_box.setLayout(audio_format_layout)
-        layout.addWidget(audio_format_group_box)
+        format_layout.addWidget(audio_format_group_box)
+        format_layout.addStretch()
+
+        # === File Tab ===
+        file_tab = QWidget()
+        file_layout = QVBoxLayout(file_tab)
 
         # --- Filename Format Section ---
         filename_format_group_box = QGroupBox(_("settings.filename_format"))
@@ -343,7 +387,13 @@ class DownloadSettingsDialog(QDialog):
         filename_layout.addWidget(filename_help_label)
         
         filename_format_group_box.setLayout(filename_layout)
-        layout.addWidget(filename_format_group_box)
+        file_layout.addWidget(filename_format_group_box)
+        file_layout.addStretch()
+
+        # Add tabs to tab widget
+        self.tab_widget.addTab(general_tab, _("settings.tab_general", default="General"))
+        self.tab_widget.addTab(format_tab, _("settings.tab_format", default="Format"))
+        self.tab_widget.addTab(file_tab, _("settings.tab_file", default="File"))
 
         # Dialog buttons (OK/Cancel)
         button_box = QDialogButtonBox()
@@ -351,6 +401,27 @@ class DownloadSettingsDialog(QDialog):
         cancel_button = button_box.addButton(_("buttons.cancel"), QDialogButtonBox.ButtonRole.RejectRole)
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
+        
+        # Style the buttons to look identical to Custom Options dialog
+        for btn in [ok_button, cancel_button]:
+            btn.setMinimumHeight(35)
+            btn.setMinimumWidth(80)
+            btn.setStyleSheet(
+                """
+                QPushButton {
+                    padding: 8px 20px;
+                    background-color: #c90000;
+                    border: none;
+                    border-radius: 4px;
+                    color: white;
+                    font-weight: bold;
+                }
+                QPushButton:hover {
+                    background-color: #a50000;
+                }
+                """
+            )
+
         layout.addWidget(button_box)
 
     def _on_audio_normalization_toggled(self, state: int) -> None:
