@@ -71,7 +71,7 @@ YTSage wurde für Benutzer entwickelt, die einen **einfachen, aber leistungsstar
 | 📑 Kapitel einbetten | ✂️ Videoabschnitte zuschneiden | 🍪 Mit Cookies anmelden |
 | 📜 Download-Verlauf | 🔄 Kanalauswahl freigeben | 🌐 Proxy-Unterstützung |
 | 🎚️ Audioformatkonvertierung | 🎬 Videoformateinstellungen | 🆙 Integrierte Updater-Registerkarte |
-| 🌍 Allgemeiner Modus | 🌍 Lokalisierung in 14 Sprachen |                                  |
+| 🌍 Allgemeiner Modus | 🔊 Audio-Normalisierung (EBU R128) | 🌍 Lokalisierung in 14 Sprachen |
 </div>
 
 <a id="installation"></a>

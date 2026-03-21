@@ -71,7 +71,7 @@ YTSage dirancang untuk pengguna yang menginginkan **pengunduh YouTube yang seder
 | 📑 Sematkan Bab | ✂️ Pangkas Bagian Video | 🍪 Masuk dengan Cookie |
 | 📜 Unduh Riwayat | 🔄 Rilis Pilihan Saluran | 🌐 Dukungan Proksi |
 | 🎚️ Konversi Format Audio | 🎬 Pengaturan Format Video | 🆙 Tab Pembaruan Bawaan |
-| 🌍 Mode Generik | 🌍 Lokalisasi dalam 14 Bahasa |                                  |
+| 🌍 Mode Generik | 🔊 Normalisasi Audio (EBU R128) | 🌍 Lokalisasi dalam 14 Bahasa |
 </div>
 
 <a id="installation"></a>
