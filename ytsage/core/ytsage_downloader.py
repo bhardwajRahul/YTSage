@@ -72,6 +72,7 @@ class DownloadThread(QThread):
         preferred_output_format="mp4",
         force_audio_format=False,
         preferred_audio_format="best",
+        audio_normalization=False,
         filename_format=None,
     ) -> None:
         super().__init__()
@@ -100,6 +101,7 @@ class DownloadThread(QThread):
         self.preferred_output_format = preferred_output_format
         self.force_audio_format = force_audio_format
         self.preferred_audio_format = preferred_audio_format
+        self.audio_normalization = audio_normalization
         self.filename_format = filename_format
         self.paused: bool = False
         self.cancelled: bool = False
@@ -271,6 +273,22 @@ class DownloadThread(QThread):
                 logger.debug(f"Using --extract-audio with --audio-format {self.preferred_audio_format} for audio-only download")
             else:
                 logger.debug("Using --extract-audio with best quality (no conversion) for audio-only download")
+                
+        # Add Audio Normalization if enabled (only applies to audio-only downloads)
+        if self.audio_normalization and self.is_audio_only:
+            # Normalization using FFmpeg filters requires re-encoding the audio stream.
+            # If the user selected "Best (No conversion)", yt-dlp attempts to stream copy (-c:a copy),
+            # which will cause FFmpeg to crash with "Invalid argument".
+            # We fix this by forcing an explicit actual conversion (mp3) if no format was forced.
+            if not self.force_audio_format or self.preferred_audio_format == "best":
+                if "--extract-audio" not in cmd:
+                    cmd.append("--extract-audio")
+                cmd.extend(["--audio-format", "mp3"])
+                logger.debug("Forced audio format to mp3 since normalization requires re-encoding")
+
+            # Scope the argument specifically to ExtractAudio so it doesn't conflict with other PPs
+            cmd.extend(["--postprocessor-args", "ExtractAudio:-af loudnorm=I=-16:LRA=11:TP=-1.5"])
+            logger.debug("Added Audio Normalization (--postprocessor-args ExtractAudio:-af loudnorm=...)")
 
         # Output template with resolution in filename
         # Use string concatenation instead of Path.joinpath to avoid Path object issues
